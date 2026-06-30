@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tổng quan — Hệ thống quản lý thu học phí ULIS</title>
+<meta name="description" content="Hệ thống quản trị học phí nội bộ — Trường Đại học Ngoại ngữ, Đại học Quốc gia Hà Nội"/>
+<link rel="stylesheet" href="../css/styles.css"/>
+
+<style>
+  .overview-page .chart-card {
+    background: #FFFFFF;
+    border-color: #E5EDF7;
+  }
+
+  .overview-page .chart-card-title {
+    color: #1E293B;
+  }
+
+  .overview-page .chart-card-sub {
+    color: #64748B;
+  }
+
+  .overview-donut-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .overview-donut-box {
+    width: 260px;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overview-donut-svg {
+    width: 220px;
+    height: 220px;
+    display: block;
+  }
+
+  .overview-donut-bg {
+    fill: none;
+    stroke: #EEF4FB;
+    stroke-width: 18;
+  }
+
+  .overview-donut-segment {
+    fill: none;
+    stroke-width: 18;
+    stroke-linecap: butt;
+    transform: rotate(-90deg);
+    transform-origin: 80px 80px;
+  }
+
+  .overview-donut-inner {
+    fill: #FFFFFF;
+    stroke: #F1F5F9;
+    stroke-width: 1;
+  }
+
+  .overview-donut-total {
+    font-size: 24px;
+    font-weight: 760;
+    fill: #1E293B;
+  }
+
+  .overview-donut-label {
+    font-size: 11px;
+    font-weight: 500;
+    fill: #64748B;
+  }
+
+  .overview-page .legend-dot.soft-success { background:#2FCB8D; }
+  .overview-page .legend-dot.soft-info { background:#4F8EF7; }
+  .overview-page .legend-dot.soft-warning { background:#F5B82E; }
+  .overview-page .legend-dot.soft-error { background:#F0647A; }
+  .overview-page .legend-dot.soft-purple { background:#8E7CF4; }
+
+  .overview-page .bar-track {
+    background: #EEF6FF;
+  }
+
+  .overview-page .bar-fill.soft-blue {
+    background: linear-gradient(90deg, #BBD8FF 0%, #4F8EF7 100%);
+    box-shadow: none;
+  }
+
+  .overview-page .bar-fill.soft-green {
+    background: linear-gradient(90deg, #BDF3D8 0%, #2FCB8D 100%);
+    box-shadow: none;
+  }
+
+  .overview-page .bar-fill.soft-amber {
+    background: linear-gradient(90deg, #FFE29B 0%, #F5B82E 100%);
+    box-shadow: none;
+  }
+
+  .overview-page .bar-fill.soft-pink {
+    background: linear-gradient(90deg, #FFC5D0 0%, #F0647A 100%);
+    box-shadow: none;
+  }
+
+  .overview-page .line-chart-box {
+    background: #FFFFFF;
+    border: 1px solid #E8F0FA;
+    border-radius: var(--r);
+  }
+</style>
+</head>
+
+<body>
+<div id="toast-container"></div>
+
+<!-- ===================== SESSION EXPIRED MODAL ===================== -->
+<div class="overlay" id="modal-session-expired">
+  <div class="modal modal-sm">
+    <div class="modal-hd">
+      <h2>Phiên đăng nhập hết hạn</h2>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:24px 18px;">
+      <div class="confirm-icon" style="margin:0 auto 12px;background:var(--warn-bg);">
+        <svg width="18" height="18" fill="none" viewBox="0 0 20 20" stroke="var(--warning)" stroke-width="1.8">
+          <path d="M10 2L2 17h16L10 2zM10 8v4M10 14v1.5"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">Phiên đăng nhập đã hết hạn</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">Vui lòng đăng nhập lại để tiếp tục sử dụng hệ thống.</div>
+      <button class="btn btn-primary" onclick="location.href='../index.html'">Đăng nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="../assets/ulis-logo.png" alt="ULIS" style="height:36px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'"/>
+        <div>
+          <div class="brand-inst" style="font-size:11.5px;font-weight:600;">Trường Đại học Ngoại ngữ</div>
+          <div class="brand-vnu">Đại học Quốc gia Hà Nội</div>
+        </div>
+      </div>
+      <div class="brand-sep" style="margin:10px 0 0;"></div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="sidebar-group-label">Nghiệp vụ</div>
+
+      <a class="nav-item active" href="overview.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/>
+          <rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/>
+          <rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/>
+          <rect x="9" y="9" width="5.5" height="5.5" rx="1"/>
+        </svg>
+        Tổng quan
+      </a>
+
+      <a class="nav-item" href="tuition-config.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 4h12M2 8h8M2 12h10"/>
+        </svg>
+        Cấu hình học phí
+      </a>
+
+      <a class="nav-item" href="student-tuition.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M9 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V7M9 2l5 5M9 2v5h5"/>
+        </svg>
+        Dữ liệu học phí
+      </a>
+
+      <a class="nav-item" href="receivables.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M13 5H3a1 1 0 00-1 1v7a1 1 0 001 1h10a1 1 0 001-1V6a1 1 0 00-1-1zM11 5V3a2 2 0 00-4 0v2"/>
+        </svg>
+        Khoản phải thu
+      </a>
+
+      <a class="nav-item" href="payment-requests.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <rect x="1.5" y="3.5" width="13" height="9" rx="1"/>
+          <path d="M1.5 6.5h13"/>
+        </svg>
+        Yêu cầu thanh toán
+      </a>
+
+      <a class="nav-item" href="transactions.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 8h12M10 4l4 4-4 4M6 4L2 8l4 4"/>
+        </svg>
+        Giao dịch
+      </a>
+
+      <a class="nav-item" href="reconciliation.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 3h5v10H2zM9 3h5v10H9M5 8h6"/>
+        </svg>
+        Đối soát BIDV
+      </a>
+
+      <a class="nav-item" href="exceptions.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M8 2L1 14h14L8 2zM8 6v4M8 11v1.5"/>
+        </svg>
+        Ngoại lệ
+      </a>
+
+      <div class="sidebar-group-label">Quản lý</div>
+
+      <a class="nav-item" href="reports.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M3 2h10v12H3zM6 6h4M6 9h4M6 12h2"/>
+        </svg>
+        Báo cáo
+      </a>
+
+      <a class="nav-item" href="reminders.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M8 1a5 5 0 015 5c0 4 2 5 2 5H1s2-1 2-5a5 5 0 015-5zM6.5 13.5a1.5 1.5 0 003 0"/>
+        </svg>
+        Nhắc hạn
+      </a>
+
+      <div class="sidebar-group-label">Cấu hình</div>
+
+      <a class="nav-item" href="system-config.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/>
+        </svg>
+        Cấu hình hệ thống
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===================== MAIN ===================== -->
+  <div id="main">
+
+    <!-- ===================== TOPBAR ===================== -->
+    <header id="topbar">
+      <div class="topbar-crumb" style="display:flex;flex-direction:column;gap:1px;">
+        <div style="font-size:10px;font-weight:500;color:var(--muted-lt);letter-spacing:.2px;">Hệ thống quản lý thu học phí</div>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span class="crumb-root">Tổng quan</span>
+        </div>
+      </div>
+
+      <div class="topbar-user topbar-user-wrap">
+        <div class="user-menu-trigger" id="userMenuTrigger" onclick="toggleUserMenu()">
+          <div class="topbar-user-info">
+            <div class="topbar-user-dept">Phòng Kế hoạch Tài chính</div>
+            <div class="topbar-user-role">Cán bộ KHTC &nbsp;&bull;&nbsp; Nguyễn Thị Hương</div>
+          </div>
+          <div class="topbar-avatar">NH</div>
+        </div>
+
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-header">
+            <div class="udh-name">Nguyễn Thị Hương</div>
+            <div class="udh-role">Phòng KHTC — Cán bộ quản trị</div>
+          </div>
+
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <circle cx="8" cy="5" r="3"/>
+              <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+            </svg>
+            Thông tin tài khoản
+          </div>
+
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="7" width="12" height="8" rx="1"/>
+              <path d="M5 7V5a3 3 0 016 0v2"/>
+            </svg>
+            Đổi mật khẩu
+          </div>
+
+          <hr class="user-menu-sep"/>
+
+          <div class="user-menu-item danger" onclick="location.href='../index.html'">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <path d="M10 11l4-3-4-3M5 8h9M6 3H3a1 1 0 00-1 1v8a1 1 0 001 1h3"/>
+            </svg>
+            Đăng xuất
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== CONTENT ===================== -->
+    <div id="content">
+      <div class="page-body overview-page">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+          <div>
+            <h1>Tổng quan thu học phí</h1>
+            <div class="page-header-sub">Năm học 2025–2026 · Học kỳ 1 · Cập nhật 31/10/2025, 17:30</div>
+          </div>
+
+          <div class="page-header-actions">
+            <select style="height:28px;padding:0 7px;border:1px solid var(--border-dk);border-radius:var(--r-sm);font-size:11.5px;background:var(--surface);font-family:var(--font);">
+              <option selected>2025–2026</option>
+              <option>2024–2025</option>
+              <option>2023–2024</option>
+            </select>
+
+            <select style="height:28px;padding:0 7px;border:1px solid var(--border-dk);border-radius:var(--r-sm);font-size:11.5px;background:var(--surface);font-family:var(--font);">
+              <option selected>Học kỳ 1</option>
+              <option>Đợt 1</option>
+              <option>Học kỳ phụ</option>
+            </select>
+
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã xuất báo cáo tổng quan Excel.','success')">
+              <svg viewBox="0 0 14 14">
+                <path d="M7 9V1M3 7l4 4 4-4M2 12h10"/>
+              </svg>
+              Xuất Excel
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI CARDS -->
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-card-label">Tổng nộp học phí</div>
+            <div class="stat-card-value">122.619.600</div>
+            <div class="stat-card-sub">đã ghi nhận trong kỳ</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Khoản thu khác</div>
+            <div class="stat-card-value c-primary">1.516.320</div>
+            <div class="stat-card-sub">BHYT và khoản ngoài học phí</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Khấu trừ / Trừ nợ</div>
+            <div class="stat-card-value c-warning">20.561.000</div>
+            <div class="stat-card-sub">đã xử lý trong kỳ</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Đã thanh toán</div>
+            <div class="stat-card-value c-success">1.241</div>
+            <div class="stat-card-sub">giao dịch thành công</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Đã cập nhật KPT</div>
+            <div class="stat-card-value c-primary">1.238</div>
+            <div class="stat-card-sub">giao dịch đã ghi nhận vào khoản phải thu</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Ngoại lệ mở</div>
+            <div class="stat-card-value c-error">12</div>
+            <div class="stat-card-sub">3 ngoại lệ quá hạn</div>
+          </div>
+        </div>
+
+        <!-- DASHBOARD CHARTS -->
+        <div class="dashboard-charts">
+
+          <!-- DONUT CHART -->
+         <!-- DONUT CHART -->
+<div class="chart-card">
+  <div class="chart-card-head">
+    <div>
+      <div class="chart-card-title">Cơ cấu khoản phải thu</div>
+      <div class="chart-card-sub">Theo trạng thái xử lý · HK1 2025–2026</div>
+    </div>
+    <span class="badge bg-info">2.156 khoản</span>
+  </div>
+
+  <div class="chart-card-body">
+    <div class="overview-donut-layout">
+      <div class="overview-donut-box">
+        <svg class="overview-donut-svg" viewBox="0 0 160 160" role="img" aria-label="Cơ cấu khoản phải thu">
+          <circle class="overview-donut-bg" cx="80" cy="80" r="56"/>
+
+          <!-- Đã thu: 1.238 / 2.156 -->
+          <circle
+            class="overview-donut-segment"
+            cx="80"
+            cy="80"
+            r="56"
+            stroke="#2FCB8D"
+            stroke-dasharray="199 352"
+            stroke-dashoffset="0"
+          />
+
+          <!-- Khoản thu khác: 176 / 2.156 -->
+          <circle
+            class="overview-donut-segment"
+            cx="80"
+            cy="80"
+            r="56"
+            stroke="#4F8EF7"
+            stroke-dasharray="25 352"
+            stroke-dashoffset="-202"
+          />
+
+          <!-- Thu một phần: 207 / 2.156 -->
+          <circle
+            class="overview-donut-segment"
+            cx="80"
+            cy="80"
+            r="56"
+            stroke="#F5B82E"
+            stroke-dasharray="30 352"
+            stroke-dashoffset="-231"
+          />
+
+          <!-- Quá hạn: 155 / 2.156 -->
+          <circle
+            class="overview-donut-segment"
+            cx="80"
+            cy="80"
+            r="56"
+            stroke="#F0647A"
+            stroke-dasharray="22 352"
+            stroke-dashoffset="-265"
+          />
+
+          <!-- Chờ thanh toán / ngoại lệ: 380 / 2.156 -->
+          <circle
+            class="overview-donut-segment"
+            cx="80"
+            cy="80"
+            r="56"
+            stroke="#8E7CF4"
+            stroke-dasharray="61 352"
+            stroke-dashoffset="-291"
+          />
+
+          <circle class="overview-donut-inner" cx="80" cy="80" r="42"/>
+          <text x="80" y="77" text-anchor="middle" class="overview-donut-total">2.156</text>
+          <text x="80" y="96" text-anchor="middle" class="overview-donut-label">khoản</text>
+        </svg>
+      </div>
+
+      <div class="chart-legend">
+        <div class="legend-row">
+          <div class="legend-left">
+            <span class="legend-dot soft-success"></span>
+            <span class="legend-name">Đã thu</span>
+          </div>
+          <span class="legend-value">1.238</span>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-left">
+            <span class="legend-dot soft-info"></span>
+            <span class="legend-name">Khoản thu khác</span>
+          </div>
+          <span class="legend-value">176</span>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-left">
+            <span class="legend-dot soft-warning"></span>
+            <span class="legend-name">Thu một phần</span>
+          </div>
+          <span class="legend-value">207</span>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-left">
+            <span class="legend-dot soft-error"></span>
+            <span class="legend-name">Quá hạn</span>
+          </div>
+          <span class="legend-value">155</span>
+        </div>
+
+        <div class="legend-row">
+          <div class="legend-left">
+            <span class="legend-dot soft-purple"></span>
+            <span class="legend-name">Chờ thanh toán / ngoại lệ</span>
+          </div>
+          <span class="legend-value">380</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+          <!-- BAR CHART -->
+          <div class="chart-card">
+            <div class="chart-card-head">
+              <div>
+                <div class="chart-card-title">Tổng thu theo loại khoản</div>
+                <div class="chart-card-sub">Giá trị đã ghi nhận trong kỳ thu</div>
+              </div>
+              <span class="badge bg-success">Đã cập nhật</span>
+            </div>
+
+            <div class="chart-card-body">
+              <div class="bar-chart-list">
+                <div class="bar-chart-row">
+                  <div class="bar-name">Học phí ĐHCQ</div>
+                  <div class="bar-track"><div class="bar-fill soft-blue" style="width:100%;"></div></div>
+                  <div class="bar-value">122,6 triệu</div>
+                </div>
+
+                <div class="bar-chart-row">
+                  <div class="bar-name">BRT đợt 1</div>
+                  <div class="bar-track"><div class="bar-fill soft-green" style="width:20%;"></div></div>
+                  <div class="bar-value">25,0 triệu</div>
+                </div>
+
+                <div class="bar-chart-row">
+                  <div class="bar-name">Khấu trừ / trừ nợ</div>
+                  <div class="bar-track"><div class="bar-fill soft-amber" style="width:16.8%;"></div></div>
+                  <div class="bar-value">20,6 triệu</div>
+                </div>
+
+                <div class="bar-chart-row">
+                  <div class="bar-name">BHYT</div>
+                  <div class="bar-track"><div class="bar-fill soft-green" style="width:1.3%;"></div></div>
+                  <div class="bar-value">1,52 triệu</div>
+                </div>
+
+                <div class="bar-chart-row">
+                  <div class="bar-name">Ngoại lệ cần xử lý</div>
+                  <div class="bar-track"><div class="bar-fill soft-pink" style="width:8.6%;"></div></div>
+                  <div class="bar-value">12 mục</div>
+                </div>
+              </div>
+
+       
+            </div>
+          </div>
+        </div>
+
+        <!-- ALERTS + LINE CHART -->
+        <div class="g2" style="margin-bottom:14px;">
+
+          <!-- ALERTS -->
+          <div class="section-block">
+            <div class="section-head">
+              <span class="section-title">Cảnh báo vận hành</span>
+              <span class="badge bg-error">4 mục cần xử lý</span>
+            </div>
+
+            <div class="section-body">
+              <div class="alert-list">
+                <div class="alert-row warn">
+                  <div>
+                    <div class="alert-label">Đã thanh toán nhưng chưa cập nhật KPT</div>
+                    <div class="alert-meta">Cần kiểm tra trước khi lập phiếu thu và HĐĐT</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="alert-count-warn">4</span>
+                    <span class="alert-act" onclick="location.href='exceptions.html'">Xem</span>
+                  </div>
+                </div>
+
+                <div class="alert-row err">
+                  <div>
+                    <div class="alert-label">Giao dịch mồ côi</div>
+                    <div class="alert-meta">BIDV có giao dịch, hệ thống chưa xác định mã đơn/yêu cầu</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="alert-count-err">2</span>
+                    <span class="alert-act" onclick="location.href='exceptions.html'">Xem</span>
+                  </div>
+                </div>
+
+                <div class="alert-row warn">
+                  <div>
+                    <div class="alert-label">Phiếu thu / HĐĐT lỗi</div>
+                    <div class="alert-meta">Cần phát hành lại hoặc đồng bộ trạng thái hóa đơn</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="alert-count-warn">3</span>
+                    <span class="alert-act" onclick="location.href='exceptions.html'">Xử lý</span>
+                  </div>
+                </div>
+
+                <div class="alert-row warn">
+                  <div>
+                    <div class="alert-label">Đối soát chưa đóng sổ</div>
+                    <div class="alert-meta">Ngày 29/10/2025 còn giao dịch lệch cần review</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="alert-count-warn">1</span>
+                    <span class="alert-act" onclick="location.href='reconciliation.html'">Xử lý</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LINE CHART -->
+          <div class="section-block">
+            <div class="section-head">
+              <span class="section-title">Giao dịch 7 ngày gần nhất</span>
+              <span class="c-muted fs-12">Số lượng giao dịch/ngày</span>
+            </div>
+
+            <div class="section-body">
+              <div class="line-chart-box">
+                <svg viewBox="0 0 520 170" role="img" aria-label="Biểu đồ giao dịch 7 ngày gần nhất">
+                  <line x1="34" y1="132" x2="500" y2="132" stroke="#EAF1F9" stroke-width="1"/>
+                  <line x1="34" y1="92" x2="500" y2="92" stroke="#EAF1F9" stroke-width="1"/>
+                  <line x1="34" y1="52" x2="500" y2="52" stroke="#EAF1F9" stroke-width="1"/>
+
+                  <path
+                    d="M42 116 C75 108, 91 104, 118 102 C148 99, 165 108, 194 110 C223 112, 242 86, 270 78 C300 69, 318 70, 346 68 C376 66, 393 82, 422 84 C452 86, 470 62, 498 52"
+                    fill="none"
+                    stroke="#38BDF8"
+                    stroke-width="3.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+
+                  <path
+                    d="M42 116 C75 108, 91 104, 118 102 C148 99, 165 108, 194 110 C223 112, 242 86, 270 78 C300 69, 318 70, 346 68 C376 66, 393 82, 422 84 C452 86, 470 62, 498 52 L498 132 L42 132 Z"
+                    fill="#BAE6FD"
+                    opacity=".32"
+                  />
+
+                  <circle cx="42" cy="116" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+                  <circle cx="118" cy="102" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+                  <circle cx="194" cy="110" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+                  <circle cx="270" cy="78" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+                  <circle cx="346" cy="68" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+                  <circle cx="422" cy="84" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+                  <circle cx="498" cy="52" r="4.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="2"/>
+
+                  <text x="42" y="152" font-size="11" fill="#64748B" text-anchor="middle">23/10</text>
+                  <text x="118" y="152" font-size="11" fill="#64748B" text-anchor="middle">24/10</text>
+                  <text x="194" y="152" font-size="11" fill="#64748B" text-anchor="middle">25/10</text>
+                  <text x="270" y="152" font-size="11" fill="#64748B" text-anchor="middle">26/10</text>
+                  <text x="346" y="152" font-size="11" fill="#64748B" text-anchor="middle">27/10</text>
+                  <text x="422" y="152" font-size="11" fill="#64748B" text-anchor="middle">28/10</text>
+                  <text x="498" y="152" font-size="11" fill="#64748B" text-anchor="middle">29/10</text>
+
+                  <text x="42" y="106" font-size="10" fill="#334155" text-anchor="middle">18</text>
+                  <text x="118" y="92" font-size="10" fill="#334155" text-anchor="middle">23</text>
+                  <text x="194" y="100" font-size="10" fill="#334155" text-anchor="middle">20</text>
+                  <text x="270" y="68" font-size="10" fill="#334155" text-anchor="middle">31</text>
+                  <text x="346" y="58" font-size="10" fill="#334155" text-anchor="middle">35</text>
+                  <text x="422" y="74" font-size="10" fill="#334155" text-anchor="middle">29</text>
+                  <text x="498" y="42" font-size="10" fill="#334155" text-anchor="middle">34</text>
+                </svg>
+              </div>
+
+              <div class="chart-note">Đường biểu đồ dùng xanh sky nhẹ và vùng nền mờ để nhìn sáng hơn, không còn cảm giác nặng như màu navy đậm.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT TRANSACTIONS TABLE -->
+        <div class="table-wrap table-xwide">
+          <div class="table-toolbar">
+            <span class="table-title">Giao dịch cần chú ý</span>
+            <span class="table-count">Ngày 29/10/2025 · 12 mục cần kiểm tra</span>
+            <div class="table-toolbar-r">
+              <button class="btn btn-ghost btn-sm" onclick="location.href='transactions.html'">Xem tất cả</button>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="col-code">Mã giao dịch</th>
+                <th class="col-code">Mã đơn</th>
+                <th class="col-student-code">Mã SV</th>
+                <th class="col-name">Họ tên</th>
+                <th class="col-status">Loại khoản</th>
+                <th class="col-content">Nội dung thu</th>
+                <th class="r col-money">Số tiền (đ)</th>
+                <th class="col-status">Cập nhật KPT</th>
+                <th class="col-code">Số phiếu</th>
+                <th class="col-status">Trạng thái</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="td-a nowrap">TXN-20251029-0034</td>
+                <td class="td-a nowrap">ORD-20251029-0142</td>
+                <td class="fw600 nowrap">22041542</td>
+                <td>Nguyễn Thị Ánh Tuyết</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">17.500.000</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-073978</td>
+                <td><span class="badge bg-success">Thành công</span></td>
+              </tr>
+
+              <tr>
+                <td class="td-a nowrap">TXN-20251029-0032</td>
+                <td class="td-a nowrap">ORD-20251029-0140</td>
+                <td class="fw600 nowrap">22040231</td>
+                <td>Trần Minh Anh</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">8.700.000</td>
+                <td><span class="badge bg-warning">Chưa cập nhật</span></td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-warning">Lệch số tiền</span></td>
+              </tr>
+
+              <tr>
+                <td class="td-a nowrap">TXN-20251028-0030</td>
+                <td class="dim c-align">—</td>
+                <td class="fw600 nowrap">24031876</td>
+                <td>Lê Đức Huy</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">10.500.000</td>
+                <td><span class="badge bg-warning">Chưa cập nhật</span></td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-error">BIDV có / hệ thống chưa ghi</span></td>
+              </tr>
+
+              <tr>
+                <td class="td-a nowrap">TXN-20251115-0024</td>
+                <td class="td-a nowrap">ORD-20251115-0088</td>
+                <td class="fw600 nowrap">22041542</td>
+                <td>Nguyễn Thị Ánh Tuyết</td>
+                <td><span class="badge bg-neutral">BHYT</span></td>
+                <td>Bảo hiểm y tế 12 tháng</td>
+                <td class="r fw600">631.800</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-012583</td>
+                <td><span class="badge bg-success">Thành công</span></td>
+              </tr>
+
+              <tr>
+                <td class="td-a nowrap">TXN-20251029-0031</td>
+                <td class="td-a nowrap">ORD-20251029-0139</td>
+                <td class="fw600 nowrap">25010782</td>
+                <td>Đỗ Khánh Linh</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Chương trình BRT — Đợt 1</td>
+                <td class="r fw600">25.000.000</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-073980</td>
+                <td><span class="badge bg-info">Cần kiểm tra kỳ thu</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/common.js"></script>
+</body>
+</html>

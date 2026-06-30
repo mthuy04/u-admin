@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Đối soát BIDV — Hệ thống quản lý thu học phí ULIS</title>
+<meta name="description" content="Hệ thống quản trị học phí nội bộ — Trường Đại học Ngoại ngữ, Đại học Quốc gia Hà Nội"/>
+<link rel="stylesheet" href="../css/styles.css"/>
+</head>
+
+<body>
+<div id="toast-container"></div>
+
+<!-- ===================== SESSION EXPIRED MODAL ===================== -->
+<div class="overlay" id="modal-session-expired">
+  <div class="modal modal-sm">
+    <div class="modal-hd">
+      <h2>Phiên đăng nhập hết hạn</h2>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:24px 18px;">
+      <div class="confirm-icon" style="margin:0 auto 12px;background:var(--warn-bg);">
+        <svg width="18" height="18" fill="none" viewBox="0 0 20 20" stroke="var(--warning)" stroke-width="1.8">
+          <path d="M10 2L2 17h16L10 2zM10 8v4M10 14v1.5"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">Phiên đăng nhập đã hết hạn</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">Vui lòng đăng nhập lại để tiếp tục sử dụng hệ thống.</div>
+      <button class="btn btn-primary" onclick="location.href='../index.html'">Đăng nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CONFIRM: ĐÓNG SỔ ĐỐI SOÁT ===================== -->
+<div class="overlay" id="modal-confirm-close-recon">
+  <div class="modal modal-sm">
+    <div class="modal-hd">
+      <h2>Xác nhận đóng sổ đối soát</h2>
+      <button class="btn-x" onclick="closeModal('modal-confirm-close-recon')">
+        <svg viewBox="0 0 20 20">
+          <path d="M5 5l10 10M15 5L5 15"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+        Xác nhận <strong>đóng sổ</strong> đối soát ngày 29/10/2025?
+      </div>
+      <div class="sys-warn-bar" style="margin-bottom:0;">
+        Sau khi đóng sổ, kết quả đối soát sẽ được khóa, biên bản đối soát sẽ được sinh theo dữ liệu hiện tại.
+      </div>
+    </div>
+
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="closeModal('modal-confirm-close-recon')">Hủy</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-confirm-close-recon');showToast('Đã đóng sổ đối soát ngày 29/10/2025.','success')">
+        Đóng sổ
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="../assets/ulis-logo.png" alt="ULIS" style="height:36px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'"/>
+        <div>
+          <div class="brand-inst" style="font-size:11.5px;font-weight:600;">Trường Đại học Ngoại ngữ</div>
+          <div class="brand-vnu">Đại học Quốc gia Hà Nội</div>
+        </div>
+      </div>
+      <div class="brand-sep" style="margin:10px 0 0;"></div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="sidebar-group-label">Nghiệp vụ</div>
+
+      <a class="nav-item" href="overview.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/>
+          <rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/>
+          <rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/>
+          <rect x="9" y="9" width="5.5" height="5.5" rx="1"/>
+        </svg>
+        Tổng quan
+      </a>
+
+      <a class="nav-item" href="tuition-config.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 4h12M2 8h8M2 12h10"/>
+        </svg>
+        Cấu hình học phí
+      </a>
+
+      <a class="nav-item" href="student-tuition.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M9 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V7M9 2l5 5M9 2v5h5"/>
+        </svg>
+        Dữ liệu học phí
+      </a>
+
+      <a class="nav-item" href="receivables.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M13 5H3a1 1 0 00-1 1v7a1 1 0 001 1h10a1 1 0 001-1V6a1 1 0 00-1-1zM11 5V3a2 2 0 00-4 0v2"/>
+        </svg>
+        Khoản phải thu
+      </a>
+
+      <a class="nav-item" href="payment-requests.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <rect x="1.5" y="3.5" width="13" height="9" rx="1"/>
+          <path d="M1.5 6.5h13"/>
+        </svg>
+        Yêu cầu thanh toán
+      </a>
+
+      <a class="nav-item" href="transactions.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 8h12M10 4l4 4-4 4M6 4L2 8l4 4"/>
+        </svg>
+        Giao dịch
+      </a>
+
+      <a class="nav-item active" href="reconciliation.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 3h5v10H2zM9 3h5v10H9M5 8h6"/>
+        </svg>
+        Đối soát BIDV
+      </a>
+
+      <a class="nav-item" href="exceptions.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M8 2L1 14h14L8 2zM8 6v4M8 11v1.5"/>
+        </svg>
+        Ngoại lệ
+      </a>
+
+      <div class="sidebar-group-label">Quản lý</div>
+
+      <a class="nav-item" href="reports.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M3 2h10v12H3zM6 6h4M6 9h4M6 12h2"/>
+        </svg>
+        Báo cáo
+      </a>
+
+      <a class="nav-item" href="reminders.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M8 1a5 5 0 015 5c0 4 2 5 2 5H1s2-1 2-5a5 5 0 015-5zM6.5 13.5a1.5 1.5 0 003 0"/>
+        </svg>
+        Nhắc hạn
+      </a>
+
+      <div class="sidebar-group-label">Cấu hình</div>
+
+      <a class="nav-item" href="system-config.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/>
+        </svg>
+        Cấu hình hệ thống
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===================== MAIN ===================== -->
+  <div id="main">
+
+    <!-- ===================== TOPBAR ===================== -->
+    <header id="topbar">
+      <div class="topbar-crumb" style="display:flex;flex-direction:column;gap:1px;">
+        <div style="font-size:10px;font-weight:500;color:var(--muted-lt);letter-spacing:.2px;">Hệ thống quản lý thu học phí</div>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span class="crumb-root">Nghiệp vụ</span>
+          <span class="crumb-sep"> / </span>
+          <span class="crumb-page">Đối soát BIDV</span>
+        </div>
+      </div>
+
+      <div class="topbar-user topbar-user-wrap">
+        <div class="user-menu-trigger" id="userMenuTrigger" onclick="toggleUserMenu()">
+          <div class="topbar-user-info">
+            <div class="topbar-user-dept">Phòng Kế hoạch Tài chính</div>
+            <div class="topbar-user-role">Cán bộ KHTC &nbsp;&bull;&nbsp; Nguyễn Thị Hương</div>
+          </div>
+          <div class="topbar-avatar">NH</div>
+        </div>
+
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-header">
+            <div class="udh-name">Nguyễn Thị Hương</div>
+            <div class="udh-role">Phòng KHTC — Cán bộ quản trị</div>
+          </div>
+
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <circle cx="8" cy="5" r="3"/>
+              <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+            </svg>
+            Thông tin tài khoản
+          </div>
+
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="7" width="12" height="8" rx="1"/>
+              <path d="M5 7V5a3 3 0 016 0v2"/>
+            </svg>
+            Đổi mật khẩu
+          </div>
+
+          <hr class="user-menu-sep"/>
+
+          <div class="user-menu-item danger" onclick="location.href='../index.html'">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <path d="M10 11l4-3-4-3M5 8h9M6 3H3a1 1 0 00-1 1v8a1 1 0 001 1h3"/>
+            </svg>
+            Đăng xuất
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== CONTENT ===================== -->
+    <div id="content">
+      <div class="page-body">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+          <div>
+            <h1>Đối soát BIDV</h1>
+            <div class="page-header-sub">Đối chiếu tiền về, trạng thái thanh toán, cập nhật khoản phải thu, phiếu thu và hóa đơn điện tử</div>
+          </div>
+
+          <div class="page-header-actions">
+            <input
+              type="date"
+              id="reconDate"
+              value="2025-10-29"
+              style="height:28px;padding:0 7px;border:1px solid var(--border-dk);border-radius:var(--r-sm);font-size:11.5px;background:var(--surface);font-family:var(--font);"
+            />
+
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã nhận file sao kê BIDV.','info')">
+              <svg viewBox="0 0 14 14">
+                <path d="M7 5V1M3 3l4-2 4 2M2 7h10v6H2z"/>
+              </svg>
+              Import file BIDV
+            </button>
+
+            <button class="btn btn-primary btn-sm" id="btn-run-recon" onclick="runRecon()">Chạy đối soát</button>
+            <button class="btn btn-secondary btn-sm" onclick="location.href='exceptions.html'">Tạo ngoại lệ</button>
+            <button class="btn btn-warn btn-sm" onclick="openModal('modal-confirm-close-recon')">Đóng sổ</button>
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã xuất biên bản đối soát.','success')">Xuất biên bản</button>
+          </div>
+        </div>
+
+        <!-- WORKFLOW STEPPER -->
+        <div class="wf-bar">
+          <div class="wf-step done" id="wf1">
+            <span class="wf-n">01</span>
+            Chọn ngày
+          </div>
+
+          <div class="wf-step done" id="wf2">
+            <span class="wf-n">02</span>
+            Import file
+          </div>
+
+          <div class="wf-step done" id="wf3">
+            <span class="wf-n">03</span>
+            Chạy đối soát
+          </div>
+
+          <div class="wf-step active" id="wf4">
+            <span class="wf-n">04</span>
+            Review kết quả
+          </div>
+
+          <div class="wf-step" id="wf5">
+            <span class="wf-n">05</span>
+            Tạo ngoại lệ
+          </div>
+
+          <div class="wf-step" id="wf6">
+            <span class="wf-n">06</span>
+            Đóng sổ
+          </div>
+
+          <div class="wf-step" id="wf7">
+            <span class="wf-n">07</span>
+            Xuất biên bản
+          </div>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="stat-row" id="recon-summary">
+          <div class="stat-card">
+            <div class="stat-card-label">Tổng GD BIDV</div>
+            <div class="stat-card-value">138</div>
+            <div class="stat-card-sub">421.540.000 đ</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Tổng GD hệ thống</div>
+            <div class="stat-card-value">136</div>
+            <div class="stat-card-sub">418.600.000 đ</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Khớp hoàn toàn</div>
+            <div class="stat-card-value c-success">132</div>
+            <div class="stat-card-sub">đã cập nhật KPT và lập phiếu thu</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Chưa cập nhật KPT</div>
+            <div class="stat-card-value c-warning">4</div>
+            <div class="stat-card-sub">đã thanh toán nhưng chưa ghi nhận đủ</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Lệch / mồ côi</div>
+            <div class="stat-card-value c-error">4</div>
+            <div class="stat-card-sub">cần tạo ngoại lệ xử lý</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">HĐĐT đã ký</div>
+            <div class="stat-card-value c-primary">128</div>
+            <div class="stat-card-sub">phiếu thu đã phát hành hóa đơn</div>
+          </div>
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+          <div class="filter-field">
+            <label>Kết quả đối soát</label>
+            <select>
+              <option>Tất cả kết quả</option>
+              <option>Khớp hoàn toàn</option>
+              <option>Lệch số tiền</option>
+              <option>Đã thanh toán / chưa cập nhật KPT</option>
+              <option>BIDV có / hệ thống chưa ghi</option>
+              <option>Hệ thống có / BIDV không có</option>
+              <option>Giao dịch mồ côi</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label>Mã giao dịch</label>
+            <input type="text" placeholder="TXN-..." style="min-width:145px;"/>
+          </div>
+
+          <div class="filter-field">
+            <label>Mã đơn</label>
+            <input type="text" placeholder="ORD-..." style="min-width:130px;"/>
+          </div>
+
+          <div class="filter-field">
+            <label>Mã yêu cầu</label>
+            <input type="text" placeholder="PR-..." style="min-width:130px;"/>
+          </div>
+
+          <div class="filter-field">
+            <label>Mã SV</label>
+            <input type="text" placeholder="2204..." style="min-width:105px;"/>
+          </div>
+
+          <div class="filter-field">
+            <label>Loại khoản</label>
+            <select>
+              <option>Tất cả</option>
+              <option>Học phí</option>
+              <option>Bảo hiểm y tế</option>
+              <option>Khoản thu khác</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label>Cập nhật KPT</label>
+            <select>
+              <option>Tất cả</option>
+              <option>Đã cập nhật</option>
+              <option>Chưa cập nhật</option>
+              <option>Đã cập nhật một phần</option>
+              <option>Không áp dụng</option>
+            </select>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn btn-primary btn-sm">Lọc</button>
+            <button class="btn btn-secondary btn-sm">Đặt lại</button>
+          </div>
+        </div>
+
+        <!-- RESULT TABLE -->
+        <div class="table-wrap table-xwide" id="recon-results-tbl">
+          <div class="table-toolbar">
+            <span class="table-title">Kết quả đối soát — 29/10/2025</span>
+            <span class="table-count">138 bản ghi</span>
+
+            <div class="table-toolbar-r">
+              <span class="c-muted fs-11">Hiển thị</span>
+              <select class="page-size-select">
+                <option selected>20 dòng</option>
+                <option>50 dòng</option>
+                <option>100 dòng</option>
+              </select>
+              <button class="btn btn-warn btn-xs" onclick="location.href='exceptions.html'">
+                Tạo ngoại lệ cho 4 GD lệch
+              </button>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="col-code">Mã GD BIDV</th>
+                <th class="col-code">Mã giao dịch</th>
+                <th class="col-code">Mã đơn</th>
+                <th class="col-code">Mã yêu cầu</th>
+                <th class="col-student-code">Mã SV</th>
+                <th class="col-name">Họ tên</th>
+                <th class="col-status">Loại khoản</th>
+                <th class="col-content">Nội dung thu</th>
+                <th class="r col-money">BIDV (đ)</th>
+                <th class="r col-money">Hệ thống (đ)</th>
+                <th class="r col-money">Chênh lệch (đ)</th>
+                <th class="col-status">Cập nhật KPT</th>
+                <th class="col-code">Số phiếu</th>
+                <th class="col-code">Mã HĐ</th>
+                <th class="col-status">Kết quả</th>
+                <th class="col-content">Hướng xử lý</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="nowrap">FT25202000058147</td>
+                <td class="td-a nowrap">TXN-20251029-0034</td>
+                <td class="td-a nowrap">ORD-20251029-0142</td>
+                <td class="td-a nowrap">PR-20251029-0142</td>
+                <td class="fw600 nowrap">22041542</td>
+                <td>Nguyễn Thị Ánh Tuyết</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">17.500.000</td>
+                <td class="r fw600">17.500.000</td>
+                <td class="r">0</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-073978</td>
+                <td class="td-a nowrap">00004524</td>
+                <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25202000058148</td>
+                <td class="td-a nowrap">TXN-20251029-0033</td>
+                <td class="td-a nowrap">ORD-20251029-0141</td>
+                <td class="td-a nowrap">PR-20251029-0141</td>
+                <td class="fw600 nowrap">23011208</td>
+                <td>Phạm Gia Bảo</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">19.000.000</td>
+                <td class="r fw600">19.000.000</td>
+                <td class="r">0</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-073979</td>
+                <td class="td-a nowrap">00004525</td>
+                <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25202000058149</td>
+                <td class="td-a nowrap">TXN-20251029-0032</td>
+                <td class="td-a nowrap">ORD-20251029-0140</td>
+                <td class="td-a nowrap">PR-20251028-0140</td>
+                <td class="fw600 nowrap">22040231</td>
+                <td>Trần Minh Anh</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">8.700.000</td>
+                <td class="r fw600">8.450.000</td>
+                <td class="r c-error fw600">+250.000</td>
+                <td><span class="badge bg-warning">Chưa cập nhật</span></td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-warning">Lệch số tiền</span></td>
+                <td>Kiểm tra phần nộp thừa trước khi lập phiếu thu</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25202000058150</td>
+                <td class="td-a nowrap">TXN-20251029-0031</td>
+                <td class="td-a nowrap">ORD-20251029-0139</td>
+                <td class="td-a nowrap">PR-20251029-0139</td>
+                <td class="fw600 nowrap">25010782</td>
+                <td>Đỗ Khánh Linh</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Chương trình BRT — Đợt 1</td>
+                <td class="r fw600">25.000.000</td>
+                <td class="r fw600">25.000.000</td>
+                <td class="r">0</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-073980</td>
+                <td class="td-a nowrap">00004526</td>
+                <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25203000011205</td>
+                <td class="td-a nowrap">TXN-20251115-0024</td>
+                <td class="td-a nowrap">ORD-20251115-0088</td>
+                <td class="td-a nowrap">PR-20251115-0088</td>
+                <td class="fw600 nowrap">22041542</td>
+                <td>Nguyễn Thị Ánh Tuyết</td>
+                <td><span class="badge bg-neutral">BHYT</span></td>
+                <td>Bảo hiểm y tế 12 tháng</td>
+                <td class="r fw600">631.800</td>
+                <td class="r fw600">631.800</td>
+                <td class="r">0</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-012583</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25201000039284</td>
+                <td class="td-a nowrap">TXN-20251028-0030</td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td class="fw600 nowrap">24031876</td>
+                <td>Lê Đức Huy</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">10.500.000</td>
+                <td class="r c-error">—</td>
+                <td class="r c-error fw600">+10.500.000</td>
+                <td><span class="badge bg-warning">Chưa cập nhật</span></td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-error">BIDV có / hệ thống chưa ghi</span></td>
+                <td>Bổ sung giao dịch và gán khoản phải thu</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">BIDV-20251029-XZ81</td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td class="dim">Không xác định</td>
+                <td><span class="badge bg-neutral">Khác</span></td>
+                <td>Chưa xác định nội dung thu</td>
+                <td class="r fw600">1.500.000</td>
+                <td class="r c-error">—</td>
+                <td class="r c-error fw600">+1.500.000</td>
+                <td><span class="badge bg-neutral">Không áp dụng</span></td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-error">Giao dịch mồ côi</span></td>
+                <td>Tra cứu thủ công nội dung chuyển khoản</td>
+              </tr>
+
+              <tr>
+                <td class="dim c-align">—</td>
+                <td class="td-a nowrap">TXN-20251028-0029</td>
+                <td class="td-a nowrap">ORD-20251028-0136</td>
+                <td class="td-a nowrap">PR-20251028-0136</td>
+                <td class="fw600 nowrap">24040961</td>
+                <td>Hoàng Minh Tuấn</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r c-error">—</td>
+                <td class="r fw600">8.450.000</td>
+                <td class="r c-error fw600">-8.450.000</td>
+                <td><span class="badge bg-info">Chờ đối soát</span></td>
+                <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-warning">Hệ thống có / BIDV không có</span></td>
+                <td>Kiểm tra callback hoặc file sao kê bổ sung</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25202000058152</td>
+                <td class="td-a nowrap">TXN-20251028-0027</td>
+                <td class="td-a nowrap">ORD-20251028-0134</td>
+                <td class="td-a nowrap">PR-20251028-0134</td>
+                <td class="fw600 nowrap">24051243</td>
+                <td>Trần Thu Hà</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">10.000.000</td>
+                <td class="r fw600">19.000.000</td>
+                <td class="r c-error fw600">-9.000.000</td>
+                <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
+                <td class="td-a nowrap">PT-073981</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-warning">Thu một phần</span></td>
+                <td>Chờ sinh viên thanh toán phần còn phải nộp</td>
+              </tr>
+
+              <tr>
+                <td class="nowrap">FT25204000018210</td>
+                <td class="td-a nowrap">TXN-20251028-0025</td>
+                <td class="td-a nowrap">ORD-20251028-0132</td>
+                <td class="td-a nowrap">PR-20251028-0132</td>
+                <td class="fw600 nowrap">24040961</td>
+                <td>Hoàng Minh Tuấn</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>HK phụ/2024–2025 · Giáo dục quốc phòng — an ninh</td>
+                <td class="r fw600">2.208.000</td>
+                <td class="r fw600">2.208.000</td>
+                <td class="r">0</td>
+                <td><span class="badge bg-success">Đã cập nhật</span></td>
+                <td class="td-a nowrap">PT-073982</td>
+                <td class="dim c-align">—</td>
+                <td><span class="badge bg-success">Khớp qua khấu trừ</span></td>
+                <td>Khoản được tất toán bằng khấu trừ kỳ trước</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="tbl-pagination">
+            <span>Hiển thị 1–20 / 138 bản ghi</span>
+
+            <div class="pg-nav">
+              <button class="pg-btn" disabled>&laquo;</button>
+              <button class="pg-btn active">1</button>
+              <button class="pg-btn">2</button>
+              <button class="pg-btn">3</button>
+              <span style="padding:0 4px;color:var(--muted-lt);">...</span>
+              <button class="pg-btn">7</button>
+              <button class="pg-btn">&raquo;</button>
+            </div>
+
+            <div class="pg-goto">
+              <span>Trang</span>
+              <input type="number" min="1" value="1"/>
+              <button class="btn btn-secondary btn-xs">Đi</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/common.js"></script>
+</body>
+</html>

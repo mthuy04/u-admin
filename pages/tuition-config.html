@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cấu hình học phí — Hệ thống quản lý thu học phí ULIS</title>
+<meta name="description" content="Hệ thống quản trị học phí nội bộ — Trường Đại học Ngoại ngữ, Đại học Quốc gia Hà Nội"/>
+<link rel="stylesheet" href="../css/styles.css"/>
+</head>
+
+<body>
+<div id="toast-container"></div>
+
+<!-- ===================== SESSION EXPIRED MODAL ===================== -->
+<div class="overlay" id="modal-session-expired">
+  <div class="modal modal-sm">
+    <div class="modal-hd">
+      <h2>Phiên đăng nhập hết hạn</h2>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:24px 18px;">
+      <div class="confirm-icon" style="margin:0 auto 12px;background:var(--warn-bg);">
+        <svg width="18" height="18" fill="none" viewBox="0 0 20 20" stroke="var(--warning)" stroke-width="1.8">
+          <path d="M10 2L2 17h16L10 2zM10 8v4M10 14v1.5"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">Phiên đăng nhập đã hết hạn</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">Vui lòng đăng nhập lại để tiếp tục sử dụng hệ thống.</div>
+      <button class="btn btn-primary" onclick="location.href='../index.html'">Đăng nhập lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CONFIRM: NGỪNG HIỆU LỰC ===================== -->
+<div class="overlay" id="modal-confirm-deactivate">
+  <div class="modal modal-sm">
+    <div class="modal-hd">
+      <h2>Xác nhận ngừng hiệu lực</h2>
+      <button class="btn-x" onclick="closeModal('modal-confirm-deactivate')">
+        <svg viewBox="0 0 20 20">
+          <path d="M5 5l10 10M15 5L5 15"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+        Bạn có chắc chắn muốn <strong>ngừng hiệu lực</strong> cấu hình này không?
+      </div>
+      <div class="sys-warn-bar" style="margin-bottom:0;">
+        Khoản phải thu đã phát sinh sẽ không bị ảnh hưởng. Cấu hình này sẽ không áp dụng cho đợt thu mới.
+      </div>
+    </div>
+
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="closeModal('modal-confirm-deactivate')">Hủy</button>
+      <button class="btn btn-warn" onclick="closeModal('modal-confirm-deactivate');showToast('Đã ngừng hiệu lực cấu hình.','warning')">
+        Ngừng hiệu lực
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL: CẤU HÌNH KHOẢN THU ===================== -->
+<div class="overlay" id="modal-tc">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2>Thêm / Sửa cấu hình khoản thu</h2>
+      <button class="btn-x" onclick="closeModal('modal-tc')">
+        <svg viewBox="0 0 20 20">
+          <path d="M5 5l10 10M15 5L5 15"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid c3">
+        <div class="form-field">
+          <label>Mã cấu hình</label>
+          <input type="text" value="FEE-2025-HK1-DHCQ-001"/>
+        </div>
+
+        <div class="form-field">
+          <label>Loại khoản</label>
+          <select>
+            <option selected>Học phí</option>
+            <option>Bảo hiểm y tế</option>
+            <option>Khoản thu khác</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Cách tính</label>
+          <select>
+            <option selected>Theo học kỳ</option>
+            <option>Theo đợt</option>
+            <option>Theo tháng</option>
+            <option>Theo tín chỉ</option>
+            <option>Theo khoản cố định</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid c3">
+        <div class="form-field">
+          <label>Năm học</label>
+          <select>
+            <option selected>2025–2026</option>
+            <option>2026–2027</option>
+            <option>2024–2025</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Học kỳ / Đợt thu</label>
+          <select>
+            <option selected>HK1</option>
+            <option>HK2</option>
+            <option>Đợt 1</option>
+            <option>Đợt 2</option>
+            <option>Khung năm học</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Khóa áp dụng</label>
+          <select>
+            <option selected>QH.2022, QH.2023</option>
+            <option>QH.2024, QH.2025</option>
+            <option>QH.2025</option>
+            <option>QH.2026 và các khóa tiếp</option>
+            <option>Tất cả khóa đang học</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid c2">
+        <div class="form-field">
+          <label>Hệ / chương trình</label>
+          <select>
+            <option selected>Đại học chính quy</option>
+            <option>Chương trình BRT</option>
+            <option>Đào tạo đại học chương trình thứ hai</option>
+            <option>Vừa làm vừa học</option>
+            <option>Sau đại học</option>
+            <option>Tất cả hệ</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Trạng thái</label>
+          <select>
+            <option selected>Đang áp dụng</option>
+            <option>Hết đợt thu</option>
+            <option>Khung áp dụng</option>
+            <option>Bản nháp</option>
+            <option>Ngừng hiệu lực</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Nhóm ngành / chương trình đào tạo</label>
+          <textarea rows="3">Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</textarea>
+        </div>
+      </div>
+
+      <div class="form-grid c3">
+        <div class="form-field">
+          <label>Mức thu</label>
+          <input type="number" value="17500000" placeholder="0"/>
+        </div>
+
+        <div class="form-field">
+          <label>Đơn vị tính</label>
+          <select>
+            <option selected>đồng / học kỳ</option>
+            <option>đồng / tháng</option>
+            <option>đồng / tín chỉ</option>
+            <option>đồng / năm</option>
+            <option>đồng / đợt</option>
+            <option>đồng / khoản</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Bắt buộc nộp</label>
+          <select>
+            <option selected>Có</option>
+            <option>Không</option>
+            <option>Theo điều kiện</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid c3">
+        <div class="form-field">
+          <label>Thời gian trích từ</label>
+          <input type="date" value="2025-10-29"/>
+        </div>
+
+        <div class="form-field">
+          <label>Thời gian trích đến</label>
+          <input type="date" value="2025-11-06"/>
+        </div>
+
+        <div class="form-field">
+          <label>Ngày mở tra cứu</label>
+          <input type="date" value="2025-11-08"/>
+        </div>
+      </div>
+
+      <div class="form-grid c3">
+        <div class="form-field">
+          <label>Tạo khoản phải thu</label>
+          <select>
+            <option selected>Có</option>
+            <option>Không</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Cho tạo yêu cầu thanh toán</label>
+          <select>
+            <option selected>Có</option>
+            <option>Không</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Áp dụng khấu trừ / trừ nợ</label>
+          <select>
+            <option selected>Có</option>
+            <option>Không</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid c3">
+        <div class="form-field">
+          <label>Lập phiếu thu</label>
+          <select>
+            <option selected>Có</option>
+            <option>Không</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Phát hành HĐĐT</label>
+          <select>
+            <option selected>Có</option>
+            <option>Không áp dụng</option>
+            <option>Theo cấu hình</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Ưu tiên đối soát</label>
+          <select>
+            <option selected>Theo mã đơn / mã yêu cầu</option>
+            <option>Theo mã sinh viên + số tiền</option>
+            <option>Đối soát thủ công</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Văn bản căn cứ</label>
+          <input type="text" value="Thông báo thu học phí ĐHCQ học kì 1 năm học 2025–2026"/>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Ghi chú nghiệp vụ</label>
+          <textarea rows="3" placeholder="Nhập ghi chú nếu có...">Khoản phải thu được sinh theo dữ liệu import của sinh viên và cấu hình mức thu đang hiệu lực.</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="closeModal('modal-tc')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-tc');showToast('Đã lưu cấu hình khoản thu.','success')">
+        Lưu cấu hình
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="../assets/ulis-logo.png" alt="ULIS" style="height:36px;object-fit:contain;flex-shrink:0;" onerror="this.style.display='none'"/>
+        <div>
+          <div class="brand-inst" style="font-size:11.5px;font-weight:600;">Trường Đại học Ngoại ngữ</div>
+          <div class="brand-vnu">Đại học Quốc gia Hà Nội</div>
+        </div>
+      </div>
+      <div class="brand-sep" style="margin:10px 0 0;"></div>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="sidebar-group-label">Nghiệp vụ</div>
+
+      <a class="nav-item" href="overview.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/>
+          <rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/>
+          <rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/>
+          <rect x="9" y="9" width="5.5" height="5.5" rx="1"/>
+        </svg>
+        Tổng quan
+      </a>
+
+      <a class="nav-item active" href="tuition-config.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 4h12M2 8h8M2 12h10"/>
+        </svg>
+        Cấu hình học phí
+      </a>
+
+      <a class="nav-item" href="student-tuition.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M9 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V7M9 2l5 5M9 2v5h5"/>
+        </svg>
+        Dữ liệu học phí
+      </a>
+
+      <a class="nav-item" href="receivables.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M13 5H3a1 1 0 00-1 1v7a1 1 0 001 1h10a1 1 0 001-1V6a1 1 0 00-1-1zM11 5V3a2 2 0 00-4 0v2"/>
+        </svg>
+        Khoản phải thu
+      </a>
+
+      <a class="nav-item" href="payment-requests.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <rect x="1.5" y="3.5" width="13" height="9" rx="1"/>
+          <path d="M1.5 6.5h13"/>
+        </svg>
+        Yêu cầu thanh toán
+      </a>
+
+      <a class="nav-item" href="transactions.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 8h12M10 4l4 4-4 4M6 4L2 8l4 4"/>
+        </svg>
+        Giao dịch
+      </a>
+
+      <a class="nav-item" href="reconciliation.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M2 3h5v10H2zM9 3h5v10H9M5 8h6"/>
+        </svg>
+        Đối soát BIDV
+      </a>
+
+      <a class="nav-item" href="exceptions.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M8 2L1 14h14L8 2zM8 6v4M8 11v1.5"/>
+        </svg>
+        Ngoại lệ
+      </a>
+
+      <div class="sidebar-group-label">Quản lý</div>
+
+      <a class="nav-item" href="reports.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M3 2h10v12H3zM6 6h4M6 9h4M6 12h2"/>
+        </svg>
+        Báo cáo
+      </a>
+
+      <a class="nav-item" href="reminders.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <path d="M8 1a5 5 0 015 5c0 4 2 5 2 5H1s2-1 2-5a5 5 0 015-5zM6.5 13.5a1.5 1.5 0"/>
+        </svg>
+        Nhắc hạn
+      </a>
+
+      <div class="sidebar-group-label">Cấu hình</div>
+
+      <a class="nav-item" href="system-config.html">
+        <svg class="nav-icon" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.2 3.2l1.4 1.4M11.4 11.4l1.4 1.4M3.2 12.8l1.4-1.4M11.4 4.6l1.4-1.4"/>
+        </svg>
+        Cấu hình hệ thống
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===================== MAIN ===================== -->
+  <div id="main">
+
+    <!-- ===================== TOPBAR ===================== -->
+    <header id="topbar">
+      <div class="topbar-crumb" style="display:flex;flex-direction:column;gap:1px;">
+        <div style="font-size:10px;font-weight:500;color:var(--muted-lt);letter-spacing:.2px;">Hệ thống quản lý thu học phí</div>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span class="crumb-root">Nghiệp vụ</span>
+          <span class="crumb-sep"> / </span>
+          <span class="crumb-page">Cấu hình học phí</span>
+        </div>
+      </div>
+
+      <div class="topbar-user topbar-user-wrap">
+        <div class="user-menu-trigger" id="userMenuTrigger" onclick="toggleUserMenu()">
+          <div class="topbar-user-info">
+            <div class="topbar-user-dept">Phòng Kế hoạch Tài chính</div>
+            <div class="topbar-user-role">Cán bộ KHTC &nbsp;&bull;&nbsp; Nguyễn Thị Hương</div>
+          </div>
+          <div class="topbar-avatar">NH</div>
+        </div>
+
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-header">
+            <div class="udh-name">Nguyễn Thị Hương</div>
+            <div class="udh-role">Phòng KHTC — Cán bộ quản trị</div>
+          </div>
+
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Đã mở thông tin tài khoản.','info')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <circle cx="8" cy="5" r="3"/>
+              <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+            </svg>
+            Thông tin tài khoản
+          </div>
+
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Đã mở chức năng đổi mật khẩu.','info')">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="7" width="12" height="8" rx="1"/>
+              <path d="M5 7V5a3 3 0 016 0v2"/>
+            </svg>
+            Đổi mật khẩu
+          </div>
+
+          <hr class="user-menu-sep"/>
+
+          <div class="user-menu-item danger" onclick="location.href='../index.html'">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
+              <path d="M10 11l4-3-4-3M5 8h9M6 3H3a1 1 0 00-1 1v8a1 1 0 001 1h3"/>
+            </svg>
+            Đăng xuất
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================== CONTENT ===================== -->
+    <div id="content">
+      <div class="page-body">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+          <div>
+            <h1>Cấu hình học phí và khoản thu</h1>
+            <div class="page-header-sub">Quản lý nguồn tạo khoản phải thu theo năm học, kỳ thu, loại khoản, mức thu và quy tắc thanh toán</div>
+          </div>
+
+          <div class="page-header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã xuất danh sách cấu hình.','success')">
+              <svg viewBox="0 0 14 14">
+                <path d="M7 9V1M3 7l4 4 4-4M2 12h10"/>
+              </svg>
+              Xuất Excel
+            </button>
+
+            <button class="btn btn-primary btn-sm" onclick="openModal('modal-tc')">
+              <svg viewBox="0 0 14 14">
+                <path d="M7 1v12M1 7h12"/>
+              </svg>
+              Thêm cấu hình
+            </button>
+          </div>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-card-label">Tổng cấu hình</div>
+            <div class="stat-card-value">15</div>
+            <div class="stat-card-sub">học phí, BHYT và khoản thu khác</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Học phí</div>
+            <div class="stat-card-value c-success">12</div>
+            <div class="stat-card-sub">theo khóa/chương trình/kỳ thu</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Khoản thu khác</div>
+            <div class="stat-card-value c-primary">2</div>
+            <div class="stat-card-sub">BHYT và khoản ngoài học phí</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Cấu hình tạo KPT</div>
+            <div class="stat-card-value c-warning">15</div>
+            <div class="stat-card-sub">được phép sinh khoản phải thu</div>
+          </div>
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+          <div class="filter-field">
+            <label>Tìm kiếm</label>
+            <input type="text" placeholder="Mã cấu hình, nhóm ngành, khoản thu..." style="min-width:220px;"/>
+          </div>
+
+          <div class="filter-field">
+            <label>Loại khoản</label>
+            <select>
+              <option>Tất cả</option>
+              <option>Học phí</option>
+              <option>Bảo hiểm y tế</option>
+              <option>Khoản thu khác</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label>Cách tính</label>
+            <select>
+              <option>Tất cả</option>
+              <option>Theo học kỳ</option>
+              <option>Theo đợt</option>
+              <option>Theo tháng</option>
+              <option>Theo tín chỉ</option>
+              <option>Theo khoản cố định</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label>Năm học</label>
+            <select>
+              <option>Tất cả</option>
+              <option selected>2025–2026</option>
+              <option>2026–2027</option>
+              <option>2024–2025</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label>Học kỳ / Đợt</label>
+            <select>
+              <option>Tất cả</option>
+              <option>HK1</option>
+              <option>HK2</option>
+              <option>Đợt 1</option>
+              <option>Khung năm học</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label>Trạng thái</label>
+            <select>
+              <option>Tất cả</option>
+              <option>Đang áp dụng</option>
+              <option>Hết đợt thu</option>
+              <option>Khung áp dụng</option>
+              <option>Bản nháp</option>
+              <option>Ngừng hiệu lực</option>
+            </select>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn btn-primary btn-sm">Lọc</button>
+            <button class="btn btn-secondary btn-sm">Đặt lại</button>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-wrap table-xwide">
+          <div class="table-toolbar">
+            <span class="table-title">Danh sách cấu hình học phí và khoản thu</span>
+            <span class="table-count">15 bản ghi</span>
+
+            <div class="table-toolbar-r">
+              <span class="c-muted fs-11">Hiển thị</span>
+              <select class="page-size-select">
+                <option selected>20 dòng</option>
+                <option>50 dòng</option>
+                <option>100 dòng</option>
+              </select>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="col-code">Mã cấu hình</th>
+                <th class="col-status">Loại khoản</th>
+                <th class="col-status">Cách tính</th>
+                <th class="col-date">Năm học</th>
+                <th class="nowrap">HK / Đợt</th>
+                <th class="col-code">Khóa</th>
+                <th class="col-content">Nhóm ngành / khoản thu</th>
+                <th class="r col-money">Mức thu (đ)</th>
+                <th class="nowrap">Đơn vị</th>
+                <th class="col-status">Tạo KPT</th>
+                <th class="col-status">Yêu cầu TT</th>
+                <th class="col-status">Phiếu thu</th>
+                <th class="col-status">HĐĐT</th>
+                <th class="col-status">Khấu trừ</th>
+                <th class="col-status">Trạng thái</th>
+                <th class="col-actions">Thao tác</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-HK1-DHCQ-001</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo học kỳ</td>
+                <td>2025–2026</td>
+                <td>HK1</td>
+                <td class="fw600 nowrap">QH.2022, QH.2023</td>
+                <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                <td class="r fw600">17.500.000</td>
+                <td>học kỳ</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Hết đợt thu</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-HK1-DHCQ-002</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo học kỳ</td>
+                <td>2025–2026</td>
+                <td>HK1</td>
+                <td class="fw600 nowrap">QH.2022, QH.2023</td>
+                <td>Ngôn ngữ Nga, Ả Rập, Văn hóa và truyền thông xuyên quốc gia; hệ sư phạm không thụ hưởng NĐ116</td>
+                <td class="r fw600">8.450.000</td>
+                <td>học kỳ</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Hết đợt thu</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-HK1-DHCQ-003</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo học kỳ</td>
+                <td>2025–2026</td>
+                <td>HK1</td>
+                <td class="fw600 nowrap">QH.2024, QH.2025</td>
+                <td>Văn hóa và truyền thông xuyên quốc gia; Tiếng Việt và Văn hóa Việt Nam; hệ sư phạm không thụ hưởng NĐ116</td>
+                <td class="r fw600">8.450.000</td>
+                <td>học kỳ</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Hết đợt thu</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-HK1-DHCQ-004</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo học kỳ</td>
+                <td>2025–2026</td>
+                <td>HK1</td>
+                <td class="fw600 nowrap">QH.2024, QH.2025</td>
+                <td>Ngôn ngữ Nga, Ả Rập</td>
+                <td class="r fw600">10.500.000</td>
+                <td>học kỳ</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Hết đợt thu</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-HK1-DHCQ-005</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo học kỳ</td>
+                <td>2025–2026</td>
+                <td>HK1</td>
+                <td class="fw600 nowrap">QH.2024, QH.2025</td>
+                <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                <td class="r fw600">19.000.000</td>
+                <td>học kỳ</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Hết đợt thu</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-BRT-DOT1</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo đợt</td>
+                <td>2025–2026</td>
+                <td>Đợt 1</td>
+                <td class="fw600 nowrap">QH.2025</td>
+                <td>Chương trình BRT — Làn Xanh</td>
+                <td class="r fw600">25.000.000</td>
+                <td>đợt</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Hết đợt thu</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-BHYT12</td>
+                <td><span class="badge bg-neutral">BHYT</span></td>
+                <td>Theo khoản cố định</td>
+                <td>2025–2026</td>
+                <td>2025–2026</td>
+                <td class="fw600 nowrap">Tất cả</td>
+                <td>Bảo hiểm y tế 12 tháng</td>
+                <td class="r fw600">631.800</td>
+                <td>khoản</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Không áp dụng</span></td>
+                <td><span class="badge bg-neutral">Không</span></td>
+                <td><span class="badge bg-success">Đang áp dụng</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FEE-2025-OTHER-001</td>
+                <td><span class="badge bg-neutral">Khác</span></td>
+                <td>Theo khoản cố định</td>
+                <td>2025–2026</td>
+                <td>Theo đợt</td>
+                <td class="fw600 nowrap">Theo danh sách</td>
+                <td>Khoản thu khác theo danh sách được phê duyệt</td>
+                <td class="r fw600">Theo file</td>
+                <td>khoản</td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Theo cấu hình</span></td>
+                <td><span class="badge bg-neutral">Không</span></td>
+                <td><span class="badge bg-success">Đang áp dụng</span></td>
+                <td><button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button></td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FRAME-2026-DHCQ-001</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo tháng</td>
+                <td>2026–2027</td>
+                <td>Khung năm học</td>
+                <td class="fw600 nowrap">QH.2022, QH.2023</td>
+                <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                <td class="r fw600">3.500.000</td>
+                <td>tháng</td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Khung áp dụng</span></td>
+                <td>
+                  <button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button>
+                  <button class="btn btn-ghost btn-xs c-warning" onclick="openModal('modal-confirm-deactivate')">Ngừng</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FRAME-2026-DHCQ-002</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo tháng</td>
+                <td>2026–2027</td>
+                <td>Khung năm học</td>
+                <td class="fw600 nowrap">QH.2024, QH.2025</td>
+                <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                <td class="r fw600">3.800.000</td>
+                <td>tháng</td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Khung áp dụng</span></td>
+                <td>
+                  <button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button>
+                  <button class="btn btn-ghost btn-xs c-warning" onclick="openModal('modal-confirm-deactivate')">Ngừng</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="fw600 nowrap">FRAME-2026-CT2-001</td>
+                <td><span class="badge bg-info">Học phí</span></td>
+                <td>Theo tín chỉ</td>
+                <td>2026–2027</td>
+                <td>Khung năm học</td>
+                <td class="fw600 nowrap">Tuyển sinh từ 2026</td>
+                <td>Đào tạo đại học chương trình thứ hai</td>
+                <td class="r fw600">1.100.000</td>
+                <td>tín chỉ</td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-neutral">Theo đợt thu</span></td>
+                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Khung áp dụng</span></td>
+                <td>
+                  <button class="btn btn-ghost btn-xs" onclick="openModal('modal-tc')">Xem / Sửa</button>
+                  <button class="btn btn-ghost btn-xs c-warning" onclick="openModal('modal-confirm-deactivate')">Ngừng</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="tbl-pagination">
+            <span>Hiển thị 1–10 / 15 bản ghi</span>
+
+            <div class="pg-nav">
+              <button class="pg-btn" disabled>&laquo;</button>
+              <button class="pg-btn active">1</button>
+              <button class="pg-btn">2</button>
+              <button class="pg-btn">&raquo;</button>
+            </div>
+
+            <div class="pg-goto">
+              <span>Trang</span>
+              <input type="number" min="1" value="1"/>
+              <button class="btn btn-secondary btn-xs">Đi</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RULE TABLE -->
+        <div class="table-wrap table-xwide" style="margin-top:14px;">
+          <div class="table-toolbar">
+            <span class="table-title">Quy tắc sinh khoản phải thu từ cấu hình</span>
+            <span class="table-count">Áp dụng khi import/cập nhật dữ liệu sinh viên</span>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Nguồn dữ liệu</th>
+                <th>Điều kiện khớp cấu hình</th>
+                <th>Kết quả sinh khoản phải thu</th>
+                <th>Yêu cầu thanh toán</th>
+                <th>Đối soát</th>
+                <th>Trường hợp ngoại lệ</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Import dữ liệu học phí sinh viên</td>
+                <td>Năm học, kỳ thu, khóa, chương trình, loại khoản</td>
+                <td><span class="badge bg-success">Sinh khoản phải thu</span></td>
+                <td>Cho tạo mã đơn/QR nếu còn phải nộp</td>
+                <td>Khớp theo mã đơn hoặc mã yêu cầu</td>
+                <td>Thiếu cấu hình, thiếu mức thu, trùng khoản</td>
+              </tr>
+
+              <tr>
+                <td>Danh sách BHYT</td>
+                <td>Năm học, mã loại BHYT, danh sách sinh viên áp dụng</td>
+                <td><span class="badge bg-success">Sinh khoản phải thu BHYT</span></td>
+                <td>Cho tạo yêu cầu thanh toán riêng</td>
+                <td>Khớp theo mã đơn hoặc mã sinh viên</td>
+                <td>Email lỗi, thanh toán nhầm nội dung, nộp thiếu</td>
+              </tr>
+
+              <tr>
+                <td>Danh sách khoản thu khác</td>
+                <td>Mã khoản, sinh viên áp dụng, số tiền theo file</td>
+                <td><span class="badge bg-success">Sinh khoản phải thu khác</span></td>
+                <td>Theo cấu hình từng khoản</td>
+                <td>Khớp theo mã đơn/khoản phải thu</td>
+                <td>Khoản chưa được phê duyệt, số tiền lệch</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/common.js"></script>
+</body>
+</html>
