@@ -46,6 +46,9 @@
       <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
         Xác nhận <strong>đóng sổ</strong> đối soát ngày 29/10/2025?
       </div>
+      <div class="sys-error-bar">
+        Còn 3 ngoại lệ chưa xử lý (Lệch/Mồ côi/Ghi khống) trong kết quả đối soát.
+      </div>
       <div class="sys-warn-bar" style="margin-bottom:0;">
         Sau khi đóng sổ, kết quả đối soát sẽ được khóa, biên bản đối soát sẽ được sinh theo dữ liệu hiện tại.
       </div>
@@ -438,6 +441,7 @@
                 <th class="col-code">Mã định danh BIDV</th>
                 <th class="col-status">Kết quả</th>
                 <th class="col-content">Hướng xử lý</th>
+                <th class="col-actions">Thao tác</th>
               </tr>
             </thead>
 
@@ -458,6 +462,7 @@
                 <td class="td-a nowrap">PR2510290142</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
               </tr>
 
               <tr>
@@ -475,6 +480,7 @@
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
                 <td class="td-a nowrap">PR2510290141</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
                 <td class="dim c-align">—</td>
               </tr>
 
@@ -494,6 +500,7 @@
                 <td class="td-a nowrap">PR2510290140</td>
                 <td><span class="badge bg-warning">Lệch số tiền</span></td>
                 <td>Kiểm tra phần nộp thừa trước khi cập nhật khoản phải thu</td>
+                <td><a class="btn btn-ghost btn-xs" href="exceptions.html?ref=TXN-20251029-0032">Xử lý</a></td>
               </tr>
 
               <tr>
@@ -511,6 +518,7 @@
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
                 <td class="td-a nowrap">PR2510290139</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
                 <td class="dim c-align">—</td>
               </tr>
 
@@ -530,6 +538,7 @@
                 <td class="td-a nowrap">PR2511050088</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
               </tr>
 
               <tr>
@@ -548,6 +557,7 @@
                 <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">BIDV có / hệ thống chưa ghi</span></td>
                 <td>Bổ sung giao dịch và gán khoản phải thu</td>
+                <td class="dim c-align">—</td>
               </tr>
 
               <tr>
@@ -566,6 +576,7 @@
                 <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">Giao dịch mồ côi</span></td>
                 <td>Tra cứu thủ công nội dung chuyển khoản</td>
+                <td><a class="btn btn-ghost btn-xs" href="exceptions.html?ref=BIDV-20251029-XZ81">Xử lý</a></td>
               </tr>
 
               <tr>
@@ -584,6 +595,7 @@
                 <td class="td-a nowrap">PR2510280136</td>
                 <td><span class="badge bg-warning">Hệ thống có / BIDV không có</span></td>
                 <td>Kiểm tra callback hoặc chờ sao kê bổ sung</td>
+                <td><a class="btn btn-ghost btn-xs" href="exceptions.html?ref=TXN-20251028-0029">Xử lý</a></td>
               </tr>
 
               <tr>
@@ -602,6 +614,7 @@
                 <td class="td-a nowrap">PR2510280134</td>
                 <td><span class="badge bg-warning">Thu một phần</span></td>
                 <td>Chờ sinh viên thanh toán phần còn phải nộp</td>
+                <td class="dim c-align">—</td>
               </tr>
 
               <tr>
@@ -619,6 +632,7 @@
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
                 <td class="td-a nowrap">PR2510280132</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
+                <td class="dim c-align">—</td>
                 <td class="dim c-align">—</td>
               </tr>
             </tbody>
