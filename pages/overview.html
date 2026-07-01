@@ -343,9 +343,9 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-card-label">Khấu trừ / Trừ nợ</div>
-            <div class="stat-card-value c-warning">20.561.000</div>
-            <div class="stat-card-sub">đã xử lý trong kỳ</div>
+            <div class="stat-card-label">Còn phải thu</div>
+            <div class="stat-card-value c-warning">13.700.000</div>
+            <div class="stat-card-sub">chưa thu hoặc thu một phần</div>
           </div>
 
           <div class="stat-card">
@@ -431,7 +431,7 @@
             stroke-dashoffset="-265"
           />
 
-          <!-- Chờ thanh toán / ngoại lệ: 380 / 2.156 -->
+          <!-- Chưa thu / ngoại lệ: 380 / 2.156 -->
           <circle
             class="overview-donut-segment"
             cx="80"
@@ -484,7 +484,7 @@
         <div class="legend-row">
           <div class="legend-left">
             <span class="legend-dot soft-purple"></span>
-            <span class="legend-name">Chờ thanh toán / ngoại lệ</span>
+            <span class="legend-name">Chưa thu / ngoại lệ</span>
           </div>
           <span class="legend-value">380</span>
         </div>
@@ -515,12 +515,6 @@
                   <div class="bar-name">BRT đợt 1</div>
                   <div class="bar-track"><div class="bar-fill soft-green" style="width:20%;"></div></div>
                   <div class="bar-value">25,0 triệu</div>
-                </div>
-
-                <div class="bar-chart-row">
-                  <div class="bar-name">Khấu trừ / trừ nợ</div>
-                  <div class="bar-track"><div class="bar-fill soft-amber" style="width:16.8%;"></div></div>
-                  <div class="bar-value">20,6 triệu</div>
                 </div>
 
                 <div class="bar-chart-row">
@@ -556,7 +550,7 @@
                 <div class="alert-row warn">
                   <div>
                     <div class="alert-label">Đã thanh toán nhưng chưa cập nhật KPT</div>
-                    <div class="alert-meta">Cần kiểm tra trước khi lập phiếu thu và HĐĐT</div>
+                    <div class="alert-meta">Cần kiểm tra và cập nhật khoản phải thu</div>
                   </div>
                   <div style="display:flex;align-items:center;gap:10px;">
                     <span class="alert-count-warn">4</span>
@@ -577,8 +571,8 @@
 
                 <div class="alert-row warn">
                   <div>
-                    <div class="alert-label">Phiếu thu / HĐĐT lỗi</div>
-                    <div class="alert-meta">Cần phát hành lại hoặc đồng bộ trạng thái hóa đơn</div>
+                    <div class="alert-label">Callback trùng</div>
+                    <div class="alert-meta">Cần kiểm tra và xác nhận giao dịch trùng lặp</div>
                   </div>
                   <div style="display:flex;align-items:center;gap:10px;">
                     <span class="alert-count-warn">3</span>
@@ -674,14 +668,13 @@
             <thead>
               <tr>
                 <th class="col-code">Mã giao dịch</th>
-                <th class="col-code">Mã đơn</th>
+                <th class="col-code">Mã đơn nội bộ</th>
                 <th class="col-student-code">Mã SV</th>
                 <th class="col-name">Họ tên</th>
-                <th class="col-status">Loại khoản</th>
+                <th class="col-status">Khoản mục</th>
                 <th class="col-content">Nội dung thu</th>
                 <th class="r col-money">Số tiền (đ)</th>
                 <th class="col-status">Cập nhật KPT</th>
-                <th class="col-code">Số phiếu</th>
                 <th class="col-status">Trạng thái</th>
               </tr>
             </thead>
@@ -696,7 +689,6 @@
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">17.500.000</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073978</td>
                 <td><span class="badge bg-success">Thành công</span></td>
               </tr>
 
@@ -709,7 +701,6 @@
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">8.700.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-warning">Lệch số tiền</span></td>
               </tr>
 
@@ -722,7 +713,6 @@
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">10.500.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">BIDV có / hệ thống chưa ghi</span></td>
               </tr>
 
@@ -735,7 +725,6 @@
                 <td>Bảo hiểm y tế 12 tháng</td>
                 <td class="r fw600">631.800</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-012583</td>
                 <td><span class="badge bg-success">Thành công</span></td>
               </tr>
 
@@ -748,7 +737,6 @@
                 <td>Chương trình BRT — Đợt 1</td>
                 <td class="r fw600">25.000.000</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073980</td>
                 <td><span class="badge bg-info">Cần kiểm tra kỳ thu</span></td>
               </tr>
             </tbody>

@@ -201,7 +201,7 @@
         <div class="page-header">
           <div>
             <h1>Báo cáo</h1>
-            <div class="page-header-sub">Tổng hợp báo cáo học phí, khoản thu khác, khấu trừ/trừ nợ, phiếu thu, hóa đơn điện tử, đối soát và ngoại lệ</div>
+            <div class="page-header-sub">Tổng hợp báo cáo học phí, khoản thu khác, giao dịch thanh toán, đối soát và ngoại lệ</div>
           </div>
 
           <div class="page-header-actions">
@@ -229,9 +229,9 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-card-label">Khấu trừ / Trừ nợ</div>
-            <div class="stat-card-value c-warning">20.561.000</div>
-            <div class="stat-card-sub">đã ghi nhận trong kỳ</div>
+            <div class="stat-card-label">Còn phải thu</div>
+            <div class="stat-card-value c-warning">13.700.000</div>
+            <div class="stat-card-sub">chưa thu hoặc thu một phần</div>
           </div>
 
           <div class="stat-card">
@@ -249,10 +249,9 @@
               <option>Tất cả</option>
               <option>Khoản phải thu</option>
               <option>Giao dịch</option>
-              <option>Phiếu thu</option>
-              <option>Hóa đơn điện tử</option>
               <option>Đối soát</option>
               <option>Ngoại lệ</option>
+              <option>Nhắc hạn</option>
             </select>
           </div>
 
@@ -276,7 +275,7 @@
           </div>
 
           <div class="filter-field">
-            <label>Loại khoản</label>
+            <label>Khoản mục</label>
             <select>
               <option>Tất cả</option>
               <option>Học phí</option>
@@ -318,13 +317,12 @@
           <!-- REPORT LIST -->
           <div class="report-list">
 
-            <div class="report-item active" onclick="selectReport(this,'Tổng hợp khoản phải thu','Học phí, khoản thu khác, khấu trừ/trừ nợ · HK1/2025–2026')">
+            <div class="report-item active" onclick="selectReport(this,'Tổng hợp khoản phải thu','Học phí, khoản thu khác · HK1/2025–2026')">
               <div class="report-item-name">Tổng hợp khoản phải thu</div>
-              <div class="report-item-desc">Tổng phải nộp, đã nộp, khấu trừ, trừ nợ và còn phải nộp</div>
+              <div class="report-item-desc">Số tiền phải thu, đã thu và còn lại theo từng khoản</div>
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
@@ -334,7 +332,15 @@
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
+              </div>
+            </div>
+
+            <div class="report-item" onclick="selectReport(this,'Danh sách đã thu','HK1/2025–2026 · 1.669 sinh viên')">
+              <div class="report-item-name">Danh sách đã thu</div>
+              <div class="report-item-desc">Sinh viên đã hoàn tất khoản phải nộp trong kỳ thu</div>
+              <div class="report-item-acts">
+                <button class="btn btn-primary btn-xs">Xem</button>
+                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
               </div>
             </div>
 
@@ -344,37 +350,15 @@
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
-            <div class="report-item" onclick="selectReport(this,'Báo cáo khấu trừ / trừ nợ','20.561.000 đ · đã ghi nhận trong kỳ')">
-              <div class="report-item-name">Báo cáo khấu trừ / trừ nợ</div>
-              <div class="report-item-desc">Danh sách khoản được khấu trừ, trừ nợ hoặc tất toán từ kỳ trước</div>
+            <div class="report-item" onclick="selectReport(this,'Giao dịch thanh toán','HK1/2025–2026 · 1.287 giao dịch')">
+              <div class="report-item-name">Giao dịch thanh toán</div>
+              <div class="report-item-desc">Toàn bộ giao dịch ghi nhận qua callback BIDV và bổ sung từ đối soát</div>
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
-              </div>
-            </div>
-
-            <div class="report-item" onclick="selectReport(this,'Phiếu thu tổng hợp','Ngày 29/10/2025 · 138 phiếu thu')">
-              <div class="report-item-name">Phiếu thu tổng hợp</div>
-              <div class="report-item-desc">Số phiếu, ngày thu, đơn vị thu, số tiền và giao dịch liên quan</div>
-              <div class="report-item-acts">
-                <button class="btn btn-primary btn-xs">Xem</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
-              </div>
-            </div>
-
-            <div class="report-item" onclick="selectReport(this,'Nhật ký hóa đơn điện tử','HĐĐT đã ký, lỗi ký và chờ phát hành')">
-              <div class="report-item-name">Nhật ký hóa đơn điện tử</div>
-              <div class="report-item-desc">Theo dõi mã hóa đơn, loại HĐĐT, trạng thái ký và lỗi phát hành</div>
-              <div class="report-item-acts">
-                <button class="btn btn-primary btn-xs">Xem</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
@@ -384,27 +368,24 @@
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
             <div class="report-item" onclick="selectReport(this,'Biên bản đối soát BIDV','Ngày 29/10/2025 · 138 giao dịch')">
               <div class="report-item-name">Báo cáo đối soát BIDV</div>
-              <div class="report-item-desc">Đối chiếu giao dịch BIDV, hệ thống, phiếu thu và cập nhật KPT</div>
+              <div class="report-item-desc">Đối chiếu giao dịch BIDV, hệ thống và cập nhật khoản phải thu</div>
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
             <div class="report-item" onclick="selectReport(this,'Báo cáo ngoại lệ','12 ngoại lệ đang mở · 3 quá hạn')">
               <div class="report-item-name">Báo cáo ngoại lệ</div>
-              <div class="report-item-desc">Lệch tiền, giao dịch mồ côi, chưa cập nhật KPT, lỗi phiếu thu/HĐĐT</div>
+              <div class="report-item-desc">Lệch tiền, giao dịch mồ côi và chưa cập nhật khoản phải thu</div>
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
@@ -414,7 +395,6 @@
               <div class="report-item-acts">
                 <button class="btn btn-primary btn-xs">Xem</button>
                 <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation();showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
@@ -425,12 +405,11 @@
             <div class="report-preview-hd">
               <div>
                 <div class="report-preview-title" id="rpt-title">Tổng hợp khoản phải thu</div>
-                <div class="report-preview-sub" id="rpt-sub">Học phí, khoản thu khác, khấu trừ/trừ nợ · HK1/2025–2026</div>
+                <div class="report-preview-sub" id="rpt-sub">Học phí, khoản thu khác · HK1/2025–2026</div>
               </div>
 
               <div style="display:flex;gap:6px;">
                 <button class="btn btn-secondary btn-xs" onclick="showToast('Đã xuất Excel báo cáo.','success')">Excel</button>
-                <button class="btn btn-secondary btn-xs" onclick="showToast('Đã xuất PDF báo cáo.','success')">PDF</button>
               </div>
             </div>
 
@@ -438,7 +417,7 @@
               <span><strong>2.156</strong> bản ghi</span>
               <span>Học phí: <strong>122.619.600 đ</strong></span>
               <span>Khoản thu khác: <strong>1.516.320 đ</strong></span>
-              <span>Khấu trừ/trừ nợ: <strong>20.561.000 đ</strong></span>
+              <span>Còn phải thu: <strong>13.700.000 đ</strong></span>
               <span>Ngày xuất: <strong>31/10/2025</strong></span>
             </div>
 
@@ -448,17 +427,13 @@
                   <tr>
                     <th class="col-student-code">Mã SV</th>
                     <th class="col-name">Họ tên</th>
-                    <th class="col-status">Loại khoản</th>
+                    <th class="col-status">Khoản mục</th>
                     <th class="col-content">Nội dung thu</th>
                     <th class="nowrap">Kỳ thu</th>
-                    <th class="r col-money">Phải nộp (đ)</th>
-                    <th class="r col-money">Đã nộp (đ)</th>
-                    <th class="r col-money">Khấu trừ (đ)</th>
-                    <th class="r col-money">Trừ nợ (đ)</th>
-                    <th class="r col-money">Còn phải nộp (đ)</th>
+                    <th class="r col-money">Số tiền phải thu (đ)</th>
+                    <th class="r col-money">Số tiền đã thu (đ)</th>
+                    <th class="r col-money">Số tiền còn lại (đ)</th>
                     <th class="col-status">Cập nhật KPT</th>
-                    <th class="col-code">Số phiếu</th>
-                    <th class="col-code">Mã HĐ</th>
                     <th class="col-status">Trạng thái</th>
                   </tr>
                 </thead>
@@ -473,11 +448,7 @@
                     <td class="r fw600">17.500.000</td>
                     <td class="r c-success fw600">17.500.000</td>
                     <td class="r">0</td>
-                    <td class="r">0</td>
-                    <td class="r">0</td>
                     <td><span class="badge bg-success">Đã cập nhật</span></td>
-                    <td class="td-a nowrap">PT-073978</td>
-                    <td class="td-a nowrap">00004524</td>
                     <td><span class="badge bg-success">Đã thu</span></td>
                   </tr>
 
@@ -490,11 +461,7 @@
                     <td class="r fw600">631.800</td>
                     <td class="r c-success fw600">631.800</td>
                     <td class="r">0</td>
-                    <td class="r">0</td>
-                    <td class="r">0</td>
                     <td><span class="badge bg-success">Đã cập nhật</span></td>
-                    <td class="td-a nowrap">PT-012583</td>
-                    <td class="dim c-align">—</td>
                     <td><span class="badge bg-success">Đã thu</span></td>
                   </tr>
 
@@ -506,12 +473,8 @@
                     <td>HK1/25–26</td>
                     <td class="r fw600">8.450.000</td>
                     <td class="r c-success fw600">4.000.000</td>
-                    <td class="r">0</td>
-                    <td class="r">0</td>
                     <td class="r c-warning fw600">4.450.000</td>
                     <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
-                    <td class="dim c-align">—</td>
-                    <td class="dim c-align">—</td>
                     <td><span class="badge bg-warning">Thu một phần</span></td>
                   </tr>
 
@@ -522,14 +485,10 @@
                     <td>HK phụ/2024–2025 · Giáo dục quốc phòng — an ninh</td>
                     <td>HK phụ/24–25</td>
                     <td class="r fw600">2.208.000</td>
-                    <td class="r c-success fw600">0</td>
-                    <td class="r c-warning fw600">2.208.000</td>
                     <td class="r">0</td>
-                    <td class="r">0</td>
-                    <td><span class="badge bg-success">Đã cập nhật</span></td>
-                    <td class="td-a nowrap">PT-073982</td>
-                    <td class="dim c-align">—</td>
-                    <td><span class="badge bg-success">Đã thu qua khấu trừ</span></td>
+                    <td class="r c-error fw600">2.208.000</td>
+                    <td><span class="badge bg-neutral">Chưa cập nhật</span></td>
+                    <td><span class="badge bg-neutral">Chưa thu</span></td>
                   </tr>
 
                   <tr>
@@ -540,13 +499,9 @@
                     <td>HK2/23–24</td>
                     <td class="r fw600">2.111.200</td>
                     <td class="r c-success fw600">1.817.600</td>
-                    <td class="r">0</td>
                     <td class="r c-warning fw600">293.600</td>
-                    <td class="r">0</td>
-                    <td><span class="badge bg-success">Đã cập nhật</span></td>
-                    <td class="td-a nowrap">PT-073951</td>
-                    <td class="dim c-align">—</td>
-                    <td><span class="badge bg-success">Đã trừ nợ</span></td>
+                    <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
+                    <td><span class="badge bg-warning">Thu một phần</span></td>
                   </tr>
 
                   <tr>
@@ -557,12 +512,8 @@
                     <td>HK1/25–26</td>
                     <td class="r fw600">10.500.000</td>
                     <td class="r">0</td>
-                    <td class="r">0</td>
-                    <td class="r">0</td>
                     <td class="r c-error fw600">10.500.000</td>
                     <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                    <td class="dim c-align">—</td>
-                    <td class="dim c-align">—</td>
                     <td><span class="badge bg-error">Quá hạn</span></td>
                   </tr>
 
@@ -574,13 +525,9 @@
                     <td>Đợt 1/25–26</td>
                     <td class="r fw600">25.000.000</td>
                     <td class="r">0</td>
-                    <td class="r">0</td>
-                    <td class="r">0</td>
                     <td class="r c-warning fw600">25.000.000</td>
                     <td><span class="badge bg-neutral">Chưa cập nhật</span></td>
-                    <td class="dim c-align">—</td>
-                    <td class="dim c-align">—</td>
-                    <td><span class="badge bg-info">Chờ thanh toán</span></td>
+                    <td><span class="badge bg-neutral">Chưa thu</span></td>
                   </tr>
                 </tbody>
               </table>

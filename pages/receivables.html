@@ -231,7 +231,7 @@
         <div class="page-header">
           <div>
             <h1>Khoản phải thu</h1>
-            <div class="page-header-sub">Theo dõi học phí, khoản thu khác, khấu trừ, trừ nợ và trạng thái cập nhật sau thanh toán</div>
+            <div class="page-header-sub">Theo dõi số tiền phải thu, đã thu, còn lại và trạng thái cập nhật sau thanh toán</div>
           </div>
 
           <div class="page-header-actions">
@@ -247,27 +247,27 @@
         <!-- SUMMARY CARDS -->
         <div class="stat-row">
           <div class="stat-card">
-            <div class="stat-card-label">Tổng nộp học phí</div>
+            <div class="stat-card-label">Số tiền phải thu</div>
             <div class="stat-card-value">122.619.600</div>
             <div class="stat-card-sub">HK1 · 2025–2026</div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-card-label">Tổng khoản thu khác</div>
+            <div class="stat-card-label">Số tiền đã thu</div>
+            <div class="stat-card-value c-success">108.919.600</div>
+            <div class="stat-card-sub">đã ghi nhận qua thanh toán</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Số tiền còn lại</div>
+            <div class="stat-card-value c-warning">13.700.000</div>
+            <div class="stat-card-sub">chưa thu hoặc thu một phần</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-label">Khoản thu khác</div>
             <div class="stat-card-value c-primary">1.516.320</div>
             <div class="stat-card-sub">BHYT và khoản thu ngoài học phí</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-card-label">Tổng khấu trừ / trừ nợ</div>
-            <div class="stat-card-value c-warning">20.561.000</div>
-            <div class="stat-card-sub">đã ghi nhận trong kỳ</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-card-label">Công nợ còn lại</div>
-            <div class="stat-card-value c-error">0</div>
-            <div class="stat-card-sub">học phí và khoản thu khác</div>
           </div>
         </div>
 
@@ -299,7 +299,7 @@
           </div>
 
           <div class="filter-field">
-            <label>Loại khoản</label>
+            <label>Khoản mục</label>
             <select>
               <option>Tất cả</option>
               <option>Học phí</option>
@@ -309,13 +309,12 @@
           </div>
 
           <div class="filter-field">
-            <label>Trạng thái thanh toán</label>
+            <label>Trạng thái</label>
             <select>
               <option>Tất cả</option>
-              <option>Chưa nộp</option>
-              <option>Chờ thanh toán</option>
-              <option>Đã thu</option>
+              <option>Chưa thu</option>
               <option>Thu một phần</option>
+              <option>Đã thu</option>
               <option>Quá hạn</option>
               <option>Đã hủy</option>
             </select>
@@ -365,14 +364,12 @@
                 <th class="col-code">Mã khoản</th>
                 <th class="col-student-code">Mã SV</th>
                 <th class="col-name">Họ tên</th>
-                <th class="col-status">Loại khoản</th>
+                <th class="col-status">Khoản mục</th>
                 <th class="col-content">Nội dung thu</th>
                 <th class="nowrap">Kỳ thu</th>
-                <th class="r col-money">Phải nộp (đ)</th>
-                <th class="r col-money">Đã nộp (đ)</th>
-                <th class="r col-money">Khấu trừ (đ)</th>
-                <th class="r col-money">Trừ nợ (đ)</th>
-                <th class="r col-money">Còn phải nộp (đ)</th>
+                <th class="r col-money">Số tiền phải thu (đ)</th>
+                <th class="r col-money">Số tiền đã thu (đ)</th>
+                <th class="r col-money">Số tiền còn lại (đ)</th>
                 <th class="col-status">Đã thanh toán</th>
                 <th class="col-status">Cập nhật KPT</th>
                 <th class="col-status">Trạng thái</th>
@@ -391,8 +388,6 @@
                 <td class="r fw600">17.500.000</td>
                 <td class="r c-success fw600">17.500.000</td>
                 <td class="r">0</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td><span class="badge bg-success">Có</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
                 <td><span class="badge bg-success">Đã thu</span></td>
@@ -408,8 +403,6 @@
                 <td>HK1/25–26</td>
                 <td class="r fw600">8.450.000</td>
                 <td class="r c-success fw600">4.000.000</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td class="r c-warning fw600">4.450.000</td>
                 <td><span class="badge bg-warning">Một phần</span></td>
                 <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
@@ -427,8 +420,6 @@
                 <td class="r fw600">19.000.000</td>
                 <td class="r c-success fw600">19.000.000</td>
                 <td class="r">0</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td><span class="badge bg-success">Có</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
                 <td><span class="badge bg-success">Đã thu</span></td>
@@ -443,8 +434,6 @@
                 <td>Thu học phí HK1/2025–2026</td>
                 <td>HK1/25–26</td>
                 <td class="r fw600">10.500.000</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td class="r">0</td>
                 <td class="r c-error fw600">10.500.000</td>
                 <td><span class="badge bg-neutral">Không</span></td>
@@ -462,12 +451,10 @@
                 <td>Đợt 1/25–26</td>
                 <td class="r fw600">25.000.000</td>
                 <td class="r">0</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td class="r c-warning fw600">25.000.000</td>
                 <td><span class="badge bg-neutral">Không</span></td>
                 <td><span class="badge bg-neutral">Chưa cập nhật</span></td>
-                <td><span class="badge bg-info">Chờ thanh toán</span></td>
+                <td><span class="badge bg-neutral">Chưa thu</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-rcv')">Chi tiết</button></td>
               </tr>
 
@@ -480,8 +467,6 @@
                 <td>2025–2026</td>
                 <td class="r fw600">631.800</td>
                 <td class="r c-success fw600">631.800</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Có</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
@@ -499,8 +484,6 @@
                 <td class="r fw600">884.520</td>
                 <td class="r c-success fw600">884.520</td>
                 <td class="r">0</td>
-                <td class="r">0</td>
-                <td class="r">0</td>
                 <td><span class="badge bg-success">Có</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
                 <td><span class="badge bg-success">Đã thu</span></td>
@@ -515,13 +498,11 @@
                 <td>HK phụ/2024–2025 · Giáo dục quốc phòng — an ninh</td>
                 <td>HK phụ/24–25</td>
                 <td class="r fw600">2.208.000</td>
-                <td class="r c-success fw600">0</td>
-                <td class="r c-warning fw600">2.208.000</td>
                 <td class="r">0</td>
-                <td class="r">0</td>
-                <td><span class="badge bg-success">Có</span></td>
-                <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td><span class="badge bg-success">Đã thu qua khấu trừ</span></td>
+                <td class="r c-error fw600">2.208.000</td>
+                <td><span class="badge bg-neutral">Không</span></td>
+                <td><span class="badge bg-neutral">Chưa cập nhật</span></td>
+                <td><span class="badge bg-neutral">Chưa thu</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-rcv')">Chi tiết</button></td>
               </tr>
 
@@ -534,12 +515,10 @@
                 <td>HK2/23–24</td>
                 <td class="r fw600">2.111.200</td>
                 <td class="r c-success fw600">1.817.600</td>
-                <td class="r">0</td>
                 <td class="r c-warning fw600">293.600</td>
-                <td class="r">0</td>
-                <td><span class="badge bg-success">Có</span></td>
-                <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td><span class="badge bg-success">Đã trừ nợ</span></td>
+                <td><span class="badge bg-warning">Một phần</span></td>
+                <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
+                <td><span class="badge bg-warning">Thu một phần</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-rcv')">Chi tiết</button></td>
               </tr>
             </tbody>
@@ -615,7 +594,7 @@
         <dt>Mã khoản</dt>
         <dd class="bold">RCV-2025-08421</dd>
 
-        <dt>Loại khoản</dt>
+        <dt>Khoản mục</dt>
         <dd><span class="badge bg-info">Học phí</span></dd>
 
         <dt>Nội dung thu</dt>
@@ -627,11 +606,11 @@
         <dt>Kỳ thu</dt>
         <dd>HK1/2025–2026</dd>
 
-        <dt>Hệ / chương trình</dt>
-        <dd>Đại học chính quy</dd>
+        <dt>Chương trình đào tạo</dt>
+        <dd>Ngôn ngữ Anh</dd>
 
-        <dt>Nhóm ngành</dt>
-        <dd>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</dd>
+        <dt>Loại đăng ký</dt>
+        <dd>Lần đầu</dd>
 
         <dt>Văn bản căn cứ</dt>
         <dd>TB thu học phí ĐHCQ HK1 2025–2026</dd>
@@ -670,29 +649,14 @@
     <div class="drawer-section">
       <div class="drawer-sec-title">Chi tiết tài chính</div>
       <dl class="dl">
-        <dt>Phải nộp</dt>
+        <dt>Số tiền phải thu</dt>
         <dd class="bold">17.500.000 đ</dd>
 
-        <dt>Đã nộp</dt>
+        <dt>Số tiền đã thu</dt>
         <dd class="c-success bold">17.500.000 đ</dd>
 
-        <dt>Khấu trừ</dt>
-        <dd>0 đ</dd>
-
-        <dt>Trừ nợ</dt>
-        <dd>0 đ</dd>
-
-        <dt>Miễn giảm</dt>
-        <dd>0 đ</dd>
-
-        <dt>Điều chỉnh giảm</dt>
-        <dd>0 đ</dd>
-
-        <dt>Còn phải nộp</dt>
+        <dt>Số tiền còn lại</dt>
         <dd class="bold">0 đ</dd>
-
-        <dt>Không truy cứu</dt>
-        <dd><span class="badge bg-neutral">Không</span></dd>
       </dl>
     </div>
 
@@ -706,9 +670,9 @@
             <th>Mã dòng</th>
             <th>Nội dung thu</th>
             <th>Kỳ thu</th>
-            <th class="r">Phải nộp (đ)</th>
-            <th class="r">Đã nộp (đ)</th>
-            <th class="r">Còn phải nộp (đ)</th>
+            <th class="r">Số tiền phải thu (đ)</th>
+            <th class="r">Số tiền đã thu (đ)</th>
+            <th class="r">Số tiền còn lại (đ)</th>
             <th>Trạng thái</th>
           </tr>
         </thead>
@@ -767,45 +731,13 @@
     </div>
 
     <div class="drawer-section">
-      <div class="drawer-sec-title">Khấu trừ / Trừ nợ</div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Đợt</th>
-            <th>Mã khoản</th>
-            <th>Nội dung</th>
-            <th class="r">Khấu trừ (đ)</th>
-            <th class="r">Trừ nợ (đ)</th>
-            <th>Số phiếu</th>
-            <th>Người thực hiện</th>
-            <th>Ngày thực hiện</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td class="dim">—</td>
-            <td class="dim">—</td>
-            <td class="dim">Không có khấu trừ/trừ nợ phát sinh</td>
-            <td class="r">0</td>
-            <td class="r">0</td>
-            <td class="dim">—</td>
-            <td class="dim">—</td>
-            <td class="dim">—</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="drawer-section">
       <div class="drawer-sec-title">Giao dịch liên quan</div>
 
       <table>
         <thead>
           <tr>
             <th>Mã giao dịch</th>
-            <th>Mã đơn</th>
+            <th>Mã đơn nội bộ</th>
             <th class="r">Số tiền (đ)</th>
             <th>Thời gian</th>
             <th>Nguồn</th>
@@ -831,10 +763,10 @@
     <div class="drawer-section">
       <div class="drawer-sec-title">Yêu cầu thanh toán liên quan</div>
       <dl class="dl">
-        <dt>Mã đơn</dt>
+        <dt>Mã đơn nội bộ</dt>
         <dd class="td-a">ORD-20251029-0142</dd>
 
-        <dt>Mã yêu cầu</dt>
+        <dt>Mã yêu cầu nội bộ</dt>
         <dd class="td-a" onclick="location.href='payment-requests.html'">PR-20251029-0142</dd>
 
         <dt>Trạng thái giao dịch</dt>
@@ -845,32 +777,6 @@
 
         <dt>Thời gian hết hạn</dt>
         <dd class="c-muted">29/10/2025 09:14</dd>
-      </dl>
-    </div>
-
-    <div class="drawer-section">
-      <div class="drawer-sec-title">Phiếu thu và hóa đơn điện tử</div>
-      <dl class="dl">
-        <dt>Số phiếu</dt>
-        <dd class="bold">PT-20251029-073978</dd>
-
-        <dt>Ngày thu</dt>
-        <dd class="c-muted">29/10/2025 08:47</dd>
-
-        <dt>Số tiền</dt>
-        <dd class="bold">17.500.000 đ</dd>
-
-        <dt>Đơn vị thu</dt>
-        <dd>BIDV</dd>
-
-        <dt>Mã hóa đơn</dt>
-        <dd>00004524</dd>
-
-        <dt>Loại HĐĐT</dt>
-        <dd>Cá nhân</dd>
-
-        <dt>Trạng thái HĐĐT</dt>
-        <dd><span class="badge bg-success">Đã ký</span></dd>
       </dl>
     </div>
 
@@ -906,15 +812,7 @@
           <div class="tl-dot done"></div>
           <div class="tl-content">
             <div class="tl-label">Cập nhật khoản phải thu</div>
-            <div class="tl-time">29/10/2025 08:47 — Phải nộp 17.500.000 · Đã nộp 17.500.000 · Còn phải nộp 0</div>
-          </div>
-        </div>
-
-        <div class="tl-row">
-          <div class="tl-dot done"></div>
-          <div class="tl-content">
-            <div class="tl-label">Lập phiếu thu và hóa đơn điện tử</div>
-            <div class="tl-time">29/10/2025 08:48 — PT-20251029-073978 · HĐ 00004524</div>
+            <div class="tl-time">29/10/2025 08:47 — Phải thu 17.500.000 · Đã thu 17.500.000 · Còn lại 0</div>
           </div>
         </div>
       </div>
@@ -930,7 +828,6 @@
 
   <div class="drawer-ft">
     <button class="btn btn-secondary btn-sm" onclick="showToast('Đã mở chức năng điều chỉnh khoản phải thu.','info')">Điều chỉnh</button>
-    <button class="btn btn-secondary btn-sm" onclick="showToast('Đã mở chức năng miễn giảm/khấu trừ.','info')">Miễn giảm / Khấu trừ</button>
     <button class="btn btn-secondary btn-sm" onclick="location.href='transactions.html'">Xem giao dịch</button>
     <button class="btn btn-warn btn-sm" onclick="openModal('modal-confirm-cancel-rcv')">Hủy khoản</button>
     <button class="btn btn-primary btn-sm" onclick="closeDrawer('drw-rcv');showToast('Đã lưu ghi chú.','success')">Lưu ghi chú</button>

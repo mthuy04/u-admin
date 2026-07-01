@@ -231,7 +231,7 @@
         <div class="page-header">
           <div>
             <h1>Đối soát BIDV</h1>
-            <div class="page-header-sub">Đối chiếu tiền về, trạng thái thanh toán, cập nhật khoản phải thu, phiếu thu và hóa đơn điện tử</div>
+            <div class="page-header-sub">Đối chiếu tiền về, trạng thái thanh toán và cập nhật khoản phải thu</div>
           </div>
 
           <div class="page-header-actions">
@@ -242,14 +242,14 @@
               style="height:28px;padding:0 7px;border:1px solid var(--border-dk);border-radius:var(--r-sm);font-size:11.5px;background:var(--surface);font-family:var(--font);"
             />
 
-            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã nhận file sao kê BIDV.','info')">
+            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã nhận lại sao kê BIDV.','info')">
               <svg viewBox="0 0 14 14">
                 <path d="M7 5V1M3 3l4-2 4 2M2 7h10v6H2z"/>
               </svg>
-              Import file BIDV
+              Nhận lại sao kê BIDV
             </button>
 
-            <button class="btn btn-primary btn-sm" id="btn-run-recon" onclick="runRecon()">Chạy đối soát</button>
+            <button class="btn btn-primary btn-sm" id="btn-run-recon" onclick="runRecon()">Chạy lại đối soát</button>
             <button class="btn btn-secondary btn-sm" onclick="location.href='exceptions.html'">Tạo ngoại lệ</button>
             <button class="btn btn-warn btn-sm" onclick="openModal('modal-confirm-close-recon')">Đóng sổ</button>
             <button class="btn btn-secondary btn-sm" onclick="showToast('Đã xuất biên bản đối soát.','success')">Xuất biên bản</button>
@@ -265,7 +265,7 @@
 
           <div class="wf-step done" id="wf2">
             <span class="wf-n">02</span>
-            Import file
+            Nhận sao kê
           </div>
 
           <div class="wf-step done" id="wf3">
@@ -311,7 +311,7 @@
           <div class="stat-card">
             <div class="stat-card-label">Khớp hoàn toàn</div>
             <div class="stat-card-value c-success">132</div>
-            <div class="stat-card-sub">đã cập nhật KPT và lập phiếu thu</div>
+            <div class="stat-card-sub">đã cập nhật khoản phải thu</div>
           </div>
 
           <div class="stat-card">
@@ -321,15 +321,15 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-card-label">Lệch / mồ côi</div>
-            <div class="stat-card-value c-error">4</div>
+            <div class="stat-card-label">Lệch</div>
+            <div class="stat-card-value c-error">3</div>
             <div class="stat-card-sub">cần tạo ngoại lệ xử lý</div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-card-label">HĐĐT đã ký</div>
-            <div class="stat-card-value c-primary">128</div>
-            <div class="stat-card-sub">phiếu thu đã phát hành hóa đơn</div>
+            <div class="stat-card-label">Giao dịch mồ côi</div>
+            <div class="stat-card-value c-error">1</div>
+            <div class="stat-card-sub">chưa xác định nội dung thu</div>
           </div>
         </div>
 
@@ -354,12 +354,12 @@
           </div>
 
           <div class="filter-field">
-            <label>Mã đơn</label>
+            <label>Mã đơn nội bộ</label>
             <input type="text" placeholder="ORD-..." style="min-width:130px;"/>
           </div>
 
           <div class="filter-field">
-            <label>Mã yêu cầu</label>
+            <label>Mã yêu cầu nội bộ</label>
             <input type="text" placeholder="PR-..." style="min-width:130px;"/>
           </div>
 
@@ -369,7 +369,7 @@
           </div>
 
           <div class="filter-field">
-            <label>Loại khoản</label>
+            <label>Khoản mục</label>
             <select>
               <option>Tất cả</option>
               <option>Học phí</option>
@@ -419,18 +419,17 @@
               <tr>
                 <th class="col-code">Mã GD BIDV</th>
                 <th class="col-code">Mã giao dịch</th>
-                <th class="col-code">Mã đơn</th>
-                <th class="col-code">Mã yêu cầu</th>
+                <th class="col-code">Mã đơn nội bộ</th>
+                <th class="col-code">Mã yêu cầu nội bộ</th>
                 <th class="col-student-code">Mã SV</th>
                 <th class="col-name">Họ tên</th>
-                <th class="col-status">Loại khoản</th>
+                <th class="col-status">Khoản mục</th>
                 <th class="col-content">Nội dung thu</th>
                 <th class="r col-money">BIDV (đ)</th>
                 <th class="r col-money">Hệ thống (đ)</th>
                 <th class="r col-money">Chênh lệch (đ)</th>
                 <th class="col-status">Cập nhật KPT</th>
-                <th class="col-code">Số phiếu</th>
-                <th class="col-code">Mã HĐ</th>
+                <th class="col-code">Mã định danh BIDV</th>
                 <th class="col-status">Kết quả</th>
                 <th class="col-content">Hướng xử lý</th>
               </tr>
@@ -450,8 +449,7 @@
                 <td class="r fw600">17.500.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073978</td>
-                <td class="td-a nowrap">00004524</td>
+                <td class="td-a nowrap">PR2510290142</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
               </tr>
@@ -469,8 +467,7 @@
                 <td class="r fw600">19.000.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073979</td>
-                <td class="td-a nowrap">00004525</td>
+                <td class="td-a nowrap">PR2510290141</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
               </tr>
@@ -488,10 +485,9 @@
                 <td class="r fw600">8.450.000</td>
                 <td class="r c-error fw600">+250.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
+                <td class="td-a nowrap">PR2510280140</td>
                 <td><span class="badge bg-warning">Lệch số tiền</span></td>
-                <td>Kiểm tra phần nộp thừa trước khi lập phiếu thu</td>
+                <td>Kiểm tra phần nộp thừa trước khi cập nhật khoản phải thu</td>
               </tr>
 
               <tr>
@@ -507,8 +503,7 @@
                 <td class="r fw600">25.000.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073980</td>
-                <td class="td-a nowrap">00004526</td>
+                <td class="td-a nowrap">PR2510290139</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
               </tr>
@@ -526,8 +521,7 @@
                 <td class="r fw600">631.800</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-012583</td>
-                <td class="dim c-align">—</td>
+                <td class="td-a nowrap">PR2511150088</td>
                 <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
               </tr>
@@ -545,7 +539,6 @@
                 <td class="r c-error">—</td>
                 <td class="r c-error fw600">+10.500.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
                 <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">BIDV có / hệ thống chưa ghi</span></td>
                 <td>Bổ sung giao dịch và gán khoản phải thu</td>
@@ -565,7 +558,6 @@
                 <td class="r c-error fw600">+1.500.000</td>
                 <td><span class="badge bg-neutral">Không áp dụng</span></td>
                 <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">Giao dịch mồ côi</span></td>
                 <td>Tra cứu thủ công nội dung chuyển khoản</td>
               </tr>
@@ -583,10 +575,9 @@
                 <td class="r fw600">8.450.000</td>
                 <td class="r c-error fw600">-8.450.000</td>
                 <td><span class="badge bg-info">Chờ đối soát</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
+                <td class="td-a nowrap">PR2510280136</td>
                 <td><span class="badge bg-warning">Hệ thống có / BIDV không có</span></td>
-                <td>Kiểm tra callback hoặc file sao kê bổ sung</td>
+                <td>Kiểm tra callback hoặc chờ sao kê bổ sung</td>
               </tr>
 
               <tr>
@@ -602,8 +593,7 @@
                 <td class="r fw600">19.000.000</td>
                 <td class="r c-error fw600">-9.000.000</td>
                 <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
-                <td class="td-a nowrap">PT-073981</td>
-                <td class="dim c-align">—</td>
+                <td class="td-a nowrap">PR2510280134</td>
                 <td><span class="badge bg-warning">Thu một phần</span></td>
                 <td>Chờ sinh viên thanh toán phần còn phải nộp</td>
               </tr>
@@ -613,18 +603,17 @@
                 <td class="td-a nowrap">TXN-20251028-0025</td>
                 <td class="td-a nowrap">ORD-20251028-0132</td>
                 <td class="td-a nowrap">PR-20251028-0132</td>
-                <td class="fw600 nowrap">24040961</td>
-                <td>Hoàng Minh Tuấn</td>
+                <td class="fw600 nowrap">24012567</td>
+                <td>Nguyễn Văn Đạt</td>
                 <td><span class="badge bg-info">Học phí</span></td>
-                <td>HK phụ/2024–2025 · Giáo dục quốc phòng — an ninh</td>
-                <td class="r fw600">2.208.000</td>
-                <td class="r fw600">2.208.000</td>
+                <td>Thu học phí HK1/2025–2026</td>
+                <td class="r fw600">8.450.000</td>
+                <td class="r fw600">8.450.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073982</td>
+                <td class="td-a nowrap">PR2510280132</td>
+                <td><span class="badge bg-success">Khớp hoàn toàn</span></td>
                 <td class="dim c-align">—</td>
-                <td><span class="badge bg-success">Khớp qua khấu trừ</span></td>
-                <td>Khoản được tất toán bằng khấu trừ kỳ trước</td>
               </tr>
             </tbody>
           </table>

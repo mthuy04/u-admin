@@ -201,7 +201,7 @@
         <div class="page-header">
           <div>
             <h1>Giao dịch thanh toán</h1>
-            <div class="page-header-sub">Theo dõi tiền về, trạng thái thanh toán, cập nhật khoản phải thu, phiếu thu và hóa đơn điện tử</div>
+            <div class="page-header-sub">Theo dõi tiền về, trạng thái thanh toán và cập nhật khoản phải thu</div>
           </div>
 
           <div class="page-header-actions">
@@ -249,12 +249,12 @@
           </div>
 
           <div class="filter-field">
-            <label>Mã đơn</label>
+            <label>Mã đơn nội bộ</label>
             <input type="text" placeholder="ORD-..." style="min-width:130px;"/>
           </div>
 
           <div class="filter-field">
-            <label>Mã yêu cầu</label>
+            <label>Mã yêu cầu nội bộ</label>
             <input type="text" placeholder="PR-..." style="min-width:130px;"/>
           </div>
 
@@ -264,7 +264,7 @@
           </div>
 
           <div class="filter-field">
-            <label>Loại khoản</label>
+            <label>Khoản mục</label>
             <select>
               <option>Tất cả</option>
               <option>Học phí</option>
@@ -333,18 +333,17 @@
             <thead>
               <tr>
                 <th class="col-code">Mã giao dịch</th>
-                <th class="col-code">Mã đơn</th>
-                <th class="col-code">Mã yêu cầu</th>
+                <th class="col-code">Mã đơn nội bộ</th>
+                <th class="col-code">Mã yêu cầu nội bộ</th>
+                <th class="col-code">Mã định danh BIDV</th>
                 <th class="col-student-code">Mã SV</th>
                 <th class="col-name">Họ tên</th>
-                <th class="col-status">Loại khoản</th>
+                <th class="col-status">Khoản mục</th>
                 <th class="col-content">Nội dung thu</th>
                 <th class="r col-money">Số tiền (đ)</th>
                 <th class="col-date">Thời gian</th>
-                <th class="col-status">Đã thanh toán</th>
+                <th class="col-status">Nguồn</th>
                 <th class="col-status">Cập nhật KPT</th>
-                <th class="col-code">Số phiếu</th>
-                <th class="col-code">Mã hóa đơn</th>
                 <th class="col-status">Trạng thái</th>
                 <th class="col-actions">Thao tác</th>
               </tr>
@@ -355,16 +354,15 @@
                 <td class="td-a nowrap">TXN-20251029-0034</td>
                 <td class="td-a nowrap">ORD-20251029-0142</td>
                 <td class="td-a nowrap">PR-20251029-0142</td>
+                <td class="td-a nowrap">PR2510290142</td>
                 <td class="fw600 nowrap">22041542</td>
                 <td>Nguyễn Thị Ánh Tuyết</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">17.500.000</td>
                 <td class="dim nowrap">29/10/2025 08:47</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073978</td>
-                <td class="td-a nowrap">00004524</td>
                 <td><span class="badge bg-success">Thành công</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -373,16 +371,15 @@
                 <td class="td-a nowrap">TXN-20251029-0033</td>
                 <td class="td-a nowrap">ORD-20251029-0141</td>
                 <td class="td-a nowrap">PR-20251029-0141</td>
+                <td class="td-a nowrap">PR2510290141</td>
                 <td class="fw600 nowrap">23011208</td>
                 <td>Phạm Gia Bảo</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">19.000.000</td>
                 <td class="dim nowrap">29/10/2025 08:31</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073979</td>
-                <td class="td-a nowrap">00004525</td>
                 <td><span class="badge bg-success">Thành công</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -391,16 +388,15 @@
                 <td class="td-a nowrap">TXN-20251029-0032</td>
                 <td class="td-a nowrap">ORD-20251029-0140</td>
                 <td class="td-a nowrap">PR-20251028-0140</td>
+                <td class="td-a nowrap">PR2510280140</td>
                 <td class="fw600 nowrap">22040231</td>
                 <td>Trần Minh Anh</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">8.700.000</td>
                 <td class="dim nowrap">29/10/2025 08:14</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Bổ sung từ đối soát</span></td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-warning">Lệch số tiền</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -409,16 +405,15 @@
                 <td class="td-a nowrap">TXN-20251029-0031</td>
                 <td class="td-a nowrap">ORD-20251029-0139</td>
                 <td class="td-a nowrap">PR-20251029-0139</td>
+                <td class="td-a nowrap">PR2510290139</td>
                 <td class="fw600 nowrap">25010782</td>
                 <td>Đỗ Khánh Linh</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Chương trình BRT — Đợt 1</td>
                 <td class="r fw600">25.000.000</td>
                 <td class="dim nowrap">29/10/2025 07:58</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073980</td>
-                <td class="td-a nowrap">00004526</td>
                 <td><span class="badge bg-success">Thành công</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -427,16 +422,15 @@
                 <td class="td-a nowrap">TXN-20251115-0024</td>
                 <td class="td-a nowrap">ORD-20251115-0088</td>
                 <td class="td-a nowrap">PR-20251115-0088</td>
+                <td class="td-a nowrap">PR2511150088</td>
                 <td class="fw600 nowrap">22041542</td>
                 <td>Nguyễn Thị Ánh Tuyết</td>
                 <td><span class="badge bg-neutral">BHYT</span></td>
                 <td>Bảo hiểm y tế 12 tháng</td>
                 <td class="r fw600">631.800</td>
                 <td class="dim nowrap">15/11/2025 15:15</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-012583</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-success">Thành công</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -445,16 +439,15 @@
                 <td class="td-a nowrap">TXN-20251028-0030</td>
                 <td class="dim c-align">—</td>
                 <td class="dim c-align">—</td>
+                <td class="dim c-align">—</td>
                 <td class="fw600 nowrap">24031876</td>
                 <td>Lê Đức Huy</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">10.500.000</td>
                 <td class="dim nowrap">28/10/2025 16:22</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-neutral">Bổ sung từ đối soát</span></td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">Giao dịch mồ côi</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -463,16 +456,15 @@
                 <td class="td-a nowrap">TXN-20251028-0029</td>
                 <td class="td-a nowrap">ORD-20251028-0136</td>
                 <td class="td-a nowrap">PR-20251028-0136</td>
+                <td class="td-a nowrap">PR2510280136</td>
                 <td class="fw600 nowrap">24040961</td>
                 <td>Hoàng Minh Tuấn</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">8.450.000</td>
                 <td class="dim nowrap">28/10/2025 15:45</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-info">Chờ đối soát</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-info">Chờ đối soát</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -481,16 +473,15 @@
                 <td class="td-a nowrap">TXN-20251028-0027</td>
                 <td class="td-a nowrap">ORD-20251028-0134</td>
                 <td class="td-a nowrap">PR-20251028-0134</td>
+                <td class="td-a nowrap">PR2510280134</td>
                 <td class="fw600 nowrap">24051243</td>
                 <td>Trần Thu Hà</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">10.000.000</td>
                 <td class="dim nowrap">28/10/2025 11:08</td>
-                <td><span class="badge bg-success">Có</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-warning">Đã cập nhật một phần</span></td>
-                <td class="td-a nowrap">PT-073981</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-warning">Thu một phần</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -499,16 +490,15 @@
                 <td class="td-a nowrap">TXN-20251028-0026</td>
                 <td class="td-a nowrap">ORD-20251028-0133</td>
                 <td class="td-a nowrap">PR-20251028-0133</td>
+                <td class="td-a nowrap">PR2510280133</td>
                 <td class="fw600 nowrap">23022108</td>
                 <td>Vũ Thị Mai Liên</td>
                 <td><span class="badge bg-info">Học phí</span></td>
                 <td>Thu học phí HK1/2025–2026</td>
                 <td class="r fw600">17.500.000</td>
                 <td class="dim nowrap">28/10/2025 14:20</td>
-                <td><span class="badge bg-neutral">Không</span></td>
+                <td><span class="badge bg-info">Callback BIDV</span></td>
                 <td><span class="badge bg-neutral">Không áp dụng</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td><span class="badge bg-error">Giao dịch đã hủy</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-txn')">Chi tiết</button></td>
               </tr>
@@ -565,16 +555,19 @@
         <dt>Mã giao dịch BIDV</dt>
         <dd>FT25202000058147</dd>
 
-        <dt>Mã đơn</dt>
+        <dt>Mã đơn nội bộ</dt>
         <dd class="td-a">ORD-20251029-0140</dd>
 
-        <dt>Mã yêu cầu khớp</dt>
+        <dt>Mã yêu cầu nội bộ khớp</dt>
         <dd class="td-a" onclick="location.href='payment-requests.html'">PR-20251028-0140</dd>
+
+        <dt>Mã định danh BIDV</dt>
+        <dd>PR2510280140</dd>
 
         <dt>Nội dung thu</dt>
         <dd>Thu học phí HK1/2025–2026</dd>
 
-        <dt>Loại khoản</dt>
+        <dt>Khoản mục</dt>
         <dd><span class="badge bg-info">Học phí</span></dd>
 
         <dt>Thời gian giao dịch</dt>
@@ -614,12 +607,6 @@
         <dt>Số tiền phải nộp</dt>
         <dd>8.450.000 đ</dd>
 
-        <dt>Khấu trừ</dt>
-        <dd>0 đ</dd>
-
-        <dt>Trừ nợ</dt>
-        <dd>0 đ</dd>
-
         <dt>Chênh lệch</dt>
         <dd class="c-error bold">+250.000 đ</dd>
 
@@ -644,9 +631,9 @@
             <th>Mã khoản</th>
             <th>Nội dung thu</th>
             <th>Kỳ thu</th>
-            <th class="r">Phải nộp (đ)</th>
-            <th class="r">Đã nộp (đ)</th>
-            <th class="r">Còn phải nộp (đ)</th>
+            <th class="r">Số tiền phải thu (đ)</th>
+            <th class="r">Số tiền đã thu (đ)</th>
+            <th class="r">Số tiền còn lại (đ)</th>
             <th>Trạng thái</th>
           </tr>
         </thead>
@@ -675,29 +662,6 @@
     </div>
 
     <div class="drawer-section">
-      <div class="drawer-sec-title">Phiếu thu và hóa đơn điện tử</div>
-      <dl class="dl">
-        <dt>Số phiếu</dt>
-        <dd class="c-muted">Chưa lập do giao dịch lệch số tiền</dd>
-
-        <dt>Mã hóa đơn</dt>
-        <dd class="c-muted">Chưa phát hành</dd>
-
-        <dt>Đơn vị thu</dt>
-        <dd>BIDV</dd>
-
-        <dt>Loại HĐĐT</dt>
-        <dd>Cá nhân</dd>
-
-        <dt>Trạng thái HĐĐT</dt>
-        <dd><span class="badge bg-neutral">Chưa phát hành</span></dd>
-
-        <dt>Nhật ký hóa đơn</dt>
-        <dd class="c-muted">Chưa có nhật ký xuất hóa đơn</dd>
-      </dl>
-    </div>
-
-    <div class="drawer-section">
       <div class="drawer-sec-title">Ngoại lệ liên quan</div>
       <dl class="dl">
         <dt>Mã ngoại lệ</dt>
@@ -707,7 +671,7 @@
         <dd><span class="badge bg-warning">Lệch số tiền</span></dd>
 
         <dt>Hướng xử lý</dt>
-        <dd>Kiểm tra phần nộp thừa 250.000 đ trước khi cập nhật khoản phải thu và lập phiếu thu</dd>
+        <dd>Kiểm tra phần nộp thừa 250.000 đ trước khi cập nhật khoản phải thu</dd>
       </dl>
     </div>
 
@@ -752,7 +716,7 @@
     <div class="drawer-section">
       <div class="drawer-sec-title">Ghi chú xử lý</div>
       <div class="form-field">
-        <textarea rows="2" placeholder="Nhập ghi chú xử lý...">Giao dịch nộp thừa so với khoản phải thu. Cần xác nhận phương án xử lý phần chênh lệch trước khi cập nhật khoản phải thu và lập phiếu thu.</textarea>
+        <textarea rows="2" placeholder="Nhập ghi chú xử lý...">Giao dịch nộp thừa so với khoản phải thu. Cần xác nhận phương án xử lý phần chênh lệch trước khi cập nhật khoản phải thu.</textarea>
       </div>
     </div>
   </div>

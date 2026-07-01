@@ -231,7 +231,7 @@
         <div class="page-header">
           <div>
             <h1>Cấu hình hệ thống</h1>
-            <div class="page-header-sub">Quản lý cổng thanh toán, mã đơn, cập nhật khoản phải thu, ngoại lệ, phiếu thu, hóa đơn điện tử và phân quyền</div>
+            <div class="page-header-sub">Quản lý cổng thanh toán, mã đơn, cập nhật khoản phải thu, ngoại lệ và phân quyền</div>
           </div>
 
           <div class="page-header-actions">
@@ -496,16 +496,16 @@
                     </tr>
 
                     <tr>
-                      <td>Phiếu thu chưa lập</td>
-                      <td>Giao dịch, khoản phải thu</td>
+                      <td>Callback trùng</td>
+                      <td>Callback BIDV</td>
                       <td>Phòng KHTC</td>
-                      <td>2 ngày làm việc</td>
+                      <td>1 ngày làm việc</td>
                     </tr>
 
                     <tr>
-                      <td>Hóa đơn điện tử lỗi</td>
-                      <td>Phiếu thu, HĐĐT</td>
-                      <td>Quản trị hệ thống</td>
+                      <td>QR hết hạn nhưng phát sinh thanh toán</td>
+                      <td>Callback BIDV, đối soát BIDV</td>
+                      <td>Phòng KHTC</td>
                       <td>2 ngày làm việc</td>
                     </tr>
                   </tbody>
@@ -522,8 +522,8 @@
           <!-- FEE TYPES -->
           <div class="section-block">
             <div class="section-head">
-              <span class="section-title">Loại khoản thu</span>
-              <button class="btn btn-secondary btn-xs" onclick="showToast('Đã mở cấu hình loại khoản thu.','info')">Thêm loại khoản</button>
+              <span class="section-title">Khoản mục thu</span>
+              <button class="btn btn-secondary btn-xs" onclick="showToast('Đã mở cấu hình khoản mục thu.','info')">Thêm khoản mục</button>
             </div>
 
             <div class="section-body">
@@ -532,11 +532,9 @@
                   <thead>
                     <tr>
                       <th>Mã loại</th>
-                      <th>Tên loại khoản</th>
+                      <th>Tên khoản mục</th>
                       <th>Bắt buộc</th>
                       <th>Cập nhật KPT</th>
-                      <th>Phiếu thu</th>
-                      <th>HĐĐT</th>
                       <th>Trạng thái</th>
                     </tr>
                   </thead>
@@ -547,8 +545,6 @@
                       <td>Học phí</td>
                       <td><span class="badge bg-success">Có</span></td>
                       <td><span class="badge bg-success">Có</span></td>
-                      <td><span class="badge bg-success">Có</span></td>
-                      <td><span class="badge bg-success">Có</span></td>
                       <td><span class="badge bg-success">Đang dùng</span></td>
                     </tr>
 
@@ -557,8 +553,6 @@
                       <td>Bảo hiểm y tế 12 tháng</td>
                       <td><span class="badge bg-success">Có</span></td>
                       <td><span class="badge bg-success">Có</span></td>
-                      <td><span class="badge bg-success">Có</span></td>
-                      <td><span class="badge bg-neutral">Không áp dụng</span></td>
                       <td><span class="badge bg-success">Đang dùng</span></td>
                     </tr>
 
@@ -567,116 +561,7 @@
                       <td>Khoản thu khác</td>
                       <td><span class="badge bg-neutral">Theo cấu hình</span></td>
                       <td><span class="badge bg-success">Có</span></td>
-                      <td><span class="badge bg-success">Có</span></td>
-                      <td><span class="badge bg-neutral">Theo cấu hình</span></td>
                       <td><span class="badge bg-success">Đang dùng</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- RECEIPT + EINVOICE -->
-          <div class="section-block">
-            <div class="section-head">
-              <span class="section-title">Phiếu thu và hóa đơn điện tử</span>
-              <span class="badge bg-success">Đang áp dụng</span>
-            </div>
-
-            <div class="section-body">
-              <div class="table-wrap mb-0">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Cấu hình</th>
-                      <th>Giá trị</th>
-                      <th>Áp dụng khi</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td>Tự động lập phiếu thu</td>
-                      <td><span class="badge bg-success">Bật</span></td>
-                      <td>Giao dịch khớp và khoản phải thu đã cập nhật</td>
-                    </tr>
-
-                    <tr>
-                      <td>Mẫu số phiếu</td>
-                      <td class="fw600">PT-YYYYMMDD-######</td>
-                      <td>Sau khi thanh toán thành công</td>
-                    </tr>
-
-                    <tr>
-                      <td>Phát hành HĐĐT</td>
-                      <td><span class="badge bg-success">Bật cho học phí</span></td>
-                      <td>Phiếu thu hợp lệ và đủ dữ liệu hóa đơn</td>
-                    </tr>
-
-                    <tr>
-                      <td>Retry hóa đơn lỗi</td>
-                      <td class="fw600">3 lần</td>
-                      <td>HĐĐT lỗi ký hoặc lỗi đồng bộ trạng thái</td>
-                    </tr>
-
-                    <tr>
-                      <td>Sinh ngoại lệ HĐĐT</td>
-                      <td><span class="badge bg-success">Bật</span></td>
-                      <td>Sau retry vẫn lỗi</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- DEDUCTION + TERM -->
-        <div class="g2" style="margin-bottom:14px;align-items:start;">
-
-          <!-- DEDUCTION -->
-          <div class="section-block">
-            <div class="section-head">
-              <span class="section-title">Khấu trừ / Trừ nợ</span>
-              <span class="badge bg-info">Theo kỳ thu</span>
-            </div>
-
-            <div class="section-body">
-              <div class="table-wrap mb-0">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Quy tắc</th>
-                      <th>Giá trị</th>
-                      <th>Ghi nhận vào khoản phải thu</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td>Ưu tiên xử lý tiền dư kỳ trước</td>
-                      <td>Khấu trừ vào khoản còn phải nộp</td>
-                      <td><span class="badge bg-success">Có</span></td>
-                    </tr>
-
-                    <tr>
-                      <td>Trừ nợ học phí kỳ cũ</td>
-                      <td>Theo khoản phải thu còn dư nợ</td>
-                      <td><span class="badge bg-success">Có</span></td>
-                    </tr>
-
-                    <tr>
-                      <td>Không cho trừ vượt số phải nộp</td>
-                      <td>Chặn khi số khấu trừ lớn hơn khoản phải nộp</td>
-                      <td><span class="badge bg-success">Bật</span></td>
-                    </tr>
-
-                    <tr>
-                      <td>Lưu lịch sử người thực hiện</td>
-                      <td>Mã cán bộ, thời gian, lý do xử lý</td>
-                      <td><span class="badge bg-success">Bắt buộc</span></td>
                     </tr>
                   </tbody>
                 </table>
@@ -753,10 +638,10 @@
                 <thead>
                   <tr>
                     <th>Chức năng</th>
-                    <th>Phòng KHTC</th>
-                    <th>Phòng Đào tạo</th>
-                    <th>Quản trị hệ thống</th>
-                    <th>Lãnh đạo</th>
+                    <th>Cán bộ KHTC</th>
+                    <th>Cán bộ Đào tạo</th>
+                    <th>Admin hệ thống</th>
+                    <th>Kiểm toán / Chỉ xem</th>
                   </tr>
                 </thead>
 
@@ -810,14 +695,6 @@
                   </tr>
 
                   <tr>
-                    <td>Lập phiếu thu / phát hành HĐĐT</td>
-                    <td><span class="perm-y"></span></td>
-                    <td><span class="perm-n"></span></td>
-                    <td><span class="perm-y"></span></td>
-                    <td><span class="perm-n"></span></td>
-                  </tr>
-
-                  <tr>
                     <td>Xuất báo cáo</td>
                     <td><span class="perm-y"></span></td>
                     <td><span class="perm-y"></span></td>
@@ -862,7 +739,7 @@
                   <tr>
                     <td class="dim">29/10/2025 17:30</td>
                     <td>Nguyễn Văn Khoa</td>
-                    <td>Chạy đối soát BIDV</td>
+                    <td>Chạy lại đối soát BIDV</td>
                     <td>Đối soát ngày 29/10/2025</td>
                     <td><span class="badge bg-success">Thành công</span></td>
                   </tr>
@@ -873,14 +750,6 @@
                     <td>Tạo ngoại lệ tự động</td>
                     <td>EX-2025-0042</td>
                     <td><span class="badge bg-warning">Cần xử lý</span></td>
-                  </tr>
-
-                  <tr>
-                    <td class="dim">29/10/2025 08:48</td>
-                    <td>Hệ thống</td>
-                    <td>Lập phiếu thu và phát hành HĐĐT</td>
-                    <td>PT-20251029-073978 · HĐ 00004524</td>
-                    <td><span class="badge bg-success">Thành công</span></td>
                   </tr>
 
                   <tr>

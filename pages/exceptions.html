@@ -231,7 +231,7 @@
         <div class="page-header">
           <div>
             <h1>Ngoại lệ</h1>
-            <div class="page-header-sub">Theo dõi giao dịch lệch, chưa cập nhật khoản phải thu, thiếu phiếu thu, lỗi hóa đơn và khoản thu chưa khớp</div>
+            <div class="page-header-sub">Theo dõi giao dịch lệch, chưa cập nhật khoản phải thu, giao dịch mồ côi và khoản thu chưa khớp</div>
           </div>
 
           <div class="page-header-actions">
@@ -265,9 +265,9 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-card-label">Phiếu thu / HĐĐT lỗi</div>
+            <div class="stat-card-label">Quá hạn xử lý</div>
             <div class="stat-card-value c-primary">3</div>
-            <div class="stat-card-sub">cần phát hành hoặc đồng bộ lại</div>
+            <div class="stat-card-sub">cần xử lý gấp</div>
           </div>
         </div>
 
@@ -277,21 +277,22 @@
             <label>Loại ngoại lệ</label>
             <select>
               <option>Tất cả</option>
-              <option>Đã thanh toán / chưa cập nhật KPT</option>
-              <option>Lệch số tiền</option>
-              <option>Giao dịch mồ côi</option>
               <option>BIDV có / hệ thống chưa ghi</option>
               <option>Hệ thống có / BIDV không có</option>
+              <option>Lệch số tiền</option>
+              <option>Giao dịch mồ côi</option>
+              <option>Callback trùng</option>
+              <option>QR hết hạn nhưng phát sinh thanh toán</option>
+              <option>Gạch nợ lỗi</option>
+              <option>Nộp nhầm kỳ</option>
               <option>Nộp thừa</option>
               <option>Nộp thiếu</option>
-              <option>Nộp nhầm kỳ</option>
-              <option>Phiếu thu chưa lập</option>
-              <option>Hóa đơn điện tử lỗi</option>
+              <option>Đã thanh toán / chưa cập nhật KPT</option>
             </select>
           </div>
 
           <div class="filter-field">
-            <label>Loại khoản</label>
+            <label>Khoản mục</label>
             <select>
               <option>Tất cả</option>
               <option>Học phí</option>
@@ -365,16 +366,14 @@
                 <th class="col-code">Mã ngoại lệ</th>
                 <th class="col-status">Loại ngoại lệ</th>
                 <th class="col-code">Mã giao dịch</th>
-                <th class="col-code">Mã đơn</th>
+                <th class="col-code">Mã đơn nội bộ</th>
                 <th class="col-student-code">Mã SV</th>
                 <th class="col-name">Họ tên</th>
-                <th class="col-status">Loại khoản</th>
+                <th class="col-status">Khoản mục</th>
                 <th class="col-content">Nội dung thu</th>
                 <th class="r col-money">Số tiền (đ)</th>
                 <th class="r col-money">Chênh lệch (đ)</th>
                 <th class="col-status">Cập nhật KPT</th>
-                <th class="col-code">Số phiếu</th>
-                <th class="col-code">Mã HĐ</th>
                 <th class="col-name">Người phụ trách</th>
                 <th class="col-status">Trạng thái</th>
                 <th class="col-actions">Thao tác</th>
@@ -394,8 +393,6 @@
                 <td class="r fw600">10.500.000</td>
                 <td class="r c-error fw600">+10.500.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td>Nguyễn Văn Khoa</td>
                 <td><span class="badge bg-error">Quá hạn</span></td>
                 <td><button class="btn btn-primary btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -413,8 +410,6 @@
                 <td class="r fw600">8.700.000</td>
                 <td class="r c-error fw600">+250.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td>Nguyễn Văn Khoa</td>
                 <td><span class="badge bg-warning">Đang xử lý</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -432,8 +427,6 @@
                 <td class="r fw600">8.450.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-warning">Chờ đối soát</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td>Trần Thị Hoa</td>
                 <td><span class="badge bg-info">Mở</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -451,8 +444,6 @@
                 <td class="r fw600">250.000</td>
                 <td class="r c-error fw600">+250.000</td>
                 <td><span class="badge bg-warning">Chưa cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td>Trần Thị Hoa</td>
                 <td><span class="badge bg-info">Mở</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -470,8 +461,6 @@
                 <td class="r fw600">25.000.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073980</td>
-                <td class="td-a nowrap">00004526</td>
                 <td>Nguyễn Văn Khoa</td>
                 <td><span class="badge bg-info">Mở</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -489,8 +478,6 @@
                 <td class="r fw600">1.500.000</td>
                 <td class="r c-error fw600">+1.500.000</td>
                 <td><span class="badge bg-neutral">Không áp dụng</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td>Nguyễn Văn Khoa</td>
                 <td><span class="badge bg-error">Quá hạn</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -498,7 +485,7 @@
 
               <tr>
                 <td class="fw600 nowrap">EX-2025-0036</td>
-                <td>Hóa đơn điện tử lỗi</td>
+                <td>Callback trùng</td>
                 <td class="td-a nowrap">TXN-20251029-0034</td>
                 <td class="td-a nowrap">ORD-20251029-0142</td>
                 <td class="fw600 nowrap">22041542</td>
@@ -508,8 +495,6 @@
                 <td class="r fw600">17.500.000</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="td-a nowrap">PT-073978</td>
-                <td class="dim c-error nowrap">Lỗi ký</td>
                 <td>Nguyễn Thị Hương</td>
                 <td><span class="badge bg-warning">Đang xử lý</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -517,7 +502,7 @@
 
               <tr>
                 <td class="fw600 nowrap">EX-2025-0035</td>
-                <td>Phiếu thu chưa lập</td>
+                <td>QR hết hạn nhưng phát sinh thanh toán</td>
                 <td class="td-a nowrap">TXN-20251115-0024</td>
                 <td class="td-a nowrap">ORD-20251115-0088</td>
                 <td class="fw600 nowrap">22041542</td>
@@ -527,8 +512,6 @@
                 <td class="r fw600">631.800</td>
                 <td class="r">0</td>
                 <td><span class="badge bg-success">Đã cập nhật</span></td>
-                <td class="dim c-align">—</td>
-                <td class="dim c-align">—</td>
                 <td>Trần Thị Hoa</td>
                 <td><span class="badge bg-info">Mở</span></td>
                 <td><button class="btn btn-ghost btn-xs" onclick="openDrawer('drw-exc')">Xử lý</button></td>
@@ -605,13 +588,13 @@
         <dt>Mã giao dịch BIDV</dt>
         <dd>FT25201000039284</dd>
 
-        <dt>Mã đơn</dt>
+        <dt>Mã đơn nội bộ</dt>
         <dd class="c-muted">Không tìm thấy</dd>
 
-        <dt>Mã yêu cầu</dt>
+        <dt>Mã yêu cầu nội bộ</dt>
         <dd class="c-muted">Không tìm thấy</dd>
 
-        <dt>Loại khoản</dt>
+        <dt>Khoản mục</dt>
         <dd><span class="badge bg-info">Học phí</span></dd>
 
         <dt>Nội dung thu</dt>
@@ -646,13 +629,13 @@
         <dt>Mã khoản gợi ý</dt>
         <dd class="td-a" onclick="location.href='receivables.html'">RCV-2025-08436</dd>
 
-        <dt>Phải nộp</dt>
+        <dt>Số tiền phải thu</dt>
         <dd class="bold">10.500.000 đ</dd>
 
-        <dt>Đã nộp hiện tại</dt>
+        <dt>Số tiền đã thu hiện tại</dt>
         <dd>0 đ</dd>
 
-        <dt>Còn phải nộp</dt>
+        <dt>Số tiền còn lại</dt>
         <dd class="c-error bold">10.500.000 đ</dd>
 
         <dt>Cập nhật KPT</dt>
@@ -671,18 +654,6 @@
 
         <dt>Chênh lệch</dt>
         <dd class="c-error bold">+10.500.000 đ</dd>
-
-        <dt>Khấu trừ</dt>
-        <dd>0 đ</dd>
-
-        <dt>Trừ nợ</dt>
-        <dd>0 đ</dd>
-
-        <dt>Phiếu thu</dt>
-        <dd><span class="badge bg-neutral">Chưa lập</span></dd>
-
-        <dt>Hóa đơn điện tử</dt>
-        <dd><span class="badge bg-neutral">Chưa phát hành</span></dd>
       </dl>
     </div>
 
@@ -715,16 +686,16 @@
           </tr>
 
           <tr>
-            <td class="fw600">Lập phiếu thu</td>
-            <td>Tạo số phiếu sau khi gán khoản</td>
-            <td>Khoản phải thu đã cập nhật</td>
+            <td class="fw600">Tra soát giao dịch BIDV</td>
+            <td>Đối chiếu lại với sao kê BIDV gốc để xác minh giao dịch</td>
+            <td>Chưa xác định được khoản phải thu phù hợp</td>
             <td><span class="badge bg-neutral">Chờ</span></td>
           </tr>
 
           <tr>
-            <td class="fw600">Phát hành HĐĐT</td>
-            <td>Xuất hóa đơn điện tử cho phiếu thu</td>
-            <td>Phiếu thu đã lập</td>
+            <td class="fw600">Tái phát hành yêu cầu thanh toán</td>
+            <td>Tạo lại yêu cầu thanh toán mới nếu không thể gán vào khoản hiện có</td>
+            <td>Khoản phải thu không khớp hoặc đã hết hạn</td>
             <td><span class="badge bg-neutral">Chờ</span></td>
           </tr>
         </tbody>
@@ -774,12 +745,12 @@
       Gán khoản phải thu
     </button>
 
-    <button class="btn btn-secondary btn-sm" onclick="showToast('Đã lập phiếu thu cho giao dịch.','success')">
-      Lập phiếu thu
+    <button class="btn btn-secondary btn-sm" onclick="showToast('Đã gửi yêu cầu tra soát giao dịch BIDV.','info')">
+      Tra soát giao dịch BIDV
     </button>
 
-    <button class="btn btn-secondary btn-sm" onclick="showToast('Đã gửi yêu cầu phát hành hóa đơn điện tử.','info')">
-      Phát hành HĐĐT
+    <button class="btn btn-secondary btn-sm" onclick="showToast('Đã mở nhật ký xử lý đầy đủ.','info')">
+      Xem nhật ký xử lý
     </button>
 
     <button class="btn btn-primary btn-sm" onclick="closeDrawer('drw-exc');showToast('Đã đánh dấu ngoại lệ là đã xử lý.','success')">

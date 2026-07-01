@@ -231,7 +231,7 @@ function runRecon() {
     if (wf3) wf3.className = 'wf-step done';
     if (wf4) wf4.className = 'wf-step active';
 
-    showToast('Đã chạy đối soát thành công.', 'success');
+    showToast('Đã chạy lại đối soát thành công.', 'success');
   }, 900);
 }
 

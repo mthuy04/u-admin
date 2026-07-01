@@ -274,12 +274,12 @@
         <!-- FILTER BAR -->
         <div class="filter-bar">
           <div class="filter-field">
-            <label>Mã đơn</label>
+            <label>Mã đơn nội bộ</label>
             <input type="text" placeholder="ORD-..." style="min-width:135px;"/>
           </div>
 
           <div class="filter-field">
-            <label>Mã yêu cầu</label>
+            <label>Mã yêu cầu nội bộ</label>
             <input type="text" placeholder="PR-..." style="min-width:135px;"/>
           </div>
 
@@ -350,8 +350,8 @@
           <table>
             <thead>
               <tr>
-                <th class="col-code">Mã đơn</th>
-                <th class="col-code">Mã yêu cầu</th>
+                <th class="col-code">Mã đơn nội bộ</th>
+                <th class="col-code">Mã yêu cầu nội bộ</th>
                 <th class="col-student-code">Mã SV</th>
                 <th class="col-name">Họ tên</th>
                 <th class="col-content">Nội dung thu</th>
@@ -539,13 +539,16 @@
     <div class="drawer-section">
       <div class="drawer-sec-title">Thông tin yêu cầu</div>
       <dl class="dl">
-        <dt>Mã đơn</dt>
+        <dt>Mã đơn nội bộ</dt>
         <dd class="bold">ORD-20251029-0142</dd>
 
-        <dt>Mã yêu cầu</dt>
+        <dt>Mã yêu cầu nội bộ</dt>
         <dd class="bold">PR-20251029-0142</dd>
 
-        <dt>Mã thanh toán / QR ref</dt>
+        <dt>Mã định danh BIDV</dt>
+        <dd><code class="ref" style="display:inline;">PR2510290142</code></dd>
+
+        <dt>Nội dung chuyển khoản</dt>
         <dd><code class="ref" style="display:inline;">ULIS22041542HK1PR0142</code></dd>
 
         <dt>Nội dung thu</dt>
@@ -591,7 +594,7 @@
         <dt>Thời gian thanh toán</dt>
         <dd class="c-muted">29/10/2025 08:47</dd>
 
-        <dt>Mã giao dịch</dt>
+        <dt>Mã giao dịch nội bộ</dt>
         <dd class="td-a" onclick="location.href='transactions.html'">TXN-20251029-0034</dd>
 
         <dt>Mã giao dịch BIDV</dt>
@@ -640,26 +643,6 @@
     </div>
 
     <div class="drawer-section">
-      <div class="drawer-sec-title">Phiếu thu liên quan</div>
-      <dl class="dl">
-        <dt>Số phiếu</dt>
-        <dd class="bold">PT-20251029-073978</dd>
-
-        <dt>Ngày thu</dt>
-        <dd class="c-muted">29/10/2025 08:47</dd>
-
-        <dt>Số tiền</dt>
-        <dd class="bold">17.500.000 đ</dd>
-
-        <dt>Đơn vị thu</dt>
-        <dd>BIDV</dd>
-
-        <dt>Trạng thái phiếu thu</dt>
-        <dd><span class="badge bg-success">Đã lập</span></dd>
-      </dl>
-    </div>
-
-    <div class="drawer-section">
       <div class="drawer-sec-title">Tiến trình xử lý</div>
 
       <div class="timeline">
@@ -675,7 +658,7 @@
         <div class="tl-row">
           <div class="tl-dot done"></div>
           <div class="tl-content">
-            <div class="tl-label">Sinh mã đơn và mã thanh toán</div>
+            <div class="tl-label">Sinh mã đơn nội bộ và mã định danh BIDV</div>
             <div class="tl-time">29/10/2025 08:44 — ORD-20251029-0142</div>
           </div>
         </div>
@@ -701,14 +684,6 @@
           <div class="tl-content">
             <div class="tl-label">Cập nhật khoản phải thu</div>
             <div class="tl-time">29/10/2025 08:47 — RCV-2025-08421 chuyển sang Đã thu</div>
-          </div>
-        </div>
-
-        <div class="tl-row">
-          <div class="tl-dot done"></div>
-          <div class="tl-content">
-            <div class="tl-label">Lập phiếu thu</div>
-            <div class="tl-time">29/10/2025 08:48 — PT-20251029-073978</div>
           </div>
         </div>
       </div>

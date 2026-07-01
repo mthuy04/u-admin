@@ -309,9 +309,9 @@
             </div>
 
             <div class="filter-field">
-              <label>Loại khoản</label>
+              <label>Khoản mục</label>
               <select>
-                <option selected>Tất cả loại khoản</option>
+                <option selected>Tất cả khoản mục</option>
                 <option>Học phí</option>
                 <option>Bảo hiểm y tế</option>
                 <option>Khoản thu khác</option>
@@ -358,11 +358,11 @@
                   <path d="M5 20v5a2 2 0 002 2h18a2 2 0 002-2v-5M16 5v14M10 11l6-6 6 6"/>
                 </svg>
                 <p class="main"><strong>Kéo thả file vào đây</strong> hoặc nhấn để chọn</p>
-                <p class="sub" style="margin-top:3px;">.xlsx · Tối đa 5 MB · gồm mã sinh viên, loại khoản, mã cấu hình, số tiền và kỳ thu</p>
+                <p class="sub" style="margin-top:3px;">.xlsx · Theo đúng mẫu chuẩn của hệ thống · Tối đa 5 MB · gồm mã sinh viên, năm học, kỳ thu, khoản mục, loại đăng ký, số tiền và hạn nộp</p>
               </div>
 
               <div style="margin-top:9px;font-size:11.5px;color:var(--muted);">
-                Hệ thống kiểm tra mã sinh viên, loại khoản, mã cấu hình, mức thu, kỳ thu và dữ liệu trùng trước khi cho phép xác nhận.
+                Hệ thống chỉ chấp nhận file đúng mẫu chuẩn và kiểm tra mã sinh viên, khoản mục, mã cấu hình, loại đăng ký, mức thu, kỳ thu và dữ liệu trùng trước khi cho phép xác nhận.
               </div>
             </div>
           </div>
@@ -465,11 +465,12 @@
                     <th class="nowrap">Dòng</th>
                     <th class="col-student-code">Mã SV</th>
                     <th class="col-name">Họ tên</th>
-                    <th class="col-status">Loại khoản</th>
+                    <th class="col-status">Khoản mục</th>
                     <th class="col-code">Mã cấu hình</th>
                     <th class="col-code">Mã KPT dự kiến</th>
-                    <th class="col-content">Nhóm ngành / khoản thu</th>
+                    <th class="col-content">Chương trình đào tạo</th>
                     <th class="nowrap">Kỳ thu</th>
+                    <th class="nowrap">Loại đăng ký</th>
                     <th class="r col-money">Phải nộp (đ)</th>
                     <th class="col-status">Tạo KPT</th>
                     <th class="col-status">Yêu cầu TT</th>
@@ -486,8 +487,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-001</td>
                     <td class="td-a nowrap">RCV-2025-08421</td>
-                    <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                    <td>Ngôn ngữ Anh</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">17.500.000</td>
                     <td><span class="badge bg-success">Có</span></td>
                     <td><span class="badge bg-success">Có</span></td>
@@ -502,8 +504,9 @@
                     <td><span class="badge bg-neutral">BHYT</span></td>
                     <td class="td-a nowrap">FEE-2025-BHYT12</td>
                     <td class="td-a nowrap">RCV-2025-08601</td>
-                    <td>Bảo hiểm y tế 12 tháng</td>
+                    <td>Tất cả chương trình</td>
                     <td>2025–2026</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">631.800</td>
                     <td><span class="badge bg-success">Có</span></td>
                     <td><span class="badge bg-success">Có</span></td>
@@ -518,8 +521,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-002</td>
                     <td class="td-a nowrap">RCV-2025-08430</td>
-                    <td>Ngôn ngữ Nga, Ả Rập, Văn hóa và truyền thông xuyên quốc gia</td>
+                    <td>Ngôn ngữ Nga</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">8.450.000</td>
                     <td><span class="badge bg-success">Có</span></td>
                     <td><span class="badge bg-success">Có</span></td>
@@ -534,8 +538,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-005</td>
                     <td class="td-a nowrap">RCV-2025-08422</td>
-                    <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                    <td>Ngôn ngữ Anh</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">19.000.000</td>
                     <td><span class="badge bg-success">Có</span></td>
                     <td><span class="badge bg-success">Có</span></td>
@@ -550,8 +555,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-004</td>
                     <td class="td-a nowrap">RCV-2025-08436</td>
-                    <td>Ngôn ngữ Nga, Ả Rập</td>
+                    <td>Ngôn ngữ Nga</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">10.500.000</td>
                     <td><span class="badge bg-success">Có</span></td>
                     <td><span class="badge bg-success">Có</span></td>
@@ -568,6 +574,7 @@
                     <td class="td-a nowrap">RCV-2025-08501</td>
                     <td>Chương trình BRT — Làn Xanh</td>
                     <td>Đợt 1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">25.000.000</td>
                     <td><span class="badge bg-success">Có</span></td>
                     <td><span class="badge bg-success">Có</span></td>
@@ -582,8 +589,9 @@
                     <td><span class="badge bg-neutral">Khác</span></td>
                     <td class="c-error nowrap">OTHER-2025-LAB</td>
                     <td class="dim c-align">—</td>
-                    <td>Khoản thực hành chuyên ngành</td>
+                    <td class="dim c-align">—</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">450.000</td>
                     <td><span class="badge bg-neutral">Không</span></td>
                     <td><span class="badge bg-neutral">Không</span></td>
@@ -598,8 +606,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-005</td>
                     <td class="dim c-align">—</td>
-                    <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                    <td>Ngôn ngữ Anh</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r fw600">19.000.000</td>
                     <td><span class="badge bg-neutral">Không</span></td>
                     <td><span class="badge bg-neutral">Không</span></td>
@@ -614,8 +623,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-003</td>
                     <td class="dim c-align">—</td>
-                    <td>Văn hóa và truyền thông xuyên quốc gia; Tiếng Việt và Văn hóa Việt Nam</td>
+                    <td>Tiếng Việt và Văn hóa Việt Nam</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r c-error">—</td>
                     <td><span class="badge bg-neutral">Không</span></td>
                     <td><span class="badge bg-neutral">Không</span></td>
@@ -630,8 +640,9 @@
                     <td><span class="badge bg-info">Học phí</span></td>
                     <td class="td-a nowrap">FEE-2025-HK1-DHCQ-001</td>
                     <td class="dim c-align">—</td>
-                    <td>Ngôn ngữ Anh, Pháp, Đức, Trung Quốc, Nhật Bản, Hàn Quốc</td>
+                    <td>Ngôn ngữ Anh</td>
                     <td>HK1/25–26</td>
+                    <td>Lần đầu</td>
                     <td class="r c-error fw600">18.000.000</td>
                     <td><span class="badge bg-neutral">Không</span></td>
                     <td><span class="badge bg-neutral">Không</span></td>
@@ -722,7 +733,7 @@
             </div>
 
             <div class="filter-field">
-              <label>Loại khoản</label>
+              <label>Khoản mục</label>
               <select>
                 <option>Tất cả</option>
                 <option>Học phí</option>
@@ -767,7 +778,7 @@
                 <tr>
                   <th class="col-content">Tên file</th>
                   <th class="nowrap">Kỳ thu</th>
-                  <th class="col-status">Loại khoản</th>
+                  <th class="col-status">Khoản mục</th>
                   <th class="r nowrap">Số dòng</th>
                   <th class="r nowrap">Hợp lệ</th>
                   <th class="r nowrap">Cần kiểm tra</th>
