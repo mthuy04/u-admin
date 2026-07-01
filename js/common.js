@@ -179,23 +179,6 @@ function switchReminderTab(tab) {
   });
 }
 
-/* ===================== SYSTEM CONFIG TABS ===================== */
-function switchSystemTab(tab) {
-  document.querySelectorAll('.system-tab').forEach(function(item) {
-    item.classList.remove('active');
-  });
-
-  document.querySelectorAll('.system-tab-pane').forEach(function(pane) {
-    pane.classList.remove('active');
-  });
-
-  var tabEl = $('tab-system-' + tab);
-  var paneEl = $('pane-system-' + tab);
-
-  if (tabEl) tabEl.classList.add('active');
-  if (paneEl) paneEl.classList.add('active');
-}
-
 /* ===================== ACCORDION ===================== */
 function toggleAcc(id) {
   var card = $(id);
