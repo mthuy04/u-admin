@@ -146,6 +146,16 @@
         </div>
 
         <div class="form-field">
+          <label>Hệ số</label>
+          <select>
+            <option selected>1</option>
+            <option>1,5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid c3">
+        <div class="form-field">
           <label>Trạng thái áp dụng</label>
           <select>
             <option selected>Đang áp dụng</option>
@@ -366,26 +376,26 @@
         <div class="stat-row">
           <div class="stat-card">
             <div class="stat-card-label">Tổng cấu hình</div>
-            <div class="stat-card-value">15</div>
+            <div class="stat-card-value">11</div>
             <div class="stat-card-sub">học phí, BHYT và khoản thu khác</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-card-label">Học phí</div>
-            <div class="stat-card-value c-success">12</div>
+            <div class="stat-card-value c-success">10</div>
             <div class="stat-card-sub">theo khóa/chương trình/kỳ thu</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-card-label">Khoản thu khác</div>
-            <div class="stat-card-value c-primary">2</div>
+            <div class="stat-card-value c-primary">1</div>
             <div class="stat-card-sub">BHYT và khoản ngoài học phí</div>
           </div>
 
           <div class="stat-card">
             <div class="stat-card-label">Đang áp dụng</div>
-            <div class="stat-card-value c-warning">9</div>
-            <div class="stat-card-sub">trên tổng 15 cấu hình</div>
+            <div class="stat-card-value c-warning">3</div>
+            <div class="stat-card-sub">trên tổng 11 cấu hình</div>
           </div>
         </div>
 
@@ -455,7 +465,7 @@
         <div class="table-wrap table-xwide">
           <div class="table-toolbar">
             <span class="table-title">Danh sách cấu hình học phí và khoản thu</span>
-            <span class="table-count">15 bản ghi</span>
+            <span class="table-count">11 bản ghi</span>
 
             <div class="table-toolbar-r">
               <span class="c-muted fs-11">Hiển thị</span>
@@ -639,12 +649,11 @@
           </table>
 
           <div class="tbl-pagination">
-            <span>Hiển thị 1–10 / 15 bản ghi</span>
+            <span>Hiển thị 1–11 / 11 bản ghi</span>
 
             <div class="pg-nav">
               <button class="pg-btn" disabled>&laquo;</button>
               <button class="pg-btn active">1</button>
-              <button class="pg-btn">2</button>
               <button class="pg-btn">&raquo;</button>
             </div>
 
@@ -704,6 +713,10 @@
               </tr>
             </tbody>
           </table>
+
+          <div style="background:var(--info-bg);border:1px solid var(--info-bd);border-radius:var(--r);padding:9px 11px;font-size:12px;line-height:1.6;margin-top:10px;">
+            Số tiền cuối = Đơn giá lần đầu × Hệ số. Mặc định Hệ số = 1 cho các loại đăng ký Lần đầu, Học lại, Cải thiện; riêng học phần Tự chọn tự do áp dụng Hệ số = 1,5 theo quy định ULIS.
+          </div>
         </div>
 
       </div>
