@@ -235,6 +235,40 @@ function runRecon() {
   }, 900);
 }
 
+/* ===================== RECEIVABLES ADJUSTMENT ===================== */
+function submitAdjustRcv() {
+  var amountInput = $('adjust-rcv-amount');
+  var reasonInput = $('adjust-rcv-reason');
+  var amount = amountInput ? amountInput.value.trim() : '';
+  var reason = reasonInput ? reasonInput.value.trim() : '';
+
+  if (!amount || !reason) {
+    showToast('Vui lòng nhập đầy đủ số tiền mới và lý do điều chỉnh.', 'error');
+    return;
+  }
+
+  var formattedAmount = Number(amount).toLocaleString('vi-VN');
+  var timeline = $('rcv-timeline');
+
+  if (timeline) {
+    var row = document.createElement('div');
+    row.className = 'tl-row';
+    row.innerHTML =
+      '<div class="tl-dot done"></div>' +
+      '<div class="tl-content">' +
+      '<div class="tl-label">Điều chỉnh khoản phải thu</div>' +
+      '<div class="tl-time">30/10/2025 09:15 — Số tiền mới ' + safeText(formattedAmount) + ' đ · Lý do: ' + safeText(reason) + '</div>' +
+      '</div>';
+    timeline.appendChild(row);
+  }
+
+  if (amountInput) amountInput.value = '';
+  if (reasonInput) reasonInput.value = '';
+
+  closeModal('modal-adjust-rcv');
+  showToast('Đã lưu điều chỉnh khoản phải thu.', 'success');
+}
+
 /* ===================== REPORT SELECTION ===================== */
 function selectReport(el, title, sub) {
   document.querySelectorAll('.report-item').forEach(function(item) {

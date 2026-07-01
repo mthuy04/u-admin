@@ -60,6 +60,39 @@
   </div>
 </div>
 
+<!-- ===================== MODAL: ĐIỀU CHỈNH KHOẢN PHẢI THU ===================== -->
+<div class="overlay" id="modal-adjust-rcv">
+  <div class="modal modal-sm">
+    <div class="modal-hd">
+      <h2>Điều chỉnh khoản phải thu</h2>
+      <button class="btn-x" onclick="closeModal('modal-adjust-rcv')">
+        <svg viewBox="0 0 20 20">
+          <path d="M5 5l10 10M15 5L5 15"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Số tiền mới (đ)</label>
+          <input type="number" id="adjust-rcv-amount" placeholder="Nhập số tiền mới" required/>
+        </div>
+
+        <div class="form-field">
+          <label>Lý do điều chỉnh</label>
+          <textarea id="adjust-rcv-reason" rows="2" placeholder="Nhập lý do điều chỉnh..." required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="closeModal('modal-adjust-rcv')">Hủy</button>
+      <button class="btn btn-primary" onclick="submitAdjustRcv()">Lưu</button>
+    </div>
+  </div>
+</div>
+
 <div id="app">
 
   <!-- ===================== SIDEBAR ===================== -->
@@ -783,7 +816,7 @@
     <div class="drawer-section">
       <div class="drawer-sec-title">Lịch sử cập nhật khoản phải thu</div>
 
-      <div class="timeline">
+      <div class="timeline" id="rcv-timeline">
         <div class="tl-row">
           <div class="tl-dot done"></div>
           <div class="tl-content">
@@ -827,7 +860,7 @@
   </div>
 
   <div class="drawer-ft">
-    <button class="btn btn-secondary btn-sm" onclick="showToast('Đã mở chức năng điều chỉnh khoản phải thu.','info')">Điều chỉnh</button>
+    <button class="btn btn-secondary btn-sm" onclick="openModal('modal-adjust-rcv')">Điều chỉnh</button>
     <button class="btn btn-secondary btn-sm" onclick="location.href='transactions.html'">Xem giao dịch</button>
     <button class="btn btn-warn btn-sm" onclick="openModal('modal-confirm-cancel-rcv')">Hủy khoản</button>
     <button class="btn btn-primary btn-sm" onclick="closeDrawer('drw-rcv');showToast('Đã lưu ghi chú.','success')">Lưu ghi chú</button>
