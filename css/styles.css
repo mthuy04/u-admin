@@ -2733,3 +2733,217 @@ body.login-page #login-screen {
     flex-wrap: wrap;
   }
 }
+/* =========================================================
+   FINAL COLOR POLISH — KPI NUMBERS + SOLID BAR COLORS
+   Dán cuối file styles.css
+   ========================================================= */
+
+   :root {
+    --viz-green: #2FCB8D;
+    --viz-blue: #4F8EF7;
+    --viz-amber: #F5B82E;
+    --viz-pink: #F0647A;
+    --viz-purple: #8E7CF4;
+  }
+  
+  /* KPI numbers: màu tươi hơn, đồng bộ chart */
+  .stat-card-value {
+    color: var(--viz-blue);
+  }
+  
+  .stat-row .stat-card:nth-child(1) .stat-card-value {
+    color: var(--viz-blue);
+  }
+  
+  .stat-row .stat-card:nth-child(2) .stat-card-value {
+    color: var(--viz-green);
+  }
+  
+  .stat-row .stat-card:nth-child(3) .stat-card-value {
+    color: var(--viz-amber);
+  }
+  
+  .stat-row .stat-card:nth-child(4) .stat-card-value {
+    color: var(--viz-green);
+  }
+  
+  .stat-row .stat-card:nth-child(5) .stat-card-value {
+    color: var(--viz-blue);
+  }
+  
+  .stat-row .stat-card:nth-child(6) .stat-card-value {
+    color: var(--viz-pink);
+  }
+  
+  /* Nếu HTML có class màu sẵn thì vẫn ép về palette mới */
+  .stat-card-value.c-success {
+    color: var(--viz-green) !important;
+  }
+  
+  .stat-card-value.c-primary {
+    color: var(--viz-blue) !important;
+  }
+  
+  .stat-card-value.c-warning {
+    color: var(--viz-amber) !important;
+  }
+  
+  .stat-card-value.c-error {
+    color: var(--viz-pink) !important;
+  }
+  
+  /* Bar chart: bỏ gradient, dùng màu đặc */
+  .bar-track {
+    background: #EEF4FB;
+  }
+  
+  .bar-fill {
+    background: var(--viz-blue) !important;
+    box-shadow: none !important;
+  }
+  
+  .bar-fill.soft-blue {
+    background: var(--viz-blue) !important;
+    box-shadow: none !important;
+  }
+  
+  .bar-fill.soft-green {
+    background: var(--viz-green) !important;
+    box-shadow: none !important;
+  }
+  
+  .bar-fill.soft-amber {
+    background: var(--viz-amber) !important;
+    box-shadow: none !important;
+  }
+  
+  .bar-fill.soft-pink {
+    background: var(--viz-pink) !important;
+    box-shadow: none !important;
+  }
+  
+  .bar-fill.soft-purple {
+    background: var(--viz-purple) !important;
+    box-shadow: none !important;
+  }
+  
+  /* KPI card nhìn sáng và sạch hơn */
+  .stat-card {
+    background: #FFFFFF;
+    border-color: #E5EDF7;
+  }
+  
+  .stat-card-label {
+    color: #6B7C93;
+  }
+  
+  .stat-card-sub {
+    color: #8AA0B8;
+  }
+  /* =========================================================
+   FINAL COLOR POLISH — SOFT ENTERPRISE KPI + SOLID BARS
+   Thay block màu cũ ở cuối styles.css bằng block này
+   ========================================================= */
+
+:root {
+  --viz-green: #1FA77A;
+  --viz-blue: #2F6FB6;
+  --viz-amber: #C98212;
+  --viz-pink: #D94A5F;
+  --viz-purple: #7667D9;
+}
+
+/* KPI numbers: có màu nhưng không chói */
+.stat-card-value {
+  color: var(--viz-blue);
+}
+
+.stat-row .stat-card:nth-child(1) .stat-card-value {
+  color: var(--viz-blue);
+}
+
+.stat-row .stat-card:nth-child(2) .stat-card-value {
+  color: var(--viz-blue);
+}
+
+.stat-row .stat-card:nth-child(3) .stat-card-value {
+  color: var(--viz-amber);
+}
+
+.stat-row .stat-card:nth-child(4) .stat-card-value {
+  color: var(--viz-green);
+}
+
+.stat-row .stat-card:nth-child(5) .stat-card-value {
+  color: var(--viz-blue);
+}
+
+.stat-row .stat-card:nth-child(6) .stat-card-value {
+  color: var(--viz-pink);
+}
+
+/* Class semantic vẫn giữ nhưng dùng tone dịu */
+.stat-card-value.c-success {
+  color: var(--viz-green) !important;
+}
+
+.stat-card-value.c-primary {
+  color: var(--viz-blue) !important;
+}
+
+.stat-card-value.c-warning {
+  color: var(--viz-amber) !important;
+}
+
+.stat-card-value.c-error {
+  color: var(--viz-pink) !important;
+}
+
+/* Bar chart: màu đặc, không gradient, giảm độ chói */
+.bar-track {
+  background: #EEF4FB;
+}
+
+.bar-fill {
+  background: var(--viz-blue) !important;
+  box-shadow: none !important;
+}
+
+.bar-fill.soft-blue {
+  background: var(--viz-blue) !important;
+  box-shadow: none !important;
+}
+
+.bar-fill.soft-green {
+  background: var(--viz-green) !important;
+  box-shadow: none !important;
+}
+
+.bar-fill.soft-amber {
+  background: var(--viz-amber) !important;
+  box-shadow: none !important;
+}
+
+.bar-fill.soft-pink {
+  background: var(--viz-pink) !important;
+  box-shadow: none !important;
+}
+
+.bar-fill.soft-purple {
+  background: var(--viz-purple) !important;
+  box-shadow: none !important;
+}
+
+/* KPI card giữ sạch, không làm nổi quá */
+.stat-card {
+  background: #FFFFFF;
+  border-color: #E5EDF7;
+}
+
+.stat-card-label {
+  color: #64748B;
+}
+
+.stat-card-sub {
+  color: #8A9BB0;
+}
