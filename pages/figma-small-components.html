@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ULIS — Figma Small Components Export</title>
+<link rel="stylesheet" href="../css/styles.css"/>
+
+<style>
+  html,
+  body {
+    height: auto !important;
+    overflow: auto !important;
+    background: #D7DEE8 !important;
+  }
+
+  body {
+    padding: 36px;
+  }
+
+  .export-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin: 0 0 12px;
+  }
+
+  .export-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-start;
+    margin-bottom: 46px;
+  }
+
+  .export-frame {
+    background: rgba(245,247,250,.96);
+    border: 1px solid #B8C3D1;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 12px 30px rgba(15,23,42,.16);
+  }
+
+  .export-frame.dark {
+    background: rgba(15,23,42,.30);
+  }
+
+  .export-frame .modal {
+    position: static !important;
+    display: block !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    box-shadow: 0 18px 44px rgba(15,23,42,.22);
+  }
+
+  .export-frame .modal .modal-body {
+    overflow: visible !important;
+  }
+
+  .export-frame * {
+    transition: none !important;
+    animation: none !important;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ======================================================
+  01. MODAL — THÊM / SỬA CẤU HÌNH KHOẢN THU
+====================================================== -->
+<div class="export-title">01 — Modal thêm / sửa cấu hình khoản thu</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal">
+      <div class="modal-hd">
+        <h2>Thêm / Sửa cấu hình khoản thu</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid c3">
+          <div class="form-field">
+            <label>Mã cấu hình</label>
+            <input type="text" value="FEE-2025-HK1-DHCQ-001"/>
+          </div>
+
+          <div class="form-field">
+            <label>Năm học</label>
+            <select>
+              <option selected>2025–2026</option>
+              <option>2026–2027</option>
+              <option>2024–2025</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Kỳ thu</label>
+            <select>
+              <option selected>HK1</option>
+              <option>HK2</option>
+              <option>Cả năm học</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid c3">
+          <div class="form-field">
+            <label>Chương trình đào tạo</label>
+            <select>
+              <option selected>Ngôn ngữ Anh</option>
+              <option>Ngôn ngữ Pháp</option>
+              <option>Ngôn ngữ Đức</option>
+              <option>Ngôn ngữ Trung Quốc</option>
+              <option>Ngôn ngữ Nhật Bản</option>
+              <option>Ngôn ngữ Hàn Quốc</option>
+              <option>Ngôn ngữ Nga</option>
+              <option>Chương trình BRT — Làn Xanh</option>
+              <option>Đào tạo đại học chương trình thứ hai</option>
+              <option>Tất cả chương trình</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Khoản mục</label>
+            <select>
+              <option selected>Học phí</option>
+              <option>Bảo hiểm y tế</option>
+              <option>Khoản thu khác</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Loại đăng ký</label>
+            <select>
+              <option selected>Lần đầu</option>
+              <option>Học lại</option>
+              <option>Cải thiện</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid c3">
+          <div class="form-field">
+            <label>Học phần</label>
+            <input type="text" value="Áp dụng cả học kỳ"/>
+          </div>
+
+          <div class="form-field">
+            <label>Số tiền (đ)</label>
+            <input type="number" value="17500000"/>
+          </div>
+
+          <div class="form-field">
+            <label>Hệ số</label>
+            <select>
+              <option selected>1</option>
+              <option>1,5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid c3">
+          <div class="form-field">
+            <label>Trạng thái áp dụng</label>
+            <select>
+              <option selected>Đang áp dụng</option>
+              <option>Ngừng áp dụng</option>
+              <option>Nháp</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Ghi chú</label>
+            <textarea rows="3">Khoản phải thu được sinh theo dữ liệu import của sinh viên và cấu hình mức thu đang áp dụng.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Huỷ</button>
+        <button class="btn btn-primary">Lưu cấu hình</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+  02. MODAL — XÁC NHẬN NGỪNG ÁP DỤNG
+====================================================== -->
+<div class="export-title">02 — Modal xác nhận ngừng áp dụng</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2>Xác nhận ngừng áp dụng</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+          Bạn có chắc chắn muốn <strong>ngừng áp dụng</strong> cấu hình này không?
+        </div>
+        <div class="sys-warn-bar" style="margin-bottom:0;">
+          Khoản phải thu đã phát sinh sẽ không bị ảnh hưởng. Cấu hình này sẽ không áp dụng cho đợt thu mới.
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-warn">Ngừng áp dụng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+  03. MODAL — XÁC NHẬN NHẬP DỮ LIỆU
+====================================================== -->
+<div class="export-title">03 — Modal xác nhận nhập dữ liệu</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2>Xác nhận nhập dữ liệu</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+          Xác nhận nhập các dòng hợp lệ và sinh khoản phải thu tương ứng?
+        </div>
+        <div class="sys-warn-bar" style="margin-bottom:0;">
+          Chỉ các dòng hợp lệ, khớp cấu hình và chưa trùng khoản phải thu mới được ghi nhận.
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-primary">Xác nhận nhập</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+  04. MODAL — ĐIỀU CHỈNH KHOẢN PHẢI THU
+====================================================== -->
+<div class="export-title">04 — Modal điều chỉnh khoản phải thu</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2>Điều chỉnh khoản phải thu</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Số tiền mới (đ)</label>
+            <input type="number" placeholder="Nhập số tiền mới"/>
+          </div>
+
+          <div class="form-field">
+            <label>Lý do điều chỉnh</label>
+            <textarea rows="2" placeholder="Nhập lý do điều chỉnh..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-primary">Lưu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+  05. MODAL — XÁC NHẬN HỦY KHOẢN PHẢI THU
+====================================================== -->
+<div class="export-title">05 — Modal xác nhận hủy khoản phải thu</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2>Xác nhận hủy khoản phải thu</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+          Bạn có chắc chắn muốn <strong>hủy khoản phải thu</strong> này không?
+        </div>
+        <div class="sys-error-bar" style="margin-bottom:0;">
+          Khoản phải thu sẽ được đánh dấu Đã hủy và không thể tạo yêu cầu thanh toán mới.
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-danger">Xác nhận hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+  06. MODAL — XÁC NHẬN HỦY YÊU CẦU THANH TOÁN
+====================================================== -->
+<div class="export-title">06 — Modal xác nhận hủy yêu cầu thanh toán</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2>Xác nhận hủy yêu cầu</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+          Bạn có chắc chắn muốn <strong>hủy yêu cầu thanh toán</strong> này không?
+        </div>
+        <div class="sys-warn-bar" style="margin-bottom:0;">
+          Yêu cầu bị hủy sẽ không thể tiếp tục thanh toán. Sinh viên cần tạo yêu cầu mới trên Portal nếu vẫn còn khoản phải nộp.
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-danger">Xác nhận hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================
+  07. MODAL — XÁC NHẬN LƯU CẤU HÌNH HỆ THỐNG
+====================================================== -->
+<div class="export-title">07 — Modal xác nhận lưu cấu hình hệ thống</div>
+<div class="export-row">
+  <div class="export-frame dark">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2>Xác nhận lưu cấu hình</h2>
+        <button class="btn-x">
+          <svg viewBox="0 0 20 20">
+            <path d="M5 5l10 10M15 5L5 15"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
+          Xác nhận lưu các thay đổi cấu hình hệ thống?
+        </div>
+        <div class="sys-warn-bar" style="margin-bottom:0;">
+          Các thay đổi về cổng thanh toán, cập nhật khoản phải thu và sinh ngoại lệ sẽ áp dụng cho các yêu cầu thanh toán phát sinh sau thời điểm lưu.
+        </div>
+      </div>
+
+      <div class="modal-ft">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-primary">Lưu cấu hình</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

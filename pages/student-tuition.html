@@ -3,9 +3,135 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dữ liệu học phí và khoản thu — Hệ thống quản lý thu học phí ULIS</title>
+<title>Dữ liệu học phí — Hệ thống quản lý thu học phí ULIS</title>
 <meta name="description" content="Hệ thống quản trị học phí nội bộ — Trường Đại học Ngoại ngữ, Đại học Quốc gia Hà Nội"/>
 <link rel="stylesheet" href="../css/styles.css"/>
+
+<style>
+  :root{
+    --td-navy:#0b3153;--td-navy-2:#123f69;--td-blue:#2563eb;--td-blue-soft:#eff6ff;
+    --td-green:#059669;--td-green-soft:#ecfdf5;--td-amber:#d97706;--td-amber-soft:#fff7ed;
+    --td-red:#dc2626;--td-red-soft:#fef2f2;--td-indigo:#4f46e5;--td-indigo-soft:#eef2ff;
+    --td-slate:#64748b;--td-slate-soft:#f8fafc;--td-border:#dce6f1;--td-border-strong:#cbd8e6;
+    --td-text:#1e293b;--td-muted:#64748b;--td-shadow:0 8px 24px rgba(15,23,42,.055);
+  }
+  .tuition-data-page{max-width:1600px;margin:0 auto;padding-bottom:92px;color:var(--td-text);font-size:14px;line-height:1.5}
+  .tuition-data-page *{box-sizing:border-box}.tuition-data-page button,.tuition-data-page input,.tuition-data-page select,.tuition-data-page textarea{font:inherit}
+  .td-page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+  .td-page-header h1{margin:0 0 6px;font-size:24px;line-height:1.25;color:#0f172a;font-weight:800}
+  .td-page-desc{font-size:13.5px;color:var(--td-muted);max-width:900px}
+  .td-top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .td-btn{height:38px;border:1px solid var(--td-border-strong);border-radius:9px;background:#fff;color:#334155;padding:0 13px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;white-space:nowrap;transition:.15s ease}
+  .td-btn:hover{background:#f8fafc;border-color:#b8c8da}.td-btn.primary{background:#1d4ed8;border-color:#1d4ed8;color:#fff}.td-btn.primary:hover{background:#1e40af}.td-btn.danger{color:#b91c1c;border-color:#fecaca;background:#fff}.td-btn.ghost{border-color:transparent;background:transparent;color:#1d4ed8;padding:0 6px}.td-btn.sm{height:32px;padding:0 10px;font-size:12px}.td-btn:disabled{opacity:.48;cursor:not-allowed;background:#f8fafc;color:#94a3b8}
+
+  .td-tabs{display:flex;gap:4px;border-bottom:1px solid var(--td-border);margin-bottom:18px}
+  .td-tab{position:relative;padding:11px 16px 12px;border:0;background:transparent;color:#64748b;font-size:14px;font-weight:700;cursor:pointer}
+  .td-tab.active{color:#0f3a60}.td-tab.active::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:#0f4c7d}
+  .td-pane{display:none}.td-pane.active{display:block}
+
+  .stepper-wrap{background:#fff;border:1px solid var(--td-border);border-radius:12px;box-shadow:var(--td-shadow);padding:16px 18px;margin-bottom:20px}
+  .stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+  .stepper::before{content:"";position:absolute;left:12.5%;right:12.5%;top:18px;height:2px;background:#e2e8f0;z-index:0}
+  .step-item{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;cursor:pointer}
+  .step-dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:2px solid #cbd5e1;background:#fff;color:#64748b;font-weight:800;font-size:13px}
+  .step-item.done .step-dot{background:#ecfdf5;border-color:#10b981;color:#047857}.step-item.active .step-dot{background:#0f4c7d;border-color:#0f4c7d;color:#fff;box-shadow:0 0 0 5px #e8f2fa}
+  .step-label{font-size:12.5px;font-weight:700;color:#64748b}.step-item.active .step-label{color:#0f3a60}.step-item.done .step-label{color:#047857}
+  .step-note{text-align:right;font-size:12px;color:#94a3b8;margin-top:10px}
+  .step-panel{display:none}.step-panel.active{display:block}
+
+  .td-card{background:#fff;border:1px solid var(--td-border);border-radius:12px;box-shadow:var(--td-shadow);margin-bottom:20px;overflow:hidden}
+  .td-card-head{padding:16px 18px;border-bottom:1px solid #edf2f7;background:#fbfcfe;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .td-card-title{font-size:17px;font-weight:800;color:#1e293b}.td-card-sub{margin-top:3px;font-size:12.5px;color:#64748b}.td-card-body{padding:18px}
+  .td-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.td-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .td-field label{display:block;font-size:12.5px;font-weight:700;color:#475569;margin-bottom:6px}.required::after{content:" *";color:#dc2626}.td-field .help{font-size:11.5px;color:#94a3b8;margin-top:5px}
+  .td-input,.td-select,.td-textarea{width:100%;border:1px solid var(--td-border-strong);border-radius:9px;background:#fff;color:#334155;font-size:13px;outline:none;transition:.15s ease}.td-input,.td-select{height:40px;padding:0 11px}.td-textarea{min-height:82px;padding:10px 11px;resize:vertical}.td-input:focus,.td-select:focus,.td-textarea:focus{border-color:#7fb1dd;box-shadow:0 0 0 3px #e8f2fa}
+  .td-divider{height:1px;background:#edf2f7;margin:18px 0}
+  .td-actions-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}.td-actions-left,.td-actions-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+  details.td-details{border:1px solid #e5edf7;border-radius:10px;background:#fbfdff}.td-details summary{cursor:pointer;list-style:none;padding:11px 13px;font-weight:700;font-size:13px;color:#334155;display:flex;align-items:center;justify-content:space-between}.td-details summary::-webkit-details-marker{display:none}.td-details summary::after{content:"⌄";color:#64748b}.td-details[open] summary::after{content:"⌃"}.td-details-body{padding:2px 13px 13px}
+
+  .upload-zone{border:1.5px dashed #9eb7cc;border-radius:12px;background:linear-gradient(180deg,#fbfdff,#f7fbff);padding:36px 24px;text-align:center;cursor:pointer;transition:.15s ease}.upload-zone:hover{border-color:#4d89ba;background:#f4f9fd}.upload-icon{width:48px;height:48px;border-radius:12px;margin:0 auto 10px;display:grid;place-items:center;background:#eaf3fb;color:#0f4c7d;font-size:23px}.upload-main{font-size:15px;font-weight:800;color:#1e293b}.upload-sub{font-size:12.5px;color:#64748b;margin-top:5px}.upload-rules{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.rule-pill{padding:9px 10px;border:1px solid #e6edf5;border-radius:9px;background:#fff;font-size:11.5px;color:#64748b}.rule-pill strong{display:block;color:#334155;font-size:12px;margin-bottom:2px}
+  .file-card{display:grid;grid-template-columns:1.4fr repeat(6,minmax(100px,1fr));gap:0;border:1px solid #dbe5ef;border-radius:10px;overflow:hidden;margin-top:16px}.file-cell{padding:12px;border-right:1px solid #edf2f7;background:#fff}.file-cell:last-child{border-right:0}.file-label{font-size:10.5px;color:#94a3b8;margin-bottom:4px}.file-value{font-size:12.5px;font-weight:700;color:#334155;word-break:break-word}
+  .progress-box{margin-top:16px;padding:14px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:10px}.progress-top{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:#1e40af;font-weight:700}.progress-track{height:8px;border-radius:999px;background:#dbeafe;overflow:hidden;margin-top:9px}.progress-bar{height:100%;width:0;background:#2563eb;border-radius:inherit;transition:width .35s ease}.background-note{font-size:11.5px;color:#64748b;margin-top:8px}
+
+  .result-head-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:11.5px;font-weight:800;white-space:nowrap}.status-badge.ready{background:#ecfdf5;color:#047857}.status-badge.checking{background:#eff6ff;color:#1d4ed8}.status-badge.error{background:#fef2f2;color:#b91c1c}.status-badge.neutral{background:#f1f5f9;color:#475569}.status-badge.warn{background:#fff7ed;color:#b45309}
+  .result-kpis{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;margin-bottom:18px}.result-kpi{position:relative;overflow:hidden;min-height:105px;border:1px solid var(--td-border);border-radius:11px;background:#fff;padding:13px}.result-kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#94a3b8}.result-kpi.ok{background:#f4fdf8;border-color:#ccebdc}.result-kpi.ok::before{background:#10b981}.result-kpi.warn{background:#fffaf0;border-color:#f7ddab}.result-kpi.warn::before{background:#f59e0b}.result-kpi.err{background:#fff5f5;border-color:#f8cccc}.result-kpi.err::before{background:#ef4444}.result-kpi.dup{background:#f6f9fc;border-color:#d9e4ef}.result-kpi.dup::before{background:#64748b}.result-kpi.conflict{background:#fff1f2;border-color:#f4b8bd}.result-kpi.conflict::before{background:#be123c}.result-kpi.money{background:#f0f7fb;border-color:#c8ddeb}.result-kpi.money::before{background:#0f4c7d}.rk-label{font-size:11.5px;font-weight:700;color:#64748b;min-height:33px}.rk-value{font-size:21px;font-weight:850;color:#0f172a;margin-top:7px;white-space:nowrap}.rk-sub{font-size:10.5px;color:#94a3b8;margin-top:3px}
+
+  .summary-table-wrap{overflow:auto;border:1px solid var(--td-border);border-radius:10px}.summary-table{width:100%;border-collapse:collapse;min-width:900px}.summary-table th{background:#f8fafc;color:#64748b;font-size:12px;font-weight:800;padding:11px 12px;border-bottom:1px solid #e5edf7;text-align:right;white-space:nowrap}.summary-table th:first-child{text-align:left}.summary-table td{padding:11px 12px;border-bottom:1px solid #eef2f7;font-size:13px;text-align:right}.summary-table td:first-child{text-align:left;font-weight:700}.summary-table tr:last-child td{border-bottom:0}.summary-table tfoot td{background:#f8fafc;font-weight:800;color:#0f172a}
+
+  .preview-toolbar{padding:14px 16px;border:1px solid var(--td-border);border-radius:11px;background:#fff;margin-bottom:12px;box-shadow:var(--td-shadow)}
+  .toolbar-grid{display:grid;grid-template-columns:1.7fr repeat(4,minmax(145px,1fr));gap:9px}.toolbar-grid.second{grid-template-columns:repeat(3,minmax(180px,1fr)) auto;margin-top:9px}.td-search{position:relative}.td-search input{padding-left:34px}.td-search::before{content:"⌕";position:absolute;left:11px;top:8px;color:#64748b;font-size:18px;z-index:1}.quick-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}.quick-chips{display:flex;gap:7px;flex-wrap:wrap}.chip{height:30px;border:1px solid #d8e2ee;background:#fff;border-radius:999px;padding:0 11px;font-size:11.5px;color:#64748b;font-weight:700;cursor:pointer}.chip.active{background:#eaf3fb;border-color:#a7c7df;color:#0f4c7d}.toolbar-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+
+  .column-menu{position:relative}.column-panel{display:none;position:absolute;right:0;top:38px;width:270px;background:#fff;border:1px solid #dbe5ef;border-radius:10px;box-shadow:0 14px 34px rgba(15,23,42,.14);padding:10px;z-index:20}.column-panel.open{display:block}.column-option{display:flex;align-items:center;gap:8px;padding:7px 6px;font-size:12px;color:#475569;border-radius:7px}.column-option:hover{background:#f8fafc}.column-option input{accent-color:#0f4c7d}
+
+  .preview-table-shell{border:1px solid var(--td-border);border-radius:11px;background:#fff;box-shadow:var(--td-shadow);overflow:hidden}.preview-table-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:13px 15px;border-bottom:1px solid #edf2f7;background:#fbfcfe}.preview-title{font-size:16px;font-weight:800;color:#1e293b}.preview-count{font-size:12px;color:#64748b}.table-scroll{overflow:auto;max-height:590px}.preview-table{width:100%;border-collapse:separate;border-spacing:0;min-width:1740px}.preview-table th{position:sticky;top:0;z-index:4;background:#f8fafc;padding:11px 10px;border-bottom:1px solid #dfe8f1;color:#64748b;font-size:11.5px;font-weight:800;text-align:left;white-space:nowrap}.preview-table td{padding:11px 10px;border-bottom:1px solid #eef2f7;color:#334155;font-size:13px;line-height:1.45;vertical-align:middle;background:#fff}.preview-table tbody tr:hover td{background:#f7fbff}.preview-table tbody tr.row-warn td{background:#fffaf0}.preview-table tbody tr.row-error td{background:#fff5f5}.preview-table tbody tr.row-conflict td{background:#fff0f2}.preview-table tbody tr.row-dup td{background:#f7f9fc}.preview-table .sticky-1,.preview-table .sticky-2,.preview-table .sticky-3{position:sticky;z-index:3}.preview-table th.sticky-1,.preview-table th.sticky-2,.preview-table th.sticky-3{z-index:6}.preview-table .sticky-1{left:0;min-width:70px}.preview-table .sticky-2{left:70px;min-width:120px}.preview-table .sticky-3{left:190px;min-width:170px;box-shadow:5px 0 8px rgba(15,23,42,.04)}
+  .money{text-align:right!important;white-space:nowrap;font-variant-numeric:tabular-nums}.diff-pos{color:#b45309;font-weight:800}.diff-zero{color:#64748b}.result-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}.result-pill.ok{background:#ecfdf5;color:#047857}.result-pill.warn{background:#fff7ed;color:#b45309}.result-pill.err{background:#fef2f2;color:#b91c1c}.result-pill.dup{background:#eef2f7;color:#475569}.result-pill.conflict{background:#ffe4e6;color:#be123c}.match-pill{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap}.match-pill.ok{background:#ecfdf5;color:#047857}.match-pill.warn{background:#fff7ed;color:#b45309}.match-pill.na{background:#f1f5f9;color:#64748b}
+  .table-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 14px;border-top:1px solid #edf2f7;background:#fbfcfe;font-size:12px;color:#64748b}.page-controls{display:flex;align-items:center;gap:7px}.page-size{height:32px;border:1px solid #d8e2ee;border-radius:8px;background:#fff;padding:0 8px;font-size:12px}.pg{width:32px;height:32px;border:1px solid #d8e2ee;background:#fff;border-radius:8px;font-size:12px;color:#475569;cursor:pointer}.pg.active{background:#0f4c7d;color:#fff;border-color:#0f4c7d}
+
+  .issue-table-wrap{overflow:auto}.issue-table{width:100%;border-collapse:collapse;min-width:1050px}.issue-table th{background:#f8fafc;padding:11px 12px;border-bottom:1px solid #e5edf7;font-size:11.5px;font-weight:800;color:#64748b;text-align:left;white-space:nowrap}.issue-table td{padding:12px;border-bottom:1px solid #eef2f7;font-size:12.5px;color:#334155;vertical-align:middle}.issue-table tr:last-child td{border-bottom:0}.issue-count-btn{border:0;background:transparent;color:#1d4ed8;font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:2px}.sev{font-size:11px;font-weight:800}.sev.error{color:#b91c1c}.sev.warning{color:#b45309}.sev.dup{color:#475569}.sev.conflict{color:#be123c}
+
+  .sticky-action{position:sticky;bottom:10px;z-index:15;margin-top:20px;border:1px solid #cad9e7;border-radius:12px;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);box-shadow:0 -6px 24px rgba(15,23,42,.09),0 10px 28px rgba(15,23,42,.08);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.sticky-summary{text-align:right}.sticky-main{font-size:14px;font-weight:800;color:#0f172a}.sticky-sub{font-size:11.5px;color:#64748b;margin-top:2px}.sticky-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.sticky-left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+  .success-panel{text-align:center;padding:34px 24px}.success-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#dcfce7;color:#047857;font-size:30px;font-weight:900;margin:0 auto 12px}.success-title{font-size:22px;font-weight:850;color:#0f172a}.success-sub{font-size:13px;color:#64748b;max-width:700px;margin:6px auto 20px}.success-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:1050px;margin:0 auto 20px}.success-metric{border:1px solid #e3ebf3;border-radius:10px;padding:12px;background:#fbfcfe;text-align:left}.success-metric span{display:block;font-size:10.5px;color:#94a3b8;margin-bottom:4px}.success-metric strong{font-size:13px;color:#334155}
+
+  .history-filter{display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:10px}.history-filter .wide{grid-column:span 2}.history-table-wrap{overflow:auto;border:1px solid var(--td-border);border-radius:11px}.history-table{width:100%;border-collapse:collapse;min-width:1500px}.history-table th{background:#f8fafc;padding:11px 10px;border-bottom:1px solid #e5edf7;font-size:11.5px;color:#64748b;font-weight:800;text-align:left;white-space:nowrap}.history-table td{padding:12px 10px;border-bottom:1px solid #eef2f7;font-size:12.5px;color:#334155;vertical-align:middle}.history-table tr:last-child td{border-bottom:0}.hist-file{font-weight:700;color:#334155}.hist-sub{font-size:11px;color:#94a3b8;margin-top:2px}.hist-actions{display:flex;gap:5px;flex-wrap:wrap;min-width:190px}
+
+  .td-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.38);z-index:1700;align-items:center;justify-content:center;padding:20px}.td-overlay.open{display:flex}.td-modal{width:min(640px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 28px 80px rgba(15,23,42,.28)}.td-modal-head{padding:16px 18px;border-bottom:1px solid #e5edf7;display:flex;justify-content:space-between;gap:12px}.td-modal-title{font-size:18px;font-weight:850;color:#0f172a}.td-modal-body{padding:18px}.td-modal-foot{padding:14px 18px;border-top:1px solid #e5edf7;display:flex;justify-content:flex-end;gap:8px}.impact-box{padding:13px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:10px;color:#1e40af;font-size:13px;line-height:1.55}.confirm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.confirm-item{padding:9px 10px;border-radius:8px;background:#f8fafc}.confirm-item span{display:block;font-size:10.5px;color:#94a3b8;margin-bottom:3px}.confirm-item strong{font-size:12.5px;color:#334155}
+  .drawer-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.32);z-index:1650}.drawer-backdrop.open{display:block}.detail-drawer{position:absolute;right:0;top:0;height:100%;width:min(660px,94vw);background:#fff;box-shadow:-24px 0 64px rgba(15,23,42,.19);display:flex;flex-direction:column}.drawer-head{padding:17px 18px;border-bottom:1px solid #e5edf7;display:flex;justify-content:space-between;gap:12px}.drawer-title{font-size:17px;font-weight:850}.drawer-sub{font-size:12px;color:#64748b;margin-top:3px}.drawer-body{padding:16px 18px;overflow:auto}.detail-section{margin-bottom:18px}.detail-section h3{font-size:13px;color:#334155;margin:0 0 8px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.detail-item{padding:9px 10px;border-radius:8px;background:#f8fafc}.detail-item span{display:block;font-size:10.5px;color:#94a3b8;margin-bottom:3px}.detail-item strong{font-size:12.5px;color:#334155;line-height:1.45}.retro-alert{padding:11px;border-radius:9px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:12px;line-height:1.5;margin-top:8px}.error-mini{width:100%;border-collapse:collapse}.error-mini th,.error-mini td{border:1px solid #e5edf7;padding:8px;font-size:11.5px;text-align:left}.error-mini th{background:#f8fafc;color:#64748b}.no-edit-note{margin-top:8px;font-size:11.5px;color:#64748b}
+
+  @media(max-width:1400px){.result-kpis{grid-template-columns:repeat(4,1fr)}.history-filter{grid-template-columns:repeat(4,1fr)}.toolbar-grid{grid-template-columns:repeat(3,1fr)}.toolbar-grid .td-search{grid-column:span 2}.file-card{grid-template-columns:1.5fr repeat(3,1fr)}.file-cell{border-bottom:1px solid #edf2f7}}
+  @media(max-width:1000px){.td-grid-3{grid-template-columns:1fr 1fr}.result-kpis{grid-template-columns:repeat(2,1fr)}.history-filter{grid-template-columns:1fr 1fr}.toolbar-grid,.toolbar-grid.second{grid-template-columns:1fr 1fr}.success-grid{grid-template-columns:1fr 1fr}.upload-rules{grid-template-columns:1fr 1fr}.step-label{font-size:11px}}
+  @media(max-width:680px){.td-page-header{flex-direction:column}.td-grid-3,.td-grid-2,.history-filter,.toolbar-grid,.toolbar-grid.second,.success-grid,.upload-rules{grid-template-columns:1fr}.history-filter .wide,.toolbar-grid .td-search{grid-column:auto}.stepper{grid-template-columns:1fr 1fr;gap:14px}.stepper::before{display:none}.result-kpis{grid-template-columns:1fr}.detail-grid,.confirm-grid{grid-template-columns:1fr}.sticky-action{bottom:4px}.file-card{grid-template-columns:1fr 1fr}}
+
+
+  /* ===== CARD COLOR STANDARD — restored original product style ===== */
+  /* Preview KPI đúng kiểu mockup cũ: không vạch màu; semantic background chỉ dùng cho kết quả kiểm tra. */
+  .result-kpi::before,
+  .result-kpi.ok::before,
+  .result-kpi.warn::before,
+  .result-kpi.err::before,
+  .result-kpi.dup::before,
+  .result-kpi.conflict::before,
+  .result-kpi.money::before{display:none}
+
+  .result-kpi{
+    background:#fff;
+    border-color:#dce6f1;
+  }
+  .result-kpi.ok{
+    background:#ecfdf5;
+    border-color:#86efc2;
+  }
+  .result-kpi.warn{
+    background:#fffbeb;
+    border-color:#f5cd52;
+  }
+  .result-kpi.err{
+    background:#fef2f2;
+    border-color:#fda4af;
+  }
+  .result-kpi.dup{
+    background:#f8fafc;
+    border-color:#dbe5ef;
+  }
+  .result-kpi.conflict{
+    background:#fff1f2;
+    border-color:#f7b4be;
+  }
+  .result-kpi.money{
+    background:#f4f8fc;
+    border-color:#c9dceb;
+  }
+
+  .result-kpi.ok .rk-value{color:#059669}
+  .result-kpi.warn .rk-value{color:#b7791f}
+  .result-kpi.err .rk-value{color:#c81e1e}
+  .result-kpi.dup .rk-value{color:#475569}
+  .result-kpi.conflict .rk-value{color:#be123c}
+  .result-kpi.money .rk-value{color:#1f6fb2}
+
+</style>
+
 </head>
 
 <body>
@@ -26,36 +152,6 @@
       <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;">Phiên đăng nhập đã hết hạn</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">Vui lòng đăng nhập lại để tiếp tục sử dụng hệ thống.</div>
       <button class="btn btn-primary" onclick="location.href='../index.html'">Đăng nhập lại</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== CONFIRM: XÁC NHẬN NHẬP DỮ LIỆU ===================== -->
-<div class="overlay" id="modal-confirm-import">
-  <div class="modal modal-sm">
-    <div class="modal-hd">
-      <h2>Xác nhận nhập dữ liệu</h2>
-      <button class="btn-x" onclick="closeModal('modal-confirm-import')">
-        <svg viewBox="0 0 20 20">
-          <path d="M5 5l10 10M15 5L5 15"/>
-        </svg>
-      </button>
-    </div>
-
-    <div class="modal-body">
-      <div style="font-size:12.5px;color:var(--text);margin-bottom:8px;">
-        Xác nhận nhập các dòng hợp lệ và sinh khoản phải thu tương ứng?
-      </div>
-      <div class="sys-warn-bar" style="margin-bottom:0;">
-        Chỉ các dòng hợp lệ, khớp cấu hình và chưa trùng khoản phải thu mới được ghi nhận.
-      </div>
-    </div>
-
-    <div class="modal-ft">
-      <button class="btn btn-secondary" onclick="closeModal('modal-confirm-import')">Hủy</button>
-      <button class="btn btn-primary" onclick="closeModal('modal-confirm-import');showToast('Đã nhập dữ liệu và sinh khoản phải thu.','success')">
-        Xác nhận nhập
-      </button>
     </div>
   </div>
 </div>
@@ -223,690 +319,342 @@
       </div>
     </header>
 
+
     <!-- ===================== CONTENT ===================== -->
     <div id="content">
-      <div class="page-body">
-
-        <!-- PAGE HEADER -->
-        <div class="page-header">
+      <div class="page-body tuition-data-page">
+        <div class="td-page-header">
           <div>
-            <h1>Dữ liệu học phí và khoản thu sinh viên</h1>
-            <div class="page-header-sub">Nhập, kiểm tra và xác nhận dữ liệu để sinh khoản phải thu theo cấu hình học phí/khoản thu đang hiệu lực</div>
-          </div>
-
-          <div class="page-header-actions">
-            <button class="btn btn-secondary btn-sm" onclick="showToast('Đã tải file mẫu nhập dữ liệu.','success')">
-              <svg viewBox="0 0 14 14">
-                <path d="M7 9V1M3 7l4 4 4-4M2 12h10"/>
-              </svg>
-              Tải file mẫu
-            </button>
-
-            <button class="btn btn-primary btn-sm" onclick="switchImportTab('import-new')">
-              <svg viewBox="0 0 14 14">
-                <path d="M7 5V1M3 3l4-2 4 2M2 7h10v6H2z"/>
-              </svg>
-              Nhập Excel
-            </button>
+            <h1>Dữ liệu học phí</h1>
+            <div class="td-page-desc">Nhập, kiểm tra và xác nhận dữ liệu để tạo khoản phải thu ở trạng thái <strong>Nháp</strong>. Dữ liệu chỉ được ghi vào hệ thống sau khi người dùng xác nhận.</div>
           </div>
         </div>
 
-        <!-- SUMMARY CARDS -->
-        <div class="stat-row">
-          <div class="stat-card">
-            <div class="stat-card-label">Dòng dữ liệu gần nhất</div>
-            <div class="stat-card-value">2.019</div>
-            <div class="stat-card-sub">học phí, BHYT và khoản thu khác</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-card-label">Hợp lệ</div>
-            <div class="stat-card-value c-success">1.976</div>
-            <div class="stat-card-sub">đủ điều kiện sinh khoản phải thu</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-card-label">Cần kiểm tra</div>
-            <div class="stat-card-value c-warning">31</div>
-            <div class="stat-card-sub">trùng khoản hoặc lệch cấu hình</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-card-label">Lỗi dữ liệu</div>
-            <div class="stat-card-value c-error">12</div>
-            <div class="stat-card-sub">thiếu cấu hình, sai mã SV, thiếu mức thu</div>
-          </div>
+        <div class="td-tabs" role="tablist">
+          <button class="td-tab active" id="tab-import-new" type="button" onclick="switchImportTab('import-new')">Nhập dữ liệu mới</button>
+          <button class="td-tab" id="tab-import-history" type="button" onclick="switchImportTab('import-history')">Lịch sử nhập</button>
         </div>
 
-        <!-- TABS -->
-        <div class="tab-bar">
-          <div class="tab-item active" id="tab-import-new" onclick="switchImportTab('import-new')">Nhập dữ liệu</div>
-          <div class="tab-item" id="tab-import-history" onclick="switchImportTab('import-history')">Lịch sử nhập</div>
-        </div>
-
-        <!-- ===================== TAB: IMPORT NEW ===================== -->
-        <div class="tab-pane active" id="pane-import-new">
-
-          <!-- IMPORT CONTEXT -->
-          <div class="filter-bar">
-            <div class="filter-field">
-              <label>Năm học</label>
-              <select>
-                <option selected>2025–2026</option>
-                <option>2026–2027</option>
-                <option>2024–2025</option>
-              </select>
+        <section class="td-pane active" id="pane-import-new">
+          <div class="stepper-wrap">
+            <div class="stepper" id="importStepper">
+              <div class="step-item active" data-step="1" onclick="goStep(1)"><div class="step-dot">1</div><div class="step-label">Thông tin lô nhập</div></div>
+              <div class="step-item" data-step="2" onclick="goStep(2)"><div class="step-dot">2</div><div class="step-label">Tải file và kiểm tra</div></div>
+              <div class="step-item" data-step="3" onclick="goStep(3)"><div class="step-dot">3</div><div class="step-label">Xem trước kết quả</div></div>
+              <div class="step-item" data-step="4" onclick="goStep(4)"><div class="step-dot">4</div><div class="step-label">Xác nhận nhập</div></div>
             </div>
-
-            <div class="filter-field">
-              <label>Học kỳ / Đợt thu</label>
-              <select>
-                <option selected>HK1</option>
-                <option>Đợt 1</option>
-                <option>HK2</option>
-                <option>HK phụ</option>
-              </select>
-            </div>
-
-            <div class="filter-field">
-              <label>Khoản mục</label>
-              <select>
-                <option selected>Tất cả khoản mục</option>
-                <option>Học phí</option>
-                <option>Bảo hiểm y tế</option>
-                <option>Khoản thu khác</option>
-              </select>
-            </div>
-
-            <div class="filter-field">
-              <label>Nguồn dữ liệu</label>
-              <select style="min-width:220px;">
-                <option selected>Import Excel tổng hợp</option>
-                <option>Import học phí ĐHCQ</option>
-                <option>Import BRT</option>
-                <option>Import BHYT</option>
-                <option>Import khoản thu khác</option>
-              </select>
-            </div>
-
-            <div class="filter-field">
-              <label>Văn bản căn cứ</label>
-              <select style="min-width:260px;">
-                <option selected>TB thu học phí ĐHCQ HK1 2025–2026</option>
-                <option>TB thu HP ĐHCQ khóa 2025 CT BRT đợt 1</option>
-                <option>Danh sách BHYT năm học 2025–2026</option>
-                <option>Danh sách khoản thu khác đã phê duyệt</option>
-              </select>
-            </div>
-
-            <div class="filter-field">
-              <label>Thời gian trích</label>
-              <input type="text" value="29/10/2025–06/11/2025"/>
-            </div>
+            <div class="step-note">Tiến trình lô nhập được lưu tự động; mở lại trang sẽ tiếp tục tại bước đang dở.</div>
           </div>
 
-          <!-- UPLOAD -->
-          <div id="import-upload-area" class="section-block">
-            <div class="section-head">
-              <span class="section-title">Chọn file dữ liệu học phí và khoản thu</span>
-              <span class="badge bg-info">.xlsx</span>
-            </div>
-
-            <div class="section-body">
-              <div class="upload-box" onclick="simulateImport()">
-                <svg width="30" height="30" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.3" style="color:var(--muted);margin-bottom:8px;">
-                  <path d="M5 20v5a2 2 0 002 2h18a2 2 0 002-2v-5M16 5v14M10 11l6-6 6 6"/>
-                </svg>
-                <p class="main"><strong>Kéo thả file vào đây</strong> hoặc nhấn để chọn</p>
-                <p class="sub" style="margin-top:3px;">.xlsx · Theo đúng mẫu chuẩn của hệ thống · Tối đa 5 MB · gồm mã sinh viên, năm học, kỳ thu, khoản mục, loại đăng ký, số tiền và hạn nộp</p>
+          <!-- STEP 1 -->
+          <div class="step-panel active" id="step-1">
+            <div class="td-card">
+              <div class="td-card-head">
+                <div><div class="td-card-title">1. Thông tin lô nhập</div><div class="td-card-sub">Chọn ngữ cảnh dữ liệu trước khi tải file. Đợt thu là giá trị được lưu chính thức vào lô nhập.</div></div>
+                <span class="status-badge neutral">Chưa tải file</span>
               </div>
+              <div class="td-card-body">
+                <div class="td-grid-3">
+                  <div class="td-field"><label class="required">Năm học</label><select class="td-select" id="academicYear"><option>2025–2026</option><option selected>2026–2027</option></select><div class="help">Dùng để lọc học kỳ và đợt thu.</div></div>
+                  <div class="td-field"><label class="required">Học kỳ</label><select class="td-select" id="semester"><option selected>Học kỳ 1</option><option>Học kỳ 2</option><option>Học kỳ phụ</option></select><div class="help">Danh sách phụ thuộc năm học.</div></div>
+                  <div class="td-field"><label class="required">Đợt thu</label><select class="td-select prereq" id="collectionRound"><option value="">Chọn đợt thu</option><option selected>Đợt thu học phí chính</option><option>Đợt thu bổ sung 1</option></select><div class="help">Chỉ hiển thị các đợt đang cho phép nhập.</div></div>
 
-              <div style="margin-top:9px;font-size:11.5px;color:var(--muted);">
-                Hệ thống chỉ chấp nhận file đúng mẫu chuẩn và kiểm tra mã sinh viên, khoản mục, mã cấu hình, loại đăng ký, mức thu, kỳ thu và dữ liệu trùng trước khi cho phép xác nhận.
+                  <div class="td-field"><label class="required">Tên lô nhập</label><input class="td-input" id="batchName" value="Nhập học phí HK1 2026–2027 – 17/08/2026"/></div>
+                  <div class="td-field"><label class="required">Nguồn dữ liệu</label><select class="td-select prereq" id="source"><option value="">Chọn nguồn dữ liệu</option><option selected>Phòng Kế hoạch Tài chính</option><option>Phòng Đào tạo</option><option>Dữ liệu chuyển đổi</option></select></div>
+                  <div class="td-field"><label class="required">Chế độ nhập</label><select class="td-select prereq" id="importMode"><option value="">Chọn chế độ nhập</option><option>Nhập số tiền từ file</option><option selected>Nhập và đối chiếu khung phí</option></select><div class="help">Chế độ đối chiếu sẽ tính lại số tiền theo cấu hình học phí.</div></div>
+
+                  <div class="td-field"><label class="required">Cách xử lý file</label><select class="td-select" id="filePolicy" onchange="updatePolicyAction()"><option>Toàn bộ file</option><option selected>Chỉ các dòng hợp lệ</option></select><div class="help">Lỗi và xung đột sẽ không được ghi khi xác nhận.</div></div>
+                  <div class="td-field"><label>Thời điểm chốt dữ liệu</label><input class="td-input" value="17/08/2026 16:00"/></div>
+                  <div class="td-field"><label>Phiên bản dữ liệu nguồn</label><input class="td-input" value="KHTC-HP-HK1-v3"/></div>
+                </div>
+
+                <div class="td-divider"></div>
+                <details class="td-details">
+                  <summary>Thông tin bổ sung</summary>
+                  <div class="td-details-body">
+                    <div class="td-grid-2">
+                      <div class="td-field"><label>Văn bản/căn cứ áp dụng chung</label><input class="td-input" value="Thông báo thu học phí HK1 năm học 2026–2027"/></div>
+                      <div class="td-field"><label>Đơn vị cung cấp dữ liệu</label><input class="td-input" value="Phòng Kế hoạch Tài chính"/></div>
+                      <div class="td-field"><label>Mã tham chiếu nguồn</label><input class="td-input" value="KHTC/HP/HK1/2026-2027/03"/></div>
+                      <div class="td-field"><label>Ghi chú lô nhập</label><input class="td-input" value="Dữ liệu chốt phục vụ đợt thu chính HK1"/></div>
+                    </div>
+                  </div>
+                </details>
+
+                <div class="td-actions-row">
+                  <div class="td-actions-left"><span style="font-size:12px;color:#64748b">File mẫu phụ thuộc Đợt thu · Nguồn dữ liệu · Chế độ nhập.</span></div>
+                  <div class="td-actions-right">
+                    <button class="td-btn" id="btnTemplate" onclick="downloadTemplate()">⇩ Tải file mẫu</button>
+                    <button class="td-btn" id="btnChooseStep1" onclick="chooseFile()">📎 Chọn file</button>
+                    <button class="td-btn primary" id="btnUploadCheckStep1" onclick="startUploadCheck()">Tải lên và kiểm tra →</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- IMPORT RESULT -->
-          <div id="import-result" class="hidden">
-            <div class="section-block mb-8">
-              <div class="section-head">
-                <span class="section-title">Kết quả kiểm tra — ULIS_KHOANTHU_HK1_2025_2026.xlsx</span>
-                <span class="badge bg-info">2.019 dòng</span>
+          <!-- STEP 2 -->
+          <div class="step-panel" id="step-2">
+            <div class="td-card">
+              <div class="td-card-head">
+                <div><div class="td-card-title">2. Tải file và kiểm tra</div><div class="td-card-sub">File được tạo thành một lô nhập độc lập. Việc kiểm tra vẫn tiếp tục kể cả khi người dùng rời trang.</div></div>
+                <span class="status-badge checking" id="uploadStatus">Đã chọn file</span>
               </div>
-
-              <div class="section-body" style="padding-bottom:6px;">
-                <div class="vs-row">
-                  <div class="vs-card">
-                    <div class="vs-card-lbl">Tổng số dòng</div>
-                    <div class="vs-card-val">2.019</div>
-                  </div>
-
-                  <div class="vs-card ok">
-                    <div class="vs-card-lbl">Hợp lệ</div>
-                    <div class="vs-card-val">1.976</div>
-                  </div>
-
-                  <div class="vs-card warn">
-                    <div class="vs-card-lbl">Cần kiểm tra</div>
-                    <div class="vs-card-val">31</div>
-                  </div>
-
-                  <div class="vs-card err">
-                    <div class="vs-card-lbl">Có lỗi</div>
-                    <div class="vs-card-val">12</div>
+              <div class="td-card-body">
+                <input id="realFileInput" type="file" accept=".xlsx" style="display:none" onchange="onRealFileSelected(event)"/>
+                <div class="upload-zone" onclick="chooseFile()">
+                  <div class="upload-icon">⇧</div>
+                  <div class="upload-main">Kéo file Excel vào đây hoặc bấm để chọn file</div>
+                  <div class="upload-sub">Không tự ý đổi tên cột hoặc tên sheet của file mẫu.</div>
+                  <div class="upload-rules">
+                    <div class="rule-pill"><strong>Định dạng</strong>.xlsx</div>
+                    <div class="rule-pill"><strong>Dung lượng tối đa</strong>20 MB</div>
+                    <div class="rule-pill"><strong>Số dòng tối đa</strong>50.000 dòng</div>
+                    <div class="rule-pill"><strong>Phiên bản mẫu</strong>CP6-IMPORT-v1.4</div>
                   </div>
                 </div>
 
-                <div class="table-wrap mb-0" style="margin-top:10px;">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Nhóm dữ liệu</th>
-                        <th class="r">Số dòng</th>
-                        <th class="r">Hợp lệ</th>
-                        <th class="r">Cần kiểm tra</th>
-                        <th class="r">Lỗi</th>
-                        <th class="r">Tổng phải nộp (đ)</th>
-                      </tr>
-                    </thead>
+                <div class="file-card" id="fileInfoCard">
+                  <div class="file-cell"><div class="file-label">Tên file</div><div class="file-value" id="selectedFileName">ULIS_KHOANTHU_HK1_2026_2027.xlsx</div></div>
+                  <div class="file-cell"><div class="file-label">Dung lượng</div><div class="file-value">486 KB</div></div>
+                  <div class="file-cell"><div class="file-label">Phiên bản mẫu</div><div class="file-value">CP6-IMPORT-v1.4</div></div>
+                  <div class="file-cell"><div class="file-label">Người tải</div><div class="file-value">Nguyễn Thị Hương</div></div>
+                  <div class="file-cell"><div class="file-label">Thời gian tải</div><div class="file-value">17/08/2026 16:30</div></div>
+                  <div class="file-cell"><div class="file-label">Mã lô nhập</div><div class="file-value">IMP-260817-0042</div></div>
+                  <div class="file-cell"><div class="file-label">Trạng thái</div><div class="file-value" id="fileStatusText">Đã tải lên</div></div>
+                </div>
 
+                <div class="progress-box" id="progressBox">
+                  <div class="progress-top"><span id="progressLabel">Sẵn sàng kiểm tra cấu trúc file và 2.019 dòng dữ liệu.</span><span id="progressPct">0%</span></div>
+                  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+                  <div class="background-note">Bạn có thể rời trang. Trạng thái lô nhập sẽ được lưu và cập nhật khi quay lại.</div>
+                </div>
+
+                <div class="td-actions-row">
+                  <div class="td-actions-left"><button class="td-btn" onclick="goStep(1)">← Quay lại thông tin lô</button><button class="td-btn" onclick="chooseFile()">Thay file</button></div>
+                  <div class="td-actions-right"><button class="td-btn primary" onclick="runValidation()">Tải lên và kiểm tra</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="step-panel" id="step-3">
+            <div class="td-card">
+              <div class="td-card-head">
+                <div><div class="td-card-title">Kết quả kiểm tra — <span id="resultFileName">ULIS_KHOANTHU_HK1_2026_2027.xlsx</span></div><div class="td-card-sub">Kết quả gần nhất lúc 17/08/2026 16:33 · Mã lô IMP-260817-0042</div></div>
+                <div class="result-head-meta"><span class="status-badge ready">✓ Sẵn sàng xác nhận</span><span class="status-badge neutral">2.019 dòng</span><button class="td-btn sm" onclick="simulateRecheck()">↻ Kiểm tra lại</button></div>
+              </div>
+              <div class="td-card-body">
+                <div class="result-kpis">
+                  <div class="result-kpi"><div class="rk-label">Tổng số dòng</div><div class="rk-value">2.019</div><div class="rk-sub">Trong file nguồn</div></div>
+                  <div class="result-kpi ok"><div class="rk-label">Hợp lệ</div><div class="rk-value">1.976</div><div class="rk-sub">Đủ điều kiện ghi</div></div>
+                  <div class="result-kpi warn"><div class="rk-label">Cảnh báo</div><div class="rk-value">31</div><div class="rk-sub">Cần kiểm tra</div></div>
+                  <div class="result-kpi err"><div class="rk-label">Lỗi</div><div class="rk-value">12</div><div class="rk-sub">Không được ghi</div></div>
+                  <div class="result-kpi dup"><div class="rk-label">Trùng – bỏ qua</div><div class="rk-value">18</div><div class="rk-sub">Thuộc nhóm cảnh báo</div></div>
+                  <div class="result-kpi conflict"><div class="rk-label">Xung đột nguồn</div><div class="rk-value">3</div><div class="rk-sub">Thuộc nhóm lỗi</div></div>
+                  <div class="result-kpi money"><div class="rk-label">Tổng tiền đủ điều kiện</div><div class="rk-value" style="font-size:17px">122.619.600</div><div class="rk-sub">đồng</div></div>
+                </div>
+
+                <div class="summary-table-wrap">
+                  <table class="summary-table">
+                    <thead><tr><th>Nhóm dữ liệu</th><th>Tổng số dòng</th><th>Hợp lệ</th><th>Cảnh báo</th><th>Lỗi</th><th>Trùng – bỏ qua</th><th>Xung đột</th><th>Tổng tiền đủ điều kiện</th></tr></thead>
                     <tbody>
-                      <tr>
-                        <td>Học phí ĐHCQ</td>
-                        <td class="r">1.843</td>
-                        <td class="r c-success fw600">1.804</td>
-                        <td class="r c-warning">31</td>
-                        <td class="r c-error">8</td>
-                        <td class="r fw600">122.619.600</td>
-                      </tr>
-
-                      <tr>
-                        <td>Bảo hiểm y tế</td>
-                        <td class="r">176</td>
-                        <td class="r c-success fw600">172</td>
-                        <td class="r">0</td>
-                        <td class="r c-error">4</td>
-                        <td class="r fw600">1.516.320</td>
-                      </tr>
-
-                      <tr>
-                        <td>Khoản thu khác</td>
-                        <td class="r">0</td>
-                        <td class="r">0</td>
-                        <td class="r">0</td>
-                        <td class="r">0</td>
-                        <td class="r">0</td>
-                      </tr>
+                      <tr><td>Học phí đại học chính quy</td><td>1.843</td><td style="color:#047857;font-weight:800">1.804</td><td style="color:#b45309">27</td><td style="color:#b91c1c">8</td><td>16</td><td style="color:#be123c">2</td><td>118.750.000 đồng</td></tr>
+                      <tr><td>Bảo hiểm y tế</td><td>176</td><td style="color:#047857;font-weight:800">172</td><td style="color:#b45309">4</td><td style="color:#b91c1c">4</td><td>2</td><td style="color:#be123c">1</td><td>3.869.600 đồng</td></tr>
+                      <tr><td>Khoản thu khác</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0 đồng</td></tr>
                     </tbody>
+                    <tfoot><tr><td>Tổng cộng</td><td>2.019</td><td>1.976</td><td>31</td><td>12</td><td>18</td><td>3</td><td>122.619.600 đồng</td></tr></tfoot>
                   </table>
                 </div>
+              </div>
+            </div>
 
-                <div style="font-size:11.5px;color:var(--muted);margin-top:8px;">
-                  Dòng hợp lệ sẽ sinh khoản phải thu theo mã cấu hình đang áp dụng. Dòng lỗi không được ghi nhận cho đến khi được sửa và kiểm tra lại.
+            <div class="preview-toolbar">
+              <div class="toolbar-grid">
+                <div class="td-search"><input class="td-input" id="searchRows" placeholder="Tìm theo mã sinh viên hoặc họ tên" oninput="applyPreviewFilters()"/></div>
+                <select class="td-select" id="filterFee" onchange="applyPreviewFilters()"><option value="">Tất cả khoản mục</option><option>Học phí</option><option>Bảo hiểm y tế</option></select>
+                <select class="td-select" id="filterCourse" onchange="applyPreviewFilters()"><option value="">Tất cả học phần</option><option>INT1001</option><option>ENG2004</option><option>Không có học phần</option></select>
+                <select class="td-select" id="filterReg" onchange="applyPreviewFilters()"><option value="">Tất cả loại đăng ký</option><option>Lần đầu</option><option>Học lại</option><option>Cải thiện</option></select>
+                <select class="td-select" id="filterResult" onchange="applyPreviewFilters()"><option value="">Tất cả kết quả kiểm tra</option><option>Hợp lệ</option><option>Cảnh báo</option><option>Lỗi</option><option>Trùng</option><option>Xung đột</option></select>
+              </div>
+              <div class="toolbar-grid second">
+                <select class="td-select"><option>Tất cả đối chiếu khung phí</option><option>Khớp</option><option>Lệch</option><option>Không xác định</option></select>
+                <select class="td-select"><option>Tất cả chênh lệch số tiền</option><option>Có chênh lệch</option><option>Không chênh lệch</option></select>
+                <select class="td-select"><option>Tất cả quy tắc</option><option>Có sử dụng quy tắc hồi tố</option><option>Không sử dụng hồi tố</option></select>
+                <div></div>
+              </div>
+              <div class="quick-row">
+                <div class="quick-chips" id="quickChips">
+                  <button class="chip active" data-filter="" onclick="quickFilter(this)">Tất cả</button><button class="chip" data-filter="Hợp lệ" onclick="quickFilter(this)">Hợp lệ</button><button class="chip" data-filter="Cảnh báo" onclick="quickFilter(this)">Cảnh báo</button><button class="chip" data-filter="Lỗi" onclick="quickFilter(this)">Lỗi</button><button class="chip" data-filter="Trùng" onclick="quickFilter(this)">Trùng</button><button class="chip" data-filter="Xung đột" onclick="quickFilter(this)">Xung đột</button>
+                </div>
+                <div class="toolbar-actions">
+                  <div class="column-menu"><button class="td-btn sm" onclick="toggleColumns(event)">☷ Chọn cột</button><div class="column-panel" id="columnPanel">
+                    <label class="column-option"><input type="checkbox" checked disabled/> Dòng</label><label class="column-option"><input type="checkbox" checked disabled/> Mã sinh viên</label><label class="column-option"><input type="checkbox" checked disabled/> Họ và tên</label>
+                    <label class="column-option"><input type="checkbox"/> Mã bản ghi nguồn</label><label class="column-option"><input type="checkbox"/> Năm học</label><label class="column-option"><input type="checkbox"/> Học kỳ</label><label class="column-option"><input type="checkbox"/> Đợt thu</label><label class="column-option"><input type="checkbox"/> Chương trình đào tạo</label><label class="column-option"><input type="checkbox"/> Mã học phần</label><label class="column-option"><input type="checkbox"/> Loại đăng ký</label><label class="column-option"><input type="checkbox"/> Mã cấu hình/quy tắc phí</label><label class="column-option"><input type="checkbox"/> Mã quyết định</label><label class="column-option"><input type="checkbox"/> Quy tắc được chọn</label><label class="column-option"><input type="checkbox"/> Quy tắc hồi tố</label><label class="column-option"><input type="checkbox"/> Mã lỗi kiểm tra</label>
+                  </div></div>
+                  <button class="td-btn sm" onclick="mockToast('Đã chuẩn bị file lỗi theo bộ lọc hiện tại.','success')">⇩ Tải file lỗi</button>
+                  <button class="td-btn sm" onclick="applyPreviewFilters()">↻ Làm mới</button>
                 </div>
               </div>
             </div>
 
-            <!-- PREVIEW TABLE -->
-            <div class="table-wrap table-xwide">
-              <div class="table-toolbar">
-                <span class="table-title">Xem trước dữ liệu trước khi sinh khoản phải thu</span>
-                <span class="table-count">Hiển thị 10 dòng đầu tiên</span>
+            <div class="preview-table-shell">
+              <div class="preview-table-head"><div><span class="preview-title">Xem trước dữ liệu</span> <span class="preview-count" id="previewCount">10 dòng mẫu · tổng 2.019 dòng</span></div><span class="preview-count">Cố định Dòng · Mã sinh viên · Họ và tên</span></div>
+              <div class="table-scroll">
+                <table class="preview-table" id="previewTable">
+                  <thead><tr>
+                    <th class="sticky-1">Dòng</th><th class="sticky-2">Mã sinh viên</th><th class="sticky-3">Họ và tên</th><th>Khoản mục</th><th>Học phần / Loại đăng ký</th><th class="money">Số tín chỉ / Số lượng</th><th class="money">Số tiền trong file</th><th class="money">Số tiền theo khung phí</th><th class="money">Chênh lệch</th><th>Hạn nộp</th><th>Đối chiếu khung phí</th><th>Kết quả kiểm tra</th><th>Thao tác</th>
+                  </tr></thead>
+                  <tbody id="previewBody"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><span>Hiển thị 1–10 / 2.019 dòng · Mặc định 50 dòng/trang</span><div class="page-controls"><select class="page-size"><option>25 dòng</option><option selected>50 dòng</option><option>100 dòng</option></select><button class="pg">‹</button><button class="pg active">1</button><button class="pg">2</button><button class="pg">3</button><button class="pg">…</button><button class="pg">41</button><button class="pg">›</button></div></div>
+            </div>
 
-                <div class="table-toolbar-r">
-                  <button class="btn btn-ghost btn-sm">Xem tất cả lỗi</button>
+            <div class="td-card" style="margin-top:20px">
+              <div class="td-card-head"><div><div class="td-card-title">Nhóm lỗi cần xử lý</div><div class="td-card-sub">Bấm vào số dòng hoặc “Xem dòng” để lọc bảng xem trước phía trên.</div></div><span class="status-badge warn">43 dòng cần chú ý</span></div>
+              <div class="issue-table-wrap"><table class="issue-table"><thead><tr><th>Mức độ</th><th>Nhóm lỗi</th><th>Số dòng</th><th>Nguyên nhân</th><th>Hướng xử lý</th><th>Ảnh hưởng</th><th>Thao tác</th></tr></thead><tbody>
+                <tr><td><span class="sev error">LỖI</span></td><td><strong>Mã sinh viên không tồn tại</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Lỗi')">3</button></td><td>Không tìm thấy trong danh mục sinh viên.</td><td>Kiểm tra lại mã sinh viên trong file nguồn.</td><td>Không tạo khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Lỗi')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev error">LỖI</span></td><td><strong>Thiếu cấu hình khoản thu</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Lỗi')">4</button></td><td>Không tìm thấy quy tắc phù hợp.</td><td>Bổ sung cấu hình hoặc sửa dữ liệu nguồn.</td><td>Không tạo khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Lỗi')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev warning">CẢNH BÁO</span></td><td><strong>Lệch số tiền</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Cảnh báo')">3</button></td><td>Số tiền file khác kết quả tính theo CP7.</td><td>Kiểm tra file và quy tắc được áp dụng.</td><td>Chưa tự động tạo</td><td><button class="td-btn ghost sm" onclick="filterIssue('Cảnh báo')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev dup">TRÙNG</span></td><td><strong>Khoản đã tồn tại</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Trùng')">18</button></td><td>Dữ liệu đã được nhập trước đó.</td><td>Hệ thống tự bỏ qua, không tạo thêm.</td><td>Không tạo thêm khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Trùng')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev conflict">XUNG ĐỘT</span></td><td><strong>Dữ liệu nguồn thay đổi</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Xung đột')">3</button></td><td>Bản ghi nguồn trùng khóa nhưng giá trị khác dữ liệu đã có.</td><td>Đối chiếu nguồn; không ghi đè tự động.</td><td>Không được ghi</td><td><button class="td-btn ghost sm" onclick="filterIssue('Xung đột')">Xem dòng →</button></td></tr>
+              </tbody></table></div>
+            </div>
+
+            <div class="sticky-action" id="stickyAction">
+              <div class="sticky-left"><button class="td-btn sm" onclick="mockToast('Đã chuẩn bị file lỗi.','success')">⇩ Tải file lỗi</button><button class="td-btn sm" onclick="goStep(2)">Thay file</button><button class="td-btn danger sm" onclick="cancelBatch()">Hủy lô nhập</button></div>
+              <div class="sticky-right"><div class="sticky-summary"><div class="sticky-main">1.976 dòng đủ điều kiện · Tổng tiền 122.619.600 đồng</div><div class="sticky-sub" id="policyNote">Chế độ “Chỉ các dòng hợp lệ”: 12 dòng lỗi và 3 dòng xung đột sẽ không được ghi.</div></div><button class="td-btn primary" id="confirmStickyBtn" onclick="openConfirmModal()">Xác nhận tạo 1.976 khoản phải thu</button></div>
+            </div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="step-panel" id="step-4">
+            <div class="td-card" id="step4BeforeConfirm">
+              <div class="td-card-head"><div><div class="td-card-title">4. Xác nhận nhập</div><div class="td-card-sub">Kiểm tra tác động cuối cùng trước khi ghi dữ liệu vào hệ thống.</div></div><span class="status-badge ready">Sẵn sàng xác nhận</span></div>
+              <div class="td-card-body">
+                <div class="impact-box">Hệ thống sẽ tạo <strong>1.976 khoản phải thu</strong> ở trạng thái <strong>Nháp</strong>, tổng số tiền <strong>122.619.600 đồng</strong>. Các khoản này chưa được phát hành và chưa hiển thị cho sinh viên.</div>
+                <div class="confirm-grid">
+                  <div class="confirm-item"><span>Đợt thu</span><strong>Đợt thu học phí chính</strong></div><div class="confirm-item"><span>Nguồn dữ liệu</span><strong>Phòng Kế hoạch Tài chính</strong></div><div class="confirm-item"><span>File nguồn</span><strong>ULIS_KHOANTHU_HK1_2026_2027.xlsx</strong></div><div class="confirm-item"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div><div class="confirm-item"><span>Trùng bị bỏ qua</span><strong>18 dòng</strong></div><div class="confirm-item"><span>Không được ghi</span><strong>15 dòng (12 lỗi · 3 xung đột)</strong></div>
                 </div>
-              </div>
-
-              <table>
-                <thead>
-                  <tr>
-                    <th class="nowrap">Dòng</th>
-                    <th class="col-student-code">Mã SV</th>
-                    <th class="col-name">Họ tên</th>
-                    <th class="col-status">Khoản mục</th>
-                    <th class="col-code">Mã cấu hình</th>
-                    <th class="col-code">Mã KPT dự kiến</th>
-                    <th class="col-content">Chương trình đào tạo</th>
-                    <th class="nowrap">Kỳ thu</th>
-                    <th class="nowrap">Loại đăng ký</th>
-                    <th class="r col-money">Phải nộp (đ)</th>
-                    <th class="col-status">Tạo KPT</th>
-                    <th class="col-status">Yêu cầu TT</th>
-                    <th class="col-status">Khớp cấu hình</th>
-                    <th class="col-status">Kết quả kiểm tra</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td class="dim">1</td>
-                    <td class="fw600 nowrap">22041542</td>
-                    <td>Nguyễn Thị Ánh Tuyết</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-001</td>
-                    <td class="td-a nowrap">RCV-2025-08421</td>
-                    <td>Ngôn ngữ Anh</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">17.500.000</td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-success">Hợp lệ</span></td>
-                  </tr>
-
-                  <tr>
-                    <td class="dim">2</td>
-                    <td class="fw600 nowrap">22041542</td>
-                    <td>Nguyễn Thị Ánh Tuyết</td>
-                    <td><span class="badge bg-neutral">BHYT</span></td>
-                    <td class="td-a nowrap">FEE-2025-BHYT12</td>
-                    <td class="td-a nowrap">RCV-2025-08601</td>
-                    <td>Tất cả chương trình</td>
-                    <td>2025–2026</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">631.800</td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-success">Hợp lệ</span></td>
-                  </tr>
-
-                  <tr>
-                    <td class="dim">3</td>
-                    <td class="fw600 nowrap">22040231</td>
-                    <td>Trần Minh Anh</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-002</td>
-                    <td class="td-a nowrap">RCV-2025-08430</td>
-                    <td>Ngôn ngữ Nga</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">8.450.000</td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-success">Hợp lệ</span></td>
-                  </tr>
-
-                  <tr>
-                    <td class="dim">4</td>
-                    <td class="fw600 nowrap">23011208</td>
-                    <td>Phạm Gia Bảo</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-005</td>
-                    <td class="td-a nowrap">RCV-2025-08422</td>
-                    <td>Ngôn ngữ Anh</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">19.000.000</td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-success">Hợp lệ</span></td>
-                  </tr>
-
-                  <tr>
-                    <td class="dim">5</td>
-                    <td class="fw600 nowrap">24031876</td>
-                    <td>Lê Đức Huy</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-004</td>
-                    <td class="td-a nowrap">RCV-2025-08436</td>
-                    <td>Ngôn ngữ Nga</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">10.500.000</td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-warning">Trùng khoản phải thu</span></td>
-                  </tr>
-
-                  <tr>
-                    <td class="dim">6</td>
-                    <td class="fw600 nowrap">25010782</td>
-                    <td>Đỗ Khánh Linh</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-BRT-DOT1</td>
-                    <td class="td-a nowrap">RCV-2025-08501</td>
-                    <td>Chương trình BRT — Làn Xanh</td>
-                    <td>Đợt 1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">25.000.000</td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Có</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-success">Hợp lệ</span></td>
-                  </tr>
-
-                  <tr style="background:#FFF8F8;">
-                    <td class="dim">7</td>
-                    <td class="fw600 nowrap">25011890</td>
-                    <td>Nguyễn Hoàng Nam</td>
-                    <td><span class="badge bg-neutral">Khác</span></td>
-                    <td class="c-error nowrap">OTHER-2025-LAB</td>
-                    <td class="dim c-align">—</td>
-                    <td class="dim c-align">—</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">450.000</td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-error">Không tìm thấy</span></td>
-                    <td><span class="badge bg-error">Thiếu cấu hình</span></td>
-                  </tr>
-
-                  <tr style="background:#FFF8F8;">
-                    <td class="dim">8</td>
-                    <td class="c-error nowrap">99999999</td>
-                    <td class="dim" style="font-style:italic;">Không tìm thấy sinh viên</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-005</td>
-                    <td class="dim c-align">—</td>
-                    <td>Ngôn ngữ Anh</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r fw600">19.000.000</td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-error">Mã SV không tồn tại</span></td>
-                  </tr>
-
-                  <tr style="background:#FFF8F8;">
-                    <td class="dim">9</td>
-                    <td class="fw600 nowrap">24040961</td>
-                    <td>Hoàng Minh Tuấn</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-003</td>
-                    <td class="dim c-align">—</td>
-                    <td>Tiếng Việt và Văn hóa Việt Nam</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r c-error">—</td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-success">Khớp</span></td>
-                    <td><span class="badge bg-error">Thiếu mức phải nộp</span></td>
-                  </tr>
-
-                  <tr style="background:#FFF8F8;">
-                    <td class="dim">10</td>
-                    <td class="fw600 nowrap">23022108</td>
-                    <td>Vũ Thị Mai Liên</td>
-                    <td><span class="badge bg-info">Học phí</span></td>
-                    <td class="td-a nowrap">FEE-2025-HK1-DHCQ-001</td>
-                    <td class="dim c-align">—</td>
-                    <td>Ngôn ngữ Anh</td>
-                    <td>HK1/25–26</td>
-                    <td>Lần đầu</td>
-                    <td class="r c-error fw600">18.000.000</td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-neutral">Không</span></td>
-                    <td><span class="badge bg-warning">Lệch mức thu</span></td>
-                    <td><span class="badge bg-error">Sai mức phải nộp</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- ERROR DETAIL -->
-            <div class="table-wrap table-xwide" style="margin-top:12px;">
-              <div class="table-toolbar">
-                <span class="table-title">Nhóm lỗi cần xử lý</span>
-                <span class="table-count">12 lỗi dữ liệu</span>
-              </div>
-
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nhóm lỗi</th>
-                    <th class="r">Số dòng</th>
-                    <th>Nguyên nhân</th>
-                    <th>Hướng xử lý</th>
-                    <th>Ảnh hưởng</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td class="fw600">Thiếu cấu hình khoản thu</td>
-                    <td class="r c-error fw600">4</td>
-                    <td>Mã cấu hình trong file chưa tồn tại hoặc đã ngừng hiệu lực</td>
-                    <td>Bổ sung cấu hình khoản thu hoặc sửa mã cấu hình trong file</td>
-                    <td>Không sinh khoản phải thu</td>
-                  </tr>
-
-                  <tr>
-                    <td class="fw600">Mã sinh viên không tồn tại</td>
-                    <td class="r c-error fw600">3</td>
-                    <td>Mã sinh viên không khớp dữ liệu sinh viên hiện có</td>
-                    <td>Kiểm tra lại mã sinh viên trước khi nhập lại</td>
-                    <td>Không ghi nhận khoản phải nộp</td>
-                  </tr>
-
-                  <tr>
-                    <td class="fw600">Thiếu mức phải nộp</td>
-                    <td class="r c-error fw600">2</td>
-                    <td>File không có số tiền hoặc số tiền để trống</td>
-                    <td>Bổ sung mức phải nộp theo cấu hình</td>
-                    <td>Không sinh khoản phải thu</td>
-                  </tr>
-
-                  <tr>
-                    <td class="fw600">Sai mức phải nộp</td>
-                    <td class="r c-error fw600">3</td>
-                    <td>Số tiền trong file lệch so với cấu hình đang áp dụng</td>
-                    <td>Điều chỉnh file hoặc xác nhận cấu hình mức thu</td>
-                    <td>Không tự động ghi nhận</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap;">
-              <button class="btn btn-secondary btn-sm" onclick="showToast('Đã tải file lỗi.','success')">Tải file lỗi (.xlsx)</button>
-              <button class="btn btn-secondary btn-sm" onclick="cancelImport()">Huỷ</button>
-              <button class="btn btn-primary btn-sm" onclick="openModal('modal-confirm-import')">Xác nhận nhập 1.976 dòng hợp lệ</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===================== TAB: IMPORT HISTORY ===================== -->
-        <div class="tab-pane" id="pane-import-history">
-          <div class="filter-bar">
-            <div class="filter-field">
-              <label>Từ khóa</label>
-              <input type="text" placeholder="Tên file, người thực hiện..." style="min-width:220px;"/>
-            </div>
-
-            <div class="filter-field">
-              <label>Năm học</label>
-              <select>
-                <option>Tất cả</option>
-                <option selected>2025–2026</option>
-                <option>2024–2025</option>
-              </select>
-            </div>
-
-            <div class="filter-field">
-              <label>Khoản mục</label>
-              <select>
-                <option>Tất cả</option>
-                <option>Học phí</option>
-                <option>Bảo hiểm y tế</option>
-                <option>Khoản thu khác</option>
-              </select>
-            </div>
-
-            <div class="filter-field">
-              <label>Trạng thái</label>
-              <select>
-                <option>Tất cả</option>
-                <option>Hoàn thành</option>
-                <option>Có lỗi</option>
-                <option>Đã hủy</option>
-              </select>
-            </div>
-
-            <div class="filter-actions">
-              <button class="btn btn-primary btn-sm">Lọc</button>
-              <button class="btn btn-secondary btn-sm">Đặt lại</button>
-            </div>
-          </div>
-
-          <div class="table-wrap table-xwide">
-            <div class="table-toolbar">
-              <span class="table-title">Lịch sử nhập dữ liệu học phí và khoản thu</span>
-              <span class="table-count">12 lần nhập</span>
-
-              <div class="table-toolbar-r">
-                <span class="c-muted fs-11">Hiển thị</span>
-                <select class="page-size-select">
-                  <option selected>20 dòng</option>
-                  <option>50 dòng</option>
-                  <option>100 dòng</option>
-                </select>
+                <div class="td-actions-row"><button class="td-btn" onclick="goStep(3)">← Quay lại kiểm tra</button><button class="td-btn primary" onclick="openConfirmModal()">Xác nhận tạo khoản phải thu</button></div>
               </div>
             </div>
 
-            <table>
-              <thead>
-                <tr>
-                  <th class="col-content">Tên file</th>
-                  <th class="nowrap">Kỳ thu</th>
-                  <th class="col-status">Khoản mục</th>
-                  <th class="r nowrap">Số dòng</th>
-                  <th class="r nowrap">Hợp lệ</th>
-                  <th class="r nowrap">Cần kiểm tra</th>
-                  <th class="r nowrap">Lỗi</th>
-                  <th class="r nowrap">KPT đã tạo</th>
-                  <th class="col-name">Người thực hiện</th>
-                  <th class="col-date">Thời gian</th>
-                  <th class="col-status">Trạng thái</th>
-                  <th class="col-actions">Thao tác</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td>ULIS_KHOANTHU_HK1_2025_2026.xlsx</td>
-                  <td>HK1/2025–2026</td>
-                  <td>Tổng hợp</td>
-                  <td class="r">2.019</td>
-                  <td class="r c-success fw600">1.976</td>
-                  <td class="r c-warning">31</td>
-                  <td class="r c-error">12</td>
-                  <td class="r c-success fw600">1.976</td>
-                  <td>Nguyễn Văn Khoa</td>
-                  <td class="dim nowrap">21/10/2025 14:32</td>
-                  <td><span class="badge bg-warning">Có lỗi</span></td>
-                  <td class="td-actions">
-                    <button class="btn btn-ghost btn-xs">Chi tiết</button>
-                    <button class="btn btn-ghost btn-xs">Tải lỗi</button>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>ULIS_DHCQ_HK1_2025_2026.xlsx</td>
-                  <td>HK1/2025–2026</td>
-                  <td>Học phí</td>
-                  <td class="r">1.843</td>
-                  <td class="r c-success fw600">1.804</td>
-                  <td class="r c-warning">31</td>
-                  <td class="r c-error">8</td>
-                  <td class="r c-success fw600">1.804</td>
-                  <td>Nguyễn Văn Khoa</td>
-                  <td class="dim nowrap">21/10/2025 14:32</td>
-                  <td><span class="badge bg-warning">Có lỗi</span></td>
-                  <td class="td-actions">
-                    <button class="btn btn-ghost btn-xs">Chi tiết</button>
-                    <button class="btn btn-ghost btn-xs">Tải lỗi</button>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>ULIS_BHYT_2025_2026.xlsx</td>
-                  <td>2025–2026</td>
-                  <td>Bảo hiểm y tế</td>
-                  <td class="r">176</td>
-                  <td class="r c-success fw600">172</td>
-                  <td class="r">0</td>
-                  <td class="r c-error">4</td>
-                  <td class="r c-success fw600">172</td>
-                  <td>Nguyễn Văn Khoa</td>
-                  <td class="dim nowrap">21/10/2025 15:05</td>
-                  <td><span class="badge bg-warning">Có lỗi</span></td>
-                  <td class="td-actions">
-                    <button class="btn btn-ghost btn-xs">Chi tiết</button>
-                    <button class="btn btn-ghost btn-xs">Tải lỗi</button>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>ULIS_BRT_QH2025_dot1_2025_2026.xlsx</td>
-                  <td>Đợt 1/2025–2026</td>
-                  <td>Học phí</td>
-                  <td class="r">128</td>
-                  <td class="r c-success fw600">128</td>
-                  <td class="r">0</td>
-                  <td class="r">0</td>
-                  <td class="r c-success fw600">128</td>
-                  <td>Nguyễn Văn Khoa</td>
-                  <td class="dim nowrap">21/10/2025 15:10</td>
-                  <td><span class="badge bg-success">Hoàn thành</span></td>
-                  <td class="td-actions">
-                    <button class="btn btn-ghost btn-xs">Chi tiết</button>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>ULIS_DHCQ_HK2_2024_2025.xlsx</td>
-                  <td>HK2/2024–2025</td>
-                  <td>Học phí</td>
-                  <td class="r">1.706</td>
-                  <td class="r c-success fw600">1.706</td>
-                  <td class="r">0</td>
-                  <td class="r">0</td>
-                  <td class="r c-success fw600">1.706</td>
-                  <td>Trần Thị Hoa</td>
-                  <td class="dim nowrap">25/03/2025 11:20</td>
-                  <td><span class="badge bg-success">Hoàn thành</span></td>
-                  <td class="td-actions">
-                    <button class="btn btn-ghost btn-xs">Chi tiết</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="tbl-pagination">
-              <span>Hiển thị 1–5 / 12 lần nhập</span>
-
-              <div class="pg-nav">
-                <button class="pg-btn" disabled>&laquo;</button>
-                <button class="pg-btn active">1</button>
-                <button class="pg-btn">2</button>
-                <button class="pg-btn">3</button>
-                <button class="pg-btn">&raquo;</button>
-              </div>
-
-              <div class="pg-goto">
-                <span>Trang</span>
-                <input type="number" min="1" value="1"/>
-                <button class="btn btn-secondary btn-xs">Đi</button>
+            <div class="td-card" id="importSuccess" style="display:none">
+              <div class="success-panel">
+                <div class="success-icon">✓</div><div class="success-title">Đã nhập dữ liệu thành công</div><div class="success-sub">Lô nhập đã tạo khoản phải thu ở trạng thái Nháp đúng một lần. Các khoản chưa được phát hành và chưa hiển thị cho sinh viên.</div>
+                <div class="success-grid">
+                  <div class="success-metric"><span>Mã lô nhập</span><strong>IMP-260817-0042</strong></div><div class="success-metric"><span>Số khoản tạo mới</span><strong>1.976 khoản</strong></div><div class="success-metric"><span>Trùng bỏ qua</span><strong>18 dòng</strong></div><div class="success-metric"><span>Không được ghi</span><strong>15 dòng</strong></div><div class="success-metric"><span>Tổng số tiền đã tạo</span><strong>122.619.600 đồng</strong></div><div class="success-metric"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div><div class="success-metric"><span>Thời gian hoàn thành</span><strong>17/08/2026 16:36</strong></div><div class="success-metric"><span>Trạng thái khoản tạo</span><strong>Nháp</strong></div>
+                </div>
+                <div class="td-actions-right" style="justify-content:center"><button class="td-btn primary" onclick="location.href='receivables.html?importBatch=IMP-260817-0042'">Xem các khoản vừa tạo</button><button class="td-btn" onclick="mockToast('Đã chuẩn bị tệp kết quả.','success')">Tải kết quả</button><button class="td-btn" onclick="switchImportTab('import-history')">Xem lịch sử nhập</button><button class="td-btn" onclick="newBatch()">Nhập lô mới</button></div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
+        <!-- HISTORY -->
+        <section class="td-pane" id="pane-import-history">
+          <div class="td-card">
+            <div class="td-card-head"><div><div class="td-card-title">Lịch sử nhập</div><div class="td-card-sub">Tra cứu Import Job, file nguồn, người thực hiện và các khoản phải thu đã tạo.</div></div><span class="status-badge neutral">12 lô nhập</span></div>
+            <div class="td-card-body">
+              <div class="history-filter">
+                <div class="td-field"><label>Khoảng thời gian</label><input class="td-input" value="01/08/2026 – 17/08/2026"/></div><div class="td-field"><label>Năm học</label><select class="td-select"><option>Tất cả</option><option selected>2026–2027</option><option>2025–2026</option></select></div><div class="td-field"><label>Học kỳ</label><select class="td-select"><option>Tất cả</option><option selected>Học kỳ 1</option><option>Học kỳ 2</option></select></div><div class="td-field"><label>Đợt thu</label><select class="td-select"><option>Tất cả</option><option selected>Đợt thu học phí chính</option></select></div><div class="td-field"><label>Nguồn dữ liệu</label><select class="td-select"><option>Tất cả</option><option>Phòng KHTC</option><option>Phòng Đào tạo</option></select></div>
+                <div class="td-field"><label>Người tải</label><select class="td-select"><option>Tất cả</option><option>Nguyễn Thị Hương</option><option>Trần Văn Minh</option></select></div><div class="td-field"><label>Người xác nhận</label><select class="td-select"><option>Tất cả</option><option>Nguyễn Thị Hương</option><option>Trần Văn Minh</option></select></div><div class="td-field"><label>Trạng thái</label><select class="td-select"><option>Tất cả</option><option>Đã tải lên</option><option>Đang kiểm tra</option><option>Không hợp lệ</option><option>Sẵn sàng xác nhận</option><option>Đang ghi dữ liệu</option><option>Đã nhập thành công</option><option>Đã nhập một phần</option><option>Đã hủy</option><option>Thất bại</option></select></div><div class="td-field wide"><label>Tên file hoặc mã lô</label><input class="td-input" placeholder="VD: IMP-260817-0042 hoặc ULIS_KHOANTHU..."/></div>
+              </div>
+              <div class="td-actions-row"><span style="font-size:12px;color:#64748b">Bộ lọc lịch sử không ảnh hưởng lô nhập đang thao tác.</span><div class="td-actions-right"><button class="td-btn">Đặt lại</button><button class="td-btn primary">Lọc lịch sử</button></div></div>
+            </div>
+          </div>
+
+          <div class="history-table-wrap">
+            <table class="history-table"><thead><tr><th>Mã lô</th><th>Tên lô</th><th>Đợt thu</th><th>Nguồn dữ liệu</th><th>File nguồn</th><th>Người tải · Thời gian tải</th><th>Trạng thái</th><th>Kết quả</th><th class="money">Tổng tiền</th><th>Người xác nhận · Thời gian</th><th>Thao tác</th></tr></thead><tbody>
+              <tr><td><strong>IMP-260817-0042</strong></td><td>Nhập học phí HK1 2026–2027 – 17/08/2026</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">ULIS_KHOANTHU_HK1_2026_2027.xlsx</div><div class="hist-sub">486 KB · mẫu v1.4</div></td><td>Nguyễn Thị Hương<div class="hist-sub">17/08/2026 16:30</div></td><td><span class="status-badge ready">Đã nhập thành công</span></td><td>2.019 tổng · 1.976 hợp lệ · 31 cảnh báo · 12 lỗi<div class="hist-sub">18 trùng · 3 xung đột</div></td><td class="money"><strong>122.619.600 đồng</strong></td><td>Nguyễn Thị Hương<div class="hist-sub">17/08/2026 16:36</div></td><td><div class="hist-actions"><button class="td-btn ghost sm" onclick="openHistoryDetail('IMP-260817-0042')">Xem kết quả</button><button class="td-btn ghost sm">Tải kết quả</button><button class="td-btn ghost sm" onclick="location.href='receivables.html?importBatch=IMP-260817-0042'">Xem khoản đã tạo</button></div></td></tr>
+              <tr><td><strong>IMP-260817-0041</strong></td><td>Đào tạo – học phần bổ sung HK1</td><td>Đợt thu học phí chính</td><td>Phòng Đào tạo</td><td><div class="hist-file">DKHP_HK1_2026_2027_v2.xlsx</div><div class="hist-sub">612 KB · mẫu v1.4</div></td><td>Trần Văn Minh<div class="hist-sub">17/08/2026 15:20</div></td><td><span class="status-badge checking">Đang kiểm tra</span></td><td>3.840 tổng · đang xử lý</td><td class="money">—</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm" onclick="switchImportTab('import-new');goStep(2)">Tiếp tục</button><button class="td-btn ghost sm">Tải file nguồn</button></div></td></tr>
+              <tr><td><strong>IMP-260816-0038</strong></td><td>Học phí BRT đợt 1</td><td>Đợt thu bổ sung 1</td><td>Phòng KHTC</td><td><div class="hist-file">ULIS_BRT_DOT1_2026.xlsx</div><div class="hist-sub">128 KB · mẫu v1.4</div></td><td>Nguyễn Thị Hương<div class="hist-sub">16/08/2026 14:12</div></td><td><span class="status-badge warn">Đã nhập một phần</span></td><td>128 tổng · 121 hợp lệ · 7 lỗi<div class="hist-sub">4 trùng · 1 xung đột</div></td><td class="money"><strong>3.025.000.000 đồng</strong></td><td>Nguyễn Thị Hương<div class="hist-sub">16/08/2026 14:18</div></td><td><div class="hist-actions"><button class="td-btn ghost sm">Xem kết quả</button><button class="td-btn ghost sm">Tải file lỗi</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
+              <tr><td><strong>IMP-260816-0037</strong></td><td>BHYT khóa 2026</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">BHYT_K2026.xlsx</div><div class="hist-sub">84 KB · mẫu v1.4</div></td><td>Lê Thu Hà<div class="hist-sub">16/08/2026 11:05</div></td><td><span class="status-badge error">Không hợp lệ</span></td><td>176 tổng · 18 lỗi cấu trúc</td><td class="money">—</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm">Xem kết quả</button><button class="td-btn ghost sm">Tải file lỗi</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
+              <tr><td><strong>IMP-260815-0032</strong></td><td>Dữ liệu chuyển đổi đợt 02</td><td>Đợt thu học phí chính</td><td>Dữ liệu chuyển đổi</td><td><div class="hist-file">MIGRATION_HP_02.xlsx</div><div class="hist-sub">1.8 MB · mẫu chuyển đổi</div></td><td>Trần Văn Minh<div class="hist-sub">15/08/2026 09:30</div></td><td><span class="status-badge error">Thất bại</span></td><td>5.204 tổng · lỗi khi ghi dữ liệu</td><td class="money">—</td><td>Trần Văn Minh<div class="hist-sub">15/08/2026 09:42</div></td><td><div class="hist-actions"><button class="td-btn ghost sm">Xem kết quả</button><button class="td-btn ghost sm">Tải file nguồn</button></div></td></tr>
+              <tr><td><strong>IMP-260814-0029</strong></td><td>Test mẫu CP6 trước UAT</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">CP6_TEST_SAMPLE.xlsx</div><div class="hist-sub">92 KB · mẫu v1.3</div></td><td>Nguyễn Thị Hương<div class="hist-sub">14/08/2026 17:10</div></td><td><span class="status-badge neutral">Đã hủy</span></td><td>80 tổng · 80 hợp lệ</td><td class="money">2.400.000.000 đồng</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm">Tải file nguồn</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
+            </tbody></table>
+            <div class="table-footer"><span>Hiển thị 1–6 / 12 lô nhập</span><div class="page-controls"><button class="pg">‹</button><button class="pg active">1</button><button class="pg">2</button><button class="pg">›</button></div></div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
 </div>
 
+<!-- CONFIRM MODAL -->
+<div class="td-overlay" id="confirmImportModal" aria-hidden="true">
+  <div class="td-modal">
+    <div class="td-modal-head"><div><div class="td-modal-title">Xác nhận tạo khoản phải thu</div><div class="td-card-sub">Kiểm tra lại tác động trước khi ghi dữ liệu.</div></div><button class="td-btn ghost" onclick="closeConfirmModal()">✕</button></div>
+    <div class="td-modal-body">
+      <div class="impact-box">Hệ thống sẽ tạo <strong>1.976 khoản phải thu</strong> ở trạng thái <strong>Nháp</strong>, tổng số tiền <strong>122.619.600 đồng</strong>. Các khoản này chưa được phát hành và chưa hiển thị cho sinh viên.</div>
+      <div class="confirm-grid"><div class="confirm-item"><span>Đợt thu</span><strong>Đợt thu học phí chính</strong></div><div class="confirm-item"><span>Nguồn dữ liệu</span><strong>Phòng Kế hoạch Tài chính</strong></div><div class="confirm-item"><span>File nguồn</span><strong>ULIS_KHOANTHU_HK1_2026_2027.xlsx</strong></div><div class="confirm-item"><span>Trùng bị bỏ qua</span><strong>18 dòng</strong></div><div class="confirm-item"><span>Không được ghi</span><strong>15 dòng</strong></div><div class="confirm-item"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div></div>
+    </div>
+    <div class="td-modal-foot"><button class="td-btn" onclick="closeConfirmModal();goStep(3)">Quay lại kiểm tra</button><button class="td-btn primary" id="confirmOnceBtn" onclick="confirmImportOnce()">Xác nhận tạo khoản phải thu</button></div>
+  </div>
+</div>
+
+<!-- ROW DETAIL DRAWER -->
+<div class="drawer-backdrop" id="rowDrawerBackdrop" aria-hidden="true">
+  <aside class="detail-drawer"><div class="drawer-head"><div><div class="drawer-title" id="drawerTitle">Chi tiết dòng dữ liệu</div><div class="drawer-sub" id="drawerSub">Dòng 1 · 23040218</div></div><button class="td-btn ghost" onclick="closeRowDrawer()">✕</button></div><div class="drawer-body" id="drawerBody"></div></aside>
+</div>
+
 <script src="../js/common.js"></script>
+<script>
+(function(){
+  const STORAGE_KEY='ulis_cp6_import_mock_state_v2';
+  const records=[
+    {line:2,student:'23040218',name:'Nguyễn Minh Anh',fee:'Học phí',course:'INT1001',reg:'Lần đầu',qty:'3 tín chỉ',file:48000000,cp7:48000000,diff:0,due:'30/09/2026',match:'Khớp',result:'Hợp lệ',row:'',program:'Ngôn ngữ Anh',cohort:'2023',sourceId:'SRC-HP-000002',rule:'FEE-HK1-DHCQ-2026-v3',retro:false},
+    {line:3,student:'23051109',name:'Lê Hoàng Phương',fee:'Học phí',course:'ENG2004',reg:'Lần đầu',qty:'3 tín chỉ',file:42000000,cp7:42000000,diff:0,due:'30/09/2026',match:'Khớp',result:'Hợp lệ',row:'',program:'Ngôn ngữ Anh',cohort:'2023',sourceId:'SRC-HP-000003',rule:'FEE-HK1-DHCQ-2026-v3',retro:false},
+    {line:4,student:'24031876',name:'Lê Đức Huy',fee:'Học phí',course:'INT1001',reg:'Lần đầu',qty:'3 tín chỉ',file:10500000,cp7:10500000,diff:0,due:'30/09/2026',match:'Khớp',result:'Trùng',row:'row-dup',program:'Ngôn ngữ Nga',cohort:'2024',sourceId:'SRC-HP-000004',rule:'FEE-HK1-DHCQ-2026-v3',retro:false},
+    {line:5,student:'22041542',name:'Nguyễn Thị Ánh Tuyết',fee:'Học phí',course:'ENG2004',reg:'Học lại',qty:'2 tín chỉ',file:46500000,cp7:45000000,diff:1500000,due:'30/09/2026',match:'Lệch',result:'Cảnh báo',row:'row-warn',program:'Ngôn ngữ Anh',cohort:'2022',sourceId:'SRC-HP-000005',rule:'FEE-RETRO-2026-02',retro:true},
+    {line:6,student:'25010782',name:'Đỗ Khánh Linh',fee:'Học phí',course:'INT1001',reg:'Lần đầu',qty:'3 tín chỉ',file:32000000,cp7:32000000,diff:0,due:'30/09/2026',match:'Khớp',result:'Hợp lệ',row:'',program:'BRT',cohort:'2025',sourceId:'SRC-HP-000006',rule:'FEE-BRT-2026-v1',retro:false},
+    {line:7,student:'99999999',name:'Không tìm thấy sinh viên',fee:'Học phí',course:'ENG2004',reg:'Lần đầu',qty:'3 tín chỉ',file:19000000,cp7:null,diff:null,due:'30/09/2026',match:'Không xác định',result:'Lỗi',row:'row-error',program:'—',cohort:'—',sourceId:'SRC-HP-000007',rule:'—',retro:false,error:'Mã sinh viên không tồn tại'},
+    {line:8,student:'23070261',name:'Phạm Ngọc Mai',fee:'Học phí',course:'INT1001',reg:'Cải thiện',qty:'3 tín chỉ',file:31000000,cp7:31000000,diff:0,due:'30/09/2026',match:'Khớp',result:'Xung đột',row:'row-conflict',program:'Ngôn ngữ Trung Quốc',cohort:'2023',sourceId:'SRC-HP-000008',rule:'FEE-HK1-DHCQ-2026-v3',retro:false,error:'Bản ghi nguồn trùng khóa nhưng số tiền khác dữ liệu đã tồn tại'},
+    {line:9,student:'24060912',name:'Trần Gia Hân',fee:'Học phí',course:'Không có học phần',reg:'Lần đầu',qty:'1 khoản',file:25000000,cp7:null,diff:null,due:'30/09/2026',match:'Không xác định',result:'Lỗi',row:'row-error',program:'Ngôn ngữ Nhật',cohort:'2024',sourceId:'SRC-HP-000009',rule:'—',retro:false,error:'Thiếu cấu hình khoản thu'},
+    {line:10,student:'22060318',name:'Vũ Thanh Thảo',fee:'Bảo hiểm y tế',course:'Không có học phần',reg:'Lần đầu',qty:'1 suất',file:1263600,cp7:1263600,diff:0,due:'15/09/2026',match:'Khớp',result:'Hợp lệ',row:'',program:'Ngôn ngữ Anh',cohort:'2022',sourceId:'SRC-BHYT-000010',rule:'BHYT-2026-v2',retro:false},
+    {line:11,student:'23081655',name:'Bùi Minh Châu',fee:'Bảo hiểm y tế',course:'Không có học phần',reg:'Lần đầu',qty:'1 suất',file:1263600,cp7:1263600,diff:0,due:'15/09/2026',match:'Khớp',result:'Hợp lệ',row:'',program:'Ngôn ngữ Hàn Quốc',cohort:'2023',sourceId:'SRC-BHYT-000011',rule:'BHYT-2026-v2',retro:false}
+  ];
+  const $=id=>document.getElementById(id);
+  function fmt(n){if(n===null||n===undefined)return '—';return Number(n).toLocaleString('vi-VN')+' đồng'}
+  function resultPill(r){const map={'Hợp lệ':['ok','✓'],'Cảnh báo':['warn','⚠'],'Lỗi':['err','✕'],'Trùng':['dup','↺'],'Xung đột':['conflict','!']};const x=map[r]||['dup','•'];return '<span class="result-pill '+x[0]+'">'+x[1]+' '+r+'</span>'}
+  function matchPill(r){const c=r==='Khớp'?'ok':r==='Lệch'?'warn':'na';return '<span class="match-pill '+c+'">'+r+'</span>'}
+  function rowHtml(x){return '<tr class="'+x.row+'" data-result="'+x.result+'" data-fee="'+x.fee+'" data-course="'+x.course+'" data-reg="'+x.reg+'" data-search="'+(x.student+' '+x.name).toLowerCase()+'"><td class="sticky-1">'+x.line+'</td><td class="sticky-2"><strong>'+x.student+'</strong></td><td class="sticky-3">'+x.name+'</td><td>'+x.fee+'</td><td><strong>'+x.course+'</strong><div style="font-size:11px;color:#94a3b8">'+x.reg+'</div></td><td class="money">'+x.qty+'</td><td class="money"><strong>'+fmt(x.file)+'</strong></td><td class="money">'+fmt(x.cp7)+'</td><td class="money '+(x.diff? 'diff-pos':'diff-zero')+'">'+(x.diff===null?'—':x.diff===0?'0 đồng':('+'+fmt(x.diff)))+'</td><td>'+x.due+'</td><td>'+matchPill(x.match)+'</td><td>'+resultPill(x.result)+'</td><td><button class="td-btn ghost sm" onclick="openRowDrawer('+x.line+')">Xem chi tiết →</button></td></tr>'}
+  window.renderPreview=function(){ $('previewBody').innerHTML=records.map(rowHtml).join(''); applyPreviewFilters(); };
+  window.applyPreviewFilters=function(){const q=($('searchRows')?.value||'').trim().toLowerCase();const fee=$('filterFee')?.value||'';const course=$('filterCourse')?.value||'';const reg=$('filterReg')?.value||'';const result=$('filterResult')?.value||'';let count=0;document.querySelectorAll('#previewBody tr').forEach(tr=>{const ok=(!q||tr.dataset.search.includes(q))&&(!fee||tr.dataset.fee===fee)&&(!course||tr.dataset.course===course)&&(!reg||tr.dataset.reg===reg)&&(!result||tr.dataset.result===result);tr.style.display=ok?'':'none';if(ok)count++;});if($('previewCount'))$('previewCount').textContent=count+' dòng mẫu phù hợp · tổng 2.019 dòng';};
+  window.quickFilter=function(btn){document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===btn));$('filterResult').value=btn.dataset.filter;applyPreviewFilters();};
+  window.filterIssue=function(result){switchImportTab('import-new');goStep(3);$('filterResult').value=result;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.filter===result));applyPreviewFilters();setTimeout(()=>$('previewTable').scrollIntoView({behavior:'smooth',block:'start'}),50);};
+
+  function loadState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch(e){return {}}}
+  function saveState(p){const n=Object.assign(loadState(),p);localStorage.setItem(STORAGE_KEY,JSON.stringify(n));}
+  window.switchImportTab=function(tab){document.querySelectorAll('.td-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.td-pane').forEach(x=>x.classList.remove('active'));$('tab-'+tab).classList.add('active');$('pane-'+tab).classList.add('active');saveState({tab});};
+  window.goStep=function(step){step=Math.max(1,Math.min(4,Number(step)||1));document.querySelectorAll('.step-panel').forEach(x=>x.classList.remove('active'));$('step-'+step).classList.add('active');document.querySelectorAll('.step-item').forEach(x=>{const n=Number(x.dataset.step);x.classList.toggle('active',n===step);x.classList.toggle('done',n<step);});saveState({step});window.scrollTo({top:0,behavior:'smooth'});};
+  window.mockToast=function(msg,type){if(typeof showToast==='function')showToast(msg,type||'info');else alert(msg)};
+  window.downloadTemplate=function(){mockToast('Đã tải file mẫu CP6-IMPORT-v1.4 theo đợt thu, nguồn dữ liệu và chế độ nhập.','success')};
+  function prereqReady(){return !!($('collectionRound').value&&$('source').value&&$('importMode').value)}
+  function updatePrereqButtons(){const ok=prereqReady();['btnTemplate','btnChooseStep1','btnUploadCheckStep1'].forEach(id=>{if($(id))$(id).disabled=!ok})}
+  document.querySelectorAll('.prereq').forEach(x=>x.addEventListener('change',updatePrereqButtons));
+  window.chooseFile=function(){if(!prereqReady()){mockToast('Vui lòng chọn đủ Đợt thu, Nguồn dữ liệu và Chế độ nhập trước khi chọn file.','warning');return}$('realFileInput').click();};
+  window.onRealFileSelected=function(e){const f=e.target.files?.[0];if(f){$('selectedFileName').textContent=f.name;$('resultFileName').textContent=f.name;}goStep(2);mockToast('Đã chọn file. Bấm “Tải lên và kiểm tra” để tạo lô nhập.','info');};
+  window.startUploadCheck=function(){if(!prereqReady())return;goStep(2);runValidation();};
+  window.runValidation=function(){goStep(2);let p=0;$('uploadStatus').textContent='Đang kiểm tra';$('fileStatusText').textContent='Đang kiểm tra';const timer=setInterval(()=>{p=Math.min(100,p+20);$('progressBar').style.width=p+'%';$('progressPct').textContent=p+'%';$('progressLabel').textContent=p<100?'Đang kiểm tra cấu trúc file và 2.019 dòng dữ liệu…':'Đã kiểm tra xong 2.019 dòng dữ liệu.';if(p>=100){clearInterval(timer);$('uploadStatus').textContent='Sẵn sàng xác nhận';$('fileStatusText').textContent='Sẵn sàng xác nhận';saveState({step:3});setTimeout(()=>goStep(3),350)}},220);};
+  window.simulateRecheck=function(){mockToast('Đang kiểm tra lại lô nhập…','info');setTimeout(()=>mockToast('Đã kiểm tra lại. Kết quả không thay đổi.','success'),600)};
+  window.toggleColumns=function(e){e.stopPropagation();$('columnPanel').classList.toggle('open')};document.addEventListener('click',e=>{if(!e.target.closest('.column-menu'))$('columnPanel')?.classList.remove('open')});
+  window.cancelBatch=function(){if(confirm('Hủy lô nhập IMP-260817-0042? Dữ liệu chưa được ghi vào khoản phải thu.')){localStorage.removeItem(STORAGE_KEY);goStep(1);mockToast('Đã hủy lô nhập.','success')}};
+  window.updatePolicyAction=function(){const whole=$('filePolicy').value==='Toàn bộ file';const btn=$('confirmStickyBtn');if(btn)btn.disabled=whole;const note=$('policyNote');if(note)note.textContent=whole?'Không thể xác nhận: còn 12 dòng lỗi và 3 dòng xung đột. Hãy sửa file hoặc chuyển sang “Chỉ các dòng hợp lệ”.':'Chế độ “Chỉ các dòng hợp lệ”: 12 dòng lỗi và 3 dòng xung đột sẽ không được ghi.';};
+  window.openConfirmModal=function(){if($('filePolicy').value==='Toàn bộ file'){mockToast('Không thể xác nhận vì còn 12 dòng lỗi và 3 dòng xung đột.','warning');goStep(3);return}goStep(4);$('confirmImportModal').classList.add('open');$('confirmImportModal').setAttribute('aria-hidden','false')};
+  window.closeConfirmModal=function(){$('confirmImportModal').classList.remove('open');$('confirmImportModal').setAttribute('aria-hidden','true')};
+  window.confirmImportOnce=function(){const btn=$('confirmOnceBtn');if(btn.dataset.done==='1')return;btn.dataset.done='1';btn.disabled=true;btn.textContent='Đang tạo khoản phải thu…';setTimeout(()=>{closeConfirmModal();$('step4BeforeConfirm').style.display='none';$('importSuccess').style.display='block';saveState({step:4,confirmed:true});mockToast('Đã tạo 1.976 khoản phải thu ở trạng thái Nháp.','success')},700)};
+  window.newBatch=function(){localStorage.removeItem(STORAGE_KEY);$('step4BeforeConfirm').style.display='block';$('importSuccess').style.display='none';const b=$('confirmOnceBtn');b.dataset.done='';b.disabled=false;b.textContent='Xác nhận tạo khoản phải thu';switchImportTab('import-new');goStep(1)};
+  window.openRowDrawer=function(line){const x=records.find(r=>r.line===line)||records[0];$('drawerTitle').textContent='Chi tiết dòng '+x.line;$('drawerSub').textContent=x.student+' · '+x.name;const error=x.error?'<tr><td>'+x.error+'</td><td>'+x.student+'</td><td>Không đạt</td><td>Kiểm tra và sửa file nguồn, sau đó tải lại.</td></tr>':'<tr><td>Không có lỗi chặn</td><td>—</td><td>Đạt</td><td>Không cần sửa dữ liệu nguồn.</td></tr>';const retro=x.retro?'<div class="retro-alert"><strong>⚠ Cảnh báo quy tắc hồi tố</strong><br>Khoản này đang sử dụng một quy tắc được ban hành hồi tố. Cần kiểm tra trước khi xác nhận.</div>':'';$('drawerBody').innerHTML='<div class="detail-section"><h3>1. Dữ liệu sinh viên</h3><div class="detail-grid"><div class="detail-item"><span>Mã sinh viên</span><strong>'+x.student+'</strong></div><div class="detail-item"><span>Họ tên</span><strong>'+x.name+'</strong></div><div class="detail-item"><span>Chương trình đào tạo</span><strong>'+x.program+'</strong></div><div class="detail-item"><span>Khóa tuyển sinh</span><strong>'+x.cohort+'</strong></div></div></div><div class="detail-section"><h3>2. Dữ liệu nguồn</h3><div class="detail-grid"><div class="detail-item"><span>Mã bản ghi nguồn</span><strong>'+x.sourceId+'</strong></div><div class="detail-item"><span>Khoản mục</span><strong>'+x.fee+'</strong></div><div class="detail-item"><span>Học phần</span><strong>'+x.course+'</strong></div><div class="detail-item"><span>Loại đăng ký</span><strong>'+x.reg+'</strong></div><div class="detail-item"><span>Số tín chỉ / số lượng</span><strong>'+x.qty+'</strong></div><div class="detail-item"><span>Số tiền</span><strong>'+fmt(x.file)+'</strong></div><div class="detail-item"><span>Hạn nộp</span><strong>'+x.due+'</strong></div><div class="detail-item"><span>Căn cứ</span><strong>Thông báo thu học phí HK1 2026–2027</strong></div></div></div><div class="detail-section"><h3>3. Kết quả đối chiếu</h3><div class="detail-grid"><div class="detail-item"><span>Số tiền trong file</span><strong>'+fmt(x.file)+'</strong></div><div class="detail-item"><span>Số tiền tính theo CP7</span><strong>'+fmt(x.cp7)+'</strong></div><div class="detail-item"><span>Chênh lệch</span><strong>'+(x.diff===null?'—':fmt(x.diff))+'</strong></div><div class="detail-item"><span>Quy tắc được chọn</span><strong>'+x.rule+'</strong></div><div class="detail-item"><span>Quy tắc hồi tố</span><strong>'+(x.retro?'Có':'Không')+'</strong></div></div>'+retro+'</div><div class="detail-section"><h3>4. Kiểm tra trùng/xung đột</h3><div class="detail-grid"><div class="detail-item"><span>Dữ liệu đã tồn tại</span><strong>'+(x.result==='Trùng'||x.result==='Xung đột'?'Có':'Không')+'</strong></div><div class="detail-item"><span>Khoản phải thu liên quan</span><strong>'+(x.result==='Trùng'?'RCV-260815-01024':'—')+'</strong></div><div class="detail-item"><span>Giá trị cũ và giá trị mới</span><strong>'+(x.result==='Xung đột'?'30.000.000 → '+fmt(x.file):'Không có thay đổi')+'</strong></div><div class="detail-item"><span>Kết luận</span><strong>'+(x.result==='Trùng'?'Trùng – tự động bỏ qua':x.result==='Xung đột'?'Xung đột – không được ghi đè':'Không phát hiện trùng/xung đột')+'</strong></div></div></div><div class="detail-section"><h3>5. Danh sách lỗi</h3><table class="error-mini"><thead><tr><th>Lỗi</th><th>Giá trị đã nhập</th><th>Kết quả</th><th>Hướng dẫn sửa</th></tr></thead><tbody>'+error+'</tbody></table><div class="no-edit-note">Không sửa trực tiếp dữ liệu Excel tại đây. Người dùng sửa file nguồn và tải lại để hệ thống kiểm tra lại.</div></div>';$('rowDrawerBackdrop').classList.add('open');$('rowDrawerBackdrop').setAttribute('aria-hidden','false')};
+  window.closeRowDrawer=function(){$('rowDrawerBackdrop').classList.remove('open');$('rowDrawerBackdrop').setAttribute('aria-hidden','true')};
+  window.openHistoryDetail=function(id){mockToast('Mở chi tiết lô '+id+' (mockup).','info')};
+  $('confirmImportModal').addEventListener('click',e=>{if(e.target===$('confirmImportModal'))closeConfirmModal()});$('rowDrawerBackdrop').addEventListener('click',e=>{if(e.target===$('rowDrawerBackdrop'))closeRowDrawer()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeConfirmModal();closeRowDrawer()}});
+
+  renderPreview();updatePrereqButtons();updatePolicyAction();const st=loadState();if(st.confirmed){$('step4BeforeConfirm').style.display='none';$('importSuccess').style.display='block'}switchImportTab(st.tab||'import-new');goStep(st.step||1);
+})();
+</script>
 </body>
 </html>
