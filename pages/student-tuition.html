@@ -85,7 +85,7 @@
 
 
   /* ===== CARD COLOR STANDARD — restored original product style ===== */
-  /* Preview KPI đúng kiểu mockup cũ: không vạch màu; semantic background chỉ dùng cho kết quả kiểm tra. */
+  /* KPI kết quả: nền trung tính; màu chỉ dùng để phân biệt trạng thái kiểm tra. */
   .result-kpi::before,
   .result-kpi.ok::before,
   .result-kpi.warn::before,
@@ -132,6 +132,7 @@
 
 </style>
 
+<link rel="stylesheet" href="../css/mvp-clean.css"/>
 </head>
 
 <body>
@@ -267,13 +268,10 @@
 
     <!-- ===================== TOPBAR ===================== -->
     <header id="topbar">
-      <div class="topbar-crumb" style="display:flex;flex-direction:column;gap:1px;">
-        <div style="font-size:10px;font-weight:500;color:var(--muted-lt);letter-spacing:.2px;">Hệ thống quản lý thu học phí</div>
-        <div style="display:flex;align-items:center;gap:5px;">
-          <span class="crumb-root">Nghiệp vụ</span>
-          <span class="crumb-sep"> / </span>
-          <span class="crumb-page">Dữ liệu học phí</span>
-        </div>
+      <div class="topbar-crumb">
+        <span class="crumb-root">Nghiệp vụ</span>
+        <span class="crumb-sep" aria-hidden="true">›</span>
+        <span class="crumb-page">Dữ liệu học phí</span>
       </div>
 
       <div class="topbar-user topbar-user-wrap">
@@ -291,7 +289,7 @@
             <div class="udh-role">Phòng KHTC — Cán bộ quản trị</div>
           </div>
 
-          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Vui lòng liên hệ quản trị viên để được hỗ trợ.','info')">
             <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
               <circle cx="8" cy="5" r="3"/>
               <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
@@ -299,7 +297,7 @@
             Thông tin tài khoản
           </div>
 
-          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Vui lòng liên hệ quản trị viên để được hỗ trợ.','info')">
             <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="7" width="12" height="8" rx="1"/>
               <path d="M5 7V5a3 3 0 016 0v2"/>
@@ -343,14 +341,14 @@
               <div class="step-item" data-step="3" onclick="goStep(3)"><div class="step-dot">3</div><div class="step-label">Xem trước kết quả</div></div>
               <div class="step-item" data-step="4" onclick="goStep(4)"><div class="step-dot">4</div><div class="step-label">Xác nhận nhập</div></div>
             </div>
-            <div class="step-note">Tiến trình lô nhập được lưu tự động; mở lại trang sẽ tiếp tục tại bước đang dở.</div>
+            <div class="step-note">Thực hiện kiểm tra và xác nhận trong cùng một lượt. Nếu rời trang trước khi xác nhận, cần chọn lại file.</div>
           </div>
 
           <!-- STEP 1 -->
           <div class="step-panel active" id="step-1">
             <div class="td-card">
               <div class="td-card-head">
-                <div><div class="td-card-title">1. Thông tin lô nhập</div><div class="td-card-sub">Chọn ngữ cảnh dữ liệu trước khi tải file. Đợt thu là giá trị được lưu chính thức vào lô nhập.</div></div>
+                <div><div class="td-card-title">1. Thông tin lô nhập</div><div class="td-card-sub">Chọn năm học, học kỳ và đợt thu để hệ thống chuẩn bị đúng tệp mẫu và ngữ cảnh nhập.</div></div>
                 <span class="status-badge neutral">Chưa tải file</span>
               </div>
               <div class="td-card-body">
@@ -363,7 +361,7 @@
                   <div class="td-field"><label class="required">Nguồn dữ liệu</label><select class="td-select prereq" id="source"><option value="">Chọn nguồn dữ liệu</option><option selected>Phòng Kế hoạch Tài chính</option><option>Phòng Đào tạo</option><option>Dữ liệu chuyển đổi</option></select></div>
                   <div class="td-field"><label class="required">Chế độ nhập</label><select class="td-select prereq" id="importMode"><option value="">Chọn chế độ nhập</option><option>Nhập số tiền từ file</option><option selected>Nhập và đối chiếu khung phí</option></select><div class="help">Chế độ đối chiếu sẽ tính lại số tiền theo cấu hình học phí.</div></div>
 
-                  <div class="td-field"><label class="required">Cách xử lý file</label><select class="td-select" id="filePolicy" onchange="updatePolicyAction()"><option>Toàn bộ file</option><option selected>Chỉ các dòng hợp lệ</option></select><div class="help">Lỗi và xung đột sẽ không được ghi khi xác nhận.</div></div>
+                  <div class="td-field"><label class="required">Cách xử lý file</label><select class="td-select" id="filePolicy" onchange="updatePolicyAction()"><option>Toàn bộ file</option><option selected>Chỉ các dòng hợp lệ</option></select><div class="help">Cảnh báo, lỗi, trùng và xung đột sẽ không được ghi khi xác nhận.</div></div>
                   <div class="td-field"><label>Thời điểm chốt dữ liệu</label><input class="td-input" value="17/08/2026 16:00"/></div>
                   <div class="td-field"><label>Phiên bản dữ liệu nguồn</label><input class="td-input" value="KHTC-HP-HK1-v3"/></div>
                 </div>
@@ -397,7 +395,7 @@
           <div class="step-panel" id="step-2">
             <div class="td-card">
               <div class="td-card-head">
-                <div><div class="td-card-title">2. Tải file và kiểm tra</div><div class="td-card-sub">File được tạo thành một lô nhập độc lập. Việc kiểm tra vẫn tiếp tục kể cả khi người dùng rời trang.</div></div>
+                <div><div class="td-card-title">2. Tải file và kiểm tra</div><div class="td-card-sub">Chọn tệp Excel theo đúng mẫu. Tải tệp lên mới bắt đầu bước kiểm tra và chưa tạo khoản phải thu.</div></div>
                 <span class="status-badge checking" id="uploadStatus">Đã chọn file</span>
               </div>
               <div class="td-card-body">
@@ -408,24 +406,24 @@
                   <div class="upload-sub">Không tự ý đổi tên cột hoặc tên sheet của file mẫu.</div>
                   <div class="upload-rules">
                     <div class="rule-pill"><strong>Định dạng</strong>.xlsx</div>
-                    <div class="rule-pill"><strong>Dung lượng tối đa</strong>20 MB</div>
-                    <div class="rule-pill"><strong>Số dòng tối đa</strong>50.000 dòng</div>
-                    <div class="rule-pill"><strong>Phiên bản mẫu</strong>CP6-IMPORT-v1.4</div>
+                    <div class="rule-pill"><strong>Dòng tiêu đề</strong>Bắt buộc</div>
+                    <div class="rule-pill"><strong>Cấu trúc</strong>Theo file mẫu</div>
+                    <div class="rule-pill"><strong>Phiên bản mẫu</strong>ULIS-IMPORT-v1.4</div>
                   </div>
                 </div>
 
                 <div class="file-card" id="fileInfoCard">
                   <div class="file-cell"><div class="file-label">Tên file</div><div class="file-value" id="selectedFileName">ULIS_KHOANTHU_HK1_2026_2027.xlsx</div></div>
                   <div class="file-cell"><div class="file-label">Dung lượng</div><div class="file-value">486 KB</div></div>
-                  <div class="file-cell"><div class="file-label">Phiên bản mẫu</div><div class="file-value">CP6-IMPORT-v1.4</div></div>
+                  <div class="file-cell"><div class="file-label">Phiên bản mẫu</div><div class="file-value">ULIS-IMPORT-v1.4</div></div>
                   <div class="file-cell"><div class="file-label">Người tải</div><div class="file-value">Nguyễn Thị Hương</div></div>
-                  <div class="file-cell"><div class="file-label">Thời gian tải</div><div class="file-value">17/08/2026 16:30</div></div>
-                  <div class="file-cell"><div class="file-label">Mã lô nhập</div><div class="file-value">IMP-260817-0042</div></div>
+                  <div class="file-cell"><div class="file-label">Thời gian tải</div><div class="file-value">25/08/2026 09:30</div></div>
+                  <div class="file-cell"><div class="file-label">Mã lô nhập</div><div class="file-value">IMP-260825-0042</div></div>
                   <div class="file-cell"><div class="file-label">Trạng thái</div><div class="file-value" id="fileStatusText">Đã tải lên</div></div>
                 </div>
 
                 <div class="progress-box" id="progressBox">
-                  <div class="progress-top"><span id="progressLabel">Sẵn sàng kiểm tra cấu trúc file và 2.019 dòng dữ liệu.</span><span id="progressPct">0%</span></div>
+                  <div class="progress-top"><span id="progressLabel">Sẵn sàng kiểm tra cấu trúc file và 986 dòng dữ liệu.</span><span id="progressPct">0%</span></div>
                   <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
                   <div class="background-note">Bạn có thể rời trang. Trạng thái lô nhập sẽ được lưu và cập nhật khi quay lại.</div>
                 </div>
@@ -442,29 +440,29 @@
           <div class="step-panel" id="step-3">
             <div class="td-card">
               <div class="td-card-head">
-                <div><div class="td-card-title">Kết quả kiểm tra — <span id="resultFileName">ULIS_KHOANTHU_HK1_2026_2027.xlsx</span></div><div class="td-card-sub">Kết quả gần nhất lúc 17/08/2026 16:33 · Mã lô IMP-260817-0042</div></div>
-                <div class="result-head-meta"><span class="status-badge ready">✓ Sẵn sàng xác nhận</span><span class="status-badge neutral">2.019 dòng</span><button class="td-btn sm" onclick="simulateRecheck()">↻ Kiểm tra lại</button></div>
+                <div><div class="td-card-title">Kết quả kiểm tra — <span id="resultFileName">ULIS_KHOANTHU_HK1_2026_2027.xlsx</span></div><div class="td-card-sub">Kết quả gần nhất lúc 25/08/2026 09:33 · Mã lô IMP-260825-0042</div></div>
+                <div class="result-head-meta"><span class="status-badge ready">✓ Sẵn sàng xác nhận</span><span class="status-badge neutral">986 dòng</span><button class="td-btn sm" onclick="simulateRecheck()">↻ Kiểm tra lại</button></div>
               </div>
               <div class="td-card-body">
                 <div class="result-kpis">
-                  <div class="result-kpi"><div class="rk-label">Tổng số dòng</div><div class="rk-value">2.019</div><div class="rk-sub">Trong file nguồn</div></div>
-                  <div class="result-kpi ok"><div class="rk-label">Hợp lệ</div><div class="rk-value">1.976</div><div class="rk-sub">Đủ điều kiện ghi</div></div>
-                  <div class="result-kpi warn"><div class="rk-label">Cảnh báo</div><div class="rk-value">31</div><div class="rk-sub">Cần kiểm tra</div></div>
-                  <div class="result-kpi err"><div class="rk-label">Lỗi</div><div class="rk-value">12</div><div class="rk-sub">Không được ghi</div></div>
-                  <div class="result-kpi dup"><div class="rk-label">Trùng – bỏ qua</div><div class="rk-value">18</div><div class="rk-sub">Thuộc nhóm cảnh báo</div></div>
-                  <div class="result-kpi conflict"><div class="rk-label">Xung đột nguồn</div><div class="rk-value">3</div><div class="rk-sub">Thuộc nhóm lỗi</div></div>
-                  <div class="result-kpi money"><div class="rk-label">Tổng tiền đủ điều kiện</div><div class="rk-value" style="font-size:17px">122.619.600</div><div class="rk-sub">đồng</div></div>
+                  <div class="result-kpi"><div class="rk-label">Tổng số dòng</div><div class="rk-value">986</div><div class="rk-sub">Trong file nguồn</div></div>
+                  <div class="result-kpi ok"><div class="rk-label">Hợp lệ</div><div class="rk-value">950</div><div class="rk-sub">Đủ điều kiện ghi</div></div>
+                  <div class="result-kpi warn"><div class="rk-label">Cảnh báo</div><div class="rk-value">16</div><div class="rk-sub">Cần kiểm tra</div></div>
+                  <div class="result-kpi err"><div class="rk-label">Lỗi</div><div class="rk-value">8</div><div class="rk-sub">Không được ghi</div></div>
+                  <div class="result-kpi dup"><div class="rk-label">Trùng – bỏ qua</div><div class="rk-value">10</div><div class="rk-sub">Không tạo thêm</div></div>
+                  <div class="result-kpi conflict"><div class="rk-label">Xung đột nguồn</div><div class="rk-value">2</div><div class="rk-sub">Không ghi đè</div></div>
+                  <div class="result-kpi money"><div class="rk-label">Tổng tiền đủ điều kiện</div><div class="rk-value" style="font-size:17px">6.284.500.000</div><div class="rk-sub">đồng</div></div>
                 </div>
 
                 <div class="summary-table-wrap">
                   <table class="summary-table">
                     <thead><tr><th>Nhóm dữ liệu</th><th>Tổng số dòng</th><th>Hợp lệ</th><th>Cảnh báo</th><th>Lỗi</th><th>Trùng – bỏ qua</th><th>Xung đột</th><th>Tổng tiền đủ điều kiện</th></tr></thead>
                     <tbody>
-                      <tr><td>Học phí đại học chính quy</td><td>1.843</td><td style="color:#047857;font-weight:800">1.804</td><td style="color:#b45309">27</td><td style="color:#b91c1c">8</td><td>16</td><td style="color:#be123c">2</td><td>118.750.000 đồng</td></tr>
-                      <tr><td>Bảo hiểm y tế</td><td>176</td><td style="color:#047857;font-weight:800">172</td><td style="color:#b45309">4</td><td style="color:#b91c1c">4</td><td>2</td><td style="color:#be123c">1</td><td>3.869.600 đồng</td></tr>
+                      <tr><td>Học phí đại học chính quy</td><td>910</td><td style="color:#047857;font-weight:800">878</td><td style="color:#b45309">14</td><td style="color:#b91c1c">6</td><td>10</td><td style="color:#be123c">2</td><td>6.193.520.800 đồng</td></tr>
+                      <tr><td>Bảo hiểm y tế</td><td>76</td><td style="color:#047857;font-weight:800">72</td><td style="color:#b45309">2</td><td style="color:#b91c1c">2</td><td>0</td><td style="color:#be123c">0</td><td>90.979.200 đồng</td></tr>
                       <tr><td>Khoản thu khác</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0 đồng</td></tr>
                     </tbody>
-                    <tfoot><tr><td>Tổng cộng</td><td>2.019</td><td>1.976</td><td>31</td><td>12</td><td>18</td><td>3</td><td>122.619.600 đồng</td></tr></tfoot>
+                    <tfoot><tr><td>Tổng cộng</td><td>986</td><td>950</td><td>16</td><td>8</td><td>10</td><td>2</td><td>6.284.500.000 đồng</td></tr></tfoot>
                   </table>
                 </div>
               </div>
@@ -500,7 +498,7 @@
             </div>
 
             <div class="preview-table-shell">
-              <div class="preview-table-head"><div><span class="preview-title">Xem trước dữ liệu</span> <span class="preview-count" id="previewCount">10 dòng mẫu · tổng 2.019 dòng</span></div><span class="preview-count">Cố định Dòng · Mã sinh viên · Họ và tên</span></div>
+              <div class="preview-table-head"><div><span class="preview-title">Xem trước dữ liệu</span> <span class="preview-count" id="previewCount">Hiển thị 10 / 986 dòng</span></div><span class="preview-count">Cố định Dòng · Mã sinh viên · Họ và tên</span></div>
               <div class="table-scroll">
                 <table class="preview-table" id="previewTable">
                   <thead><tr>
@@ -509,23 +507,23 @@
                   <tbody id="previewBody"></tbody>
                 </table>
               </div>
-              <div class="table-footer"><span>Hiển thị 1–10 / 2.019 dòng · Mặc định 50 dòng/trang</span><div class="page-controls"><select class="page-size"><option>25 dòng</option><option selected>50 dòng</option><option>100 dòng</option></select><button class="pg">‹</button><button class="pg active">1</button><button class="pg">2</button><button class="pg">3</button><button class="pg">…</button><button class="pg">41</button><button class="pg">›</button></div></div>
+              <div class="table-footer"><span>Hiển thị 1–10 / 986 dòng · Mặc định 50 dòng/trang</span><div class="page-controls"><select class="page-size"><option>25 dòng</option><option selected>50 dòng</option><option>100 dòng</option></select><button class="pg">‹</button><button class="pg active">1</button><button class="pg">2</button><button class="pg">3</button><button class="pg">…</button><button class="pg">20</button><button class="pg">›</button></div></div>
             </div>
 
             <div class="td-card" style="margin-top:20px">
-              <div class="td-card-head"><div><div class="td-card-title">Nhóm lỗi cần xử lý</div><div class="td-card-sub">Bấm vào số dòng hoặc “Xem dòng” để lọc bảng xem trước phía trên.</div></div><span class="status-badge warn">43 dòng cần chú ý</span></div>
+              <div class="td-card-head"><div><div class="td-card-title">Nhóm lỗi cần xử lý</div><div class="td-card-sub">Bấm vào số dòng hoặc “Xem dòng” để lọc bảng xem trước phía trên.</div></div><span class="status-badge warn">36 dòng cần chú ý</span></div>
               <div class="issue-table-wrap"><table class="issue-table"><thead><tr><th>Mức độ</th><th>Nhóm lỗi</th><th>Số dòng</th><th>Nguyên nhân</th><th>Hướng xử lý</th><th>Ảnh hưởng</th><th>Thao tác</th></tr></thead><tbody>
-                <tr><td><span class="sev error">LỖI</span></td><td><strong>Mã sinh viên không tồn tại</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Lỗi')">3</button></td><td>Không tìm thấy trong danh mục sinh viên.</td><td>Kiểm tra lại mã sinh viên trong file nguồn.</td><td>Không tạo khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Lỗi')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev error">LỖI</span></td><td><strong>Mã sinh viên không tồn tại</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Lỗi')">4</button></td><td>Không tìm thấy trong danh mục sinh viên.</td><td>Kiểm tra lại mã sinh viên trong file nguồn.</td><td>Không tạo khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Lỗi')">Xem dòng →</button></td></tr>
                 <tr><td><span class="sev error">LỖI</span></td><td><strong>Thiếu cấu hình khoản thu</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Lỗi')">4</button></td><td>Không tìm thấy quy tắc phù hợp.</td><td>Bổ sung cấu hình hoặc sửa dữ liệu nguồn.</td><td>Không tạo khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Lỗi')">Xem dòng →</button></td></tr>
-                <tr><td><span class="sev warning">CẢNH BÁO</span></td><td><strong>Lệch số tiền</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Cảnh báo')">3</button></td><td>Số tiền file khác kết quả tính theo CP7.</td><td>Kiểm tra file và quy tắc được áp dụng.</td><td>Chưa tự động tạo</td><td><button class="td-btn ghost sm" onclick="filterIssue('Cảnh báo')">Xem dòng →</button></td></tr>
-                <tr><td><span class="sev dup">TRÙNG</span></td><td><strong>Khoản đã tồn tại</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Trùng')">18</button></td><td>Dữ liệu đã được nhập trước đó.</td><td>Hệ thống tự bỏ qua, không tạo thêm.</td><td>Không tạo thêm khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Trùng')">Xem dòng →</button></td></tr>
-                <tr><td><span class="sev conflict">XUNG ĐỘT</span></td><td><strong>Dữ liệu nguồn thay đổi</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Xung đột')">3</button></td><td>Bản ghi nguồn trùng khóa nhưng giá trị khác dữ liệu đã có.</td><td>Đối chiếu nguồn; không ghi đè tự động.</td><td>Không được ghi</td><td><button class="td-btn ghost sm" onclick="filterIssue('Xung đột')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev warning">CẢNH BÁO</span></td><td><strong>Lệch số tiền</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Cảnh báo')">16</button></td><td>Số tiền file khác kết quả tính theo CP7.</td><td>Kiểm tra file và quy tắc được áp dụng.</td><td>Chưa tự động tạo</td><td><button class="td-btn ghost sm" onclick="filterIssue('Cảnh báo')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev dup">TRÙNG</span></td><td><strong>Khoản đã tồn tại</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Trùng')">10</button></td><td>Dữ liệu đã được nhập trước đó.</td><td>Hệ thống tự bỏ qua, không tạo thêm.</td><td>Không tạo thêm khoản</td><td><button class="td-btn ghost sm" onclick="filterIssue('Trùng')">Xem dòng →</button></td></tr>
+                <tr><td><span class="sev conflict">XUNG ĐỘT</span></td><td><strong>Dữ liệu nguồn thay đổi</strong></td><td><button class="issue-count-btn" onclick="filterIssue('Xung đột')">2</button></td><td>Bản ghi nguồn trùng khóa nhưng giá trị khác dữ liệu đã có.</td><td>Đối chiếu nguồn; không ghi đè tự động.</td><td>Không được ghi</td><td><button class="td-btn ghost sm" onclick="filterIssue('Xung đột')">Xem dòng →</button></td></tr>
               </tbody></table></div>
             </div>
 
             <div class="sticky-action" id="stickyAction">
               <div class="sticky-left"><button class="td-btn sm" onclick="mockToast('Đã chuẩn bị file lỗi.','success')">⇩ Tải file lỗi</button><button class="td-btn sm" onclick="goStep(2)">Thay file</button><button class="td-btn danger sm" onclick="cancelBatch()">Hủy lô nhập</button></div>
-              <div class="sticky-right"><div class="sticky-summary"><div class="sticky-main">1.976 dòng đủ điều kiện · Tổng tiền 122.619.600 đồng</div><div class="sticky-sub" id="policyNote">Chế độ “Chỉ các dòng hợp lệ”: 12 dòng lỗi và 3 dòng xung đột sẽ không được ghi.</div></div><button class="td-btn primary" id="confirmStickyBtn" onclick="openConfirmModal()">Xác nhận tạo 1.976 khoản phải thu</button></div>
+              <div class="sticky-right"><div class="sticky-summary"><div class="sticky-main">950 dòng đủ điều kiện · Tổng tiền 6.284.500.000 đồng</div><div class="sticky-sub" id="policyNote">36 dòng không được tạo: 16 cảnh báo, 8 lỗi, 10 trùng và 2 xung đột.</div></div><button class="td-btn primary" id="confirmStickyBtn" onclick="openConfirmModal()">Xác nhận tạo 950 khoản phải thu</button></div>
             </div>
           </div>
 
@@ -534,9 +532,9 @@
             <div class="td-card" id="step4BeforeConfirm">
               <div class="td-card-head"><div><div class="td-card-title">4. Xác nhận nhập</div><div class="td-card-sub">Kiểm tra tác động cuối cùng trước khi ghi dữ liệu vào hệ thống.</div></div><span class="status-badge ready">Sẵn sàng xác nhận</span></div>
               <div class="td-card-body">
-                <div class="impact-box">Hệ thống sẽ tạo <strong>1.976 khoản phải thu</strong> ở trạng thái <strong>Nháp</strong>, tổng số tiền <strong>122.619.600 đồng</strong>. Các khoản này chưa được phát hành và chưa hiển thị cho sinh viên.</div>
+                <div class="impact-box">Hệ thống sẽ tạo <strong>950 khoản phải thu</strong> ở trạng thái <strong>Nháp</strong>, tổng số tiền <strong>6.284.500.000 đồng</strong>. Các khoản này chưa được phát hành và chưa hiển thị cho sinh viên.</div>
                 <div class="confirm-grid">
-                  <div class="confirm-item"><span>Đợt thu</span><strong>Đợt thu học phí chính</strong></div><div class="confirm-item"><span>Nguồn dữ liệu</span><strong>Phòng Kế hoạch Tài chính</strong></div><div class="confirm-item"><span>File nguồn</span><strong>ULIS_KHOANTHU_HK1_2026_2027.xlsx</strong></div><div class="confirm-item"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div><div class="confirm-item"><span>Trùng bị bỏ qua</span><strong>18 dòng</strong></div><div class="confirm-item"><span>Không được ghi</span><strong>15 dòng (12 lỗi · 3 xung đột)</strong></div>
+                  <div class="confirm-item"><span>Đợt thu</span><strong>Đợt thu học phí chính</strong></div><div class="confirm-item"><span>Nguồn dữ liệu</span><strong>Phòng Kế hoạch Tài chính</strong></div><div class="confirm-item"><span>File nguồn</span><strong>ULIS_KHOANTHU_HK1_2026_2027.xlsx</strong></div><div class="confirm-item"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div><div class="confirm-item"><span>Đủ điều kiện tạo</span><strong>950 dòng</strong></div><div class="confirm-item"><span>Không được tạo</span><strong>36 dòng</strong></div>
                 </div>
                 <div class="td-actions-row"><button class="td-btn" onclick="goStep(3)">← Quay lại kiểm tra</button><button class="td-btn primary" onclick="openConfirmModal()">Xác nhận tạo khoản phải thu</button></div>
               </div>
@@ -546,9 +544,9 @@
               <div class="success-panel">
                 <div class="success-icon">✓</div><div class="success-title">Đã nhập dữ liệu thành công</div><div class="success-sub">Lô nhập đã tạo khoản phải thu ở trạng thái Nháp đúng một lần. Các khoản chưa được phát hành và chưa hiển thị cho sinh viên.</div>
                 <div class="success-grid">
-                  <div class="success-metric"><span>Mã lô nhập</span><strong>IMP-260817-0042</strong></div><div class="success-metric"><span>Số khoản tạo mới</span><strong>1.976 khoản</strong></div><div class="success-metric"><span>Trùng bỏ qua</span><strong>18 dòng</strong></div><div class="success-metric"><span>Không được ghi</span><strong>15 dòng</strong></div><div class="success-metric"><span>Tổng số tiền đã tạo</span><strong>122.619.600 đồng</strong></div><div class="success-metric"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div><div class="success-metric"><span>Thời gian hoàn thành</span><strong>17/08/2026 16:36</strong></div><div class="success-metric"><span>Trạng thái khoản tạo</span><strong>Nháp</strong></div>
+                  <div class="success-metric"><span>Mã lô nhập</span><strong>IMP-260825-0042</strong></div><div class="success-metric"><span>Số khoản tạo mới</span><strong>950 khoản</strong></div><div class="success-metric"><span>Trùng bỏ qua</span><strong>10 dòng</strong></div><div class="success-metric"><span>Không được tạo</span><strong>36 dòng</strong></div><div class="success-metric"><span>Tổng số tiền đã tạo</span><strong>6.284.500.000 đồng</strong></div><div class="success-metric"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div><div class="success-metric"><span>Thời gian hoàn thành</span><strong>25/08/2026 09:36</strong></div><div class="success-metric"><span>Trạng thái khoản tạo</span><strong>Nháp</strong></div>
                 </div>
-                <div class="td-actions-right" style="justify-content:center"><button class="td-btn primary" onclick="location.href='receivables.html?importBatch=IMP-260817-0042'">Xem các khoản vừa tạo</button><button class="td-btn" onclick="mockToast('Đã chuẩn bị tệp kết quả.','success')">Tải kết quả</button><button class="td-btn" onclick="switchImportTab('import-history')">Xem lịch sử nhập</button><button class="td-btn" onclick="newBatch()">Nhập lô mới</button></div>
+                <div class="td-actions-right" style="justify-content:center"><button class="td-btn primary" onclick="location.href='receivables.html?importBatch=IMP-260825-0042'">Xem các khoản vừa tạo</button><button class="td-btn" onclick="mockToast('Đã chuẩn bị tệp kết quả.','success')">Tải kết quả</button><button class="td-btn" onclick="switchImportTab('import-history')">Xem lịch sử nhập</button><button class="td-btn" onclick="newBatch()">Nhập lô mới</button></div>
               </div>
             </div>
           </div>
@@ -561,7 +559,7 @@
             <div class="td-card-body">
               <div class="history-filter">
                 <div class="td-field"><label>Khoảng thời gian</label><input class="td-input" value="01/08/2026 – 17/08/2026"/></div><div class="td-field"><label>Năm học</label><select class="td-select"><option>Tất cả</option><option selected>2026–2027</option><option>2025–2026</option></select></div><div class="td-field"><label>Học kỳ</label><select class="td-select"><option>Tất cả</option><option selected>Học kỳ 1</option><option>Học kỳ 2</option></select></div><div class="td-field"><label>Đợt thu</label><select class="td-select"><option>Tất cả</option><option selected>Đợt thu học phí chính</option></select></div><div class="td-field"><label>Nguồn dữ liệu</label><select class="td-select"><option>Tất cả</option><option>Phòng KHTC</option><option>Phòng Đào tạo</option></select></div>
-                <div class="td-field"><label>Người tải</label><select class="td-select"><option>Tất cả</option><option>Nguyễn Thị Hương</option><option>Trần Văn Minh</option></select></div><div class="td-field"><label>Người xác nhận</label><select class="td-select"><option>Tất cả</option><option>Nguyễn Thị Hương</option><option>Trần Văn Minh</option></select></div><div class="td-field"><label>Trạng thái</label><select class="td-select"><option>Tất cả</option><option>Đã tải lên</option><option>Đang kiểm tra</option><option>Không hợp lệ</option><option>Sẵn sàng xác nhận</option><option>Đang ghi dữ liệu</option><option>Đã nhập thành công</option><option>Đã nhập một phần</option><option>Đã hủy</option><option>Thất bại</option></select></div><div class="td-field wide"><label>Tên file hoặc mã lô</label><input class="td-input" placeholder="VD: IMP-260817-0042 hoặc ULIS_KHOANTHU..."/></div>
+                <div class="td-field"><label>Người tải</label><select class="td-select"><option>Tất cả</option><option>Nguyễn Thị Hương</option><option>Trần Văn Minh</option></select></div><div class="td-field"><label>Người xác nhận</label><select class="td-select"><option>Tất cả</option><option>Nguyễn Thị Hương</option><option>Trần Văn Minh</option></select></div><div class="td-field"><label>Trạng thái</label><select class="td-select"><option>Tất cả</option><option>Đã tải lên</option><option>Đang kiểm tra</option><option>Không hợp lệ</option><option>Sẵn sàng xác nhận</option><option>Đang ghi dữ liệu</option><option>Đã nhập thành công</option><option>Đã nhập một phần</option><option>Đã hủy</option><option>Thất bại</option></select></div><div class="td-field wide"><label>Tên file hoặc mã lô</label><input class="td-input" placeholder="Nhập mã lô hoặc tên tệp"/></div>
               </div>
               <div class="td-actions-row"><span style="font-size:12px;color:#64748b">Bộ lọc lịch sử không ảnh hưởng lô nhập đang thao tác.</span><div class="td-actions-right"><button class="td-btn">Đặt lại</button><button class="td-btn primary">Lọc lịch sử</button></div></div>
             </div>
@@ -569,12 +567,12 @@
 
           <div class="history-table-wrap">
             <table class="history-table"><thead><tr><th>Mã lô</th><th>Tên lô</th><th>Đợt thu</th><th>Nguồn dữ liệu</th><th>File nguồn</th><th>Người tải · Thời gian tải</th><th>Trạng thái</th><th>Kết quả</th><th class="money">Tổng tiền</th><th>Người xác nhận · Thời gian</th><th>Thao tác</th></tr></thead><tbody>
-              <tr><td><strong>IMP-260817-0042</strong></td><td>Nhập học phí HK1 2026–2027 – 17/08/2026</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">ULIS_KHOANTHU_HK1_2026_2027.xlsx</div><div class="hist-sub">486 KB · mẫu v1.4</div></td><td>Nguyễn Thị Hương<div class="hist-sub">17/08/2026 16:30</div></td><td><span class="status-badge ready">Đã nhập thành công</span></td><td>2.019 tổng · 1.976 hợp lệ · 31 cảnh báo · 12 lỗi<div class="hist-sub">18 trùng · 3 xung đột</div></td><td class="money"><strong>122.619.600 đồng</strong></td><td>Nguyễn Thị Hương<div class="hist-sub">17/08/2026 16:36</div></td><td><div class="hist-actions"><button class="td-btn ghost sm" onclick="openHistoryDetail('IMP-260817-0042')">Xem kết quả</button><button class="td-btn ghost sm">Tải kết quả</button><button class="td-btn ghost sm" onclick="location.href='receivables.html?importBatch=IMP-260817-0042'">Xem khoản đã tạo</button></div></td></tr>
+              <tr><td><strong>IMP-260825-0042</strong></td><td>Nhập học phí HK1 2026–2027 – 25/08/2026</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">ULIS_KHOANTHU_HK1_2026_2027.xlsx</div><div class="hist-sub">486 KB · phiên bản 1.4</div></td><td>Nguyễn Thị Hương<div class="hist-sub">25/08/2026 09:30</div></td><td><span class="status-badge ready">Đã nhập thành công</span></td><td>986 tổng · 950 hợp lệ · 16 cảnh báo · 8 lỗi<div class="hist-sub">10 trùng · 2 xung đột</div></td><td class="money"><strong>6.284.500.000 đồng</strong></td><td>Nguyễn Thị Hương<div class="hist-sub">25/08/2026 09:36</div></td><td><div class="hist-actions"><button class="td-btn ghost sm" onclick="openHistoryDetail('IMP-260825-0042')">Xem kết quả</button><button class="td-btn ghost sm">Tải kết quả</button><button class="td-btn ghost sm" onclick="location.href='receivables.html?importBatch=IMP-260825-0042'">Xem khoản đã tạo</button></div></td></tr>
               <tr><td><strong>IMP-260817-0041</strong></td><td>Đào tạo – học phần bổ sung HK1</td><td>Đợt thu học phí chính</td><td>Phòng Đào tạo</td><td><div class="hist-file">DKHP_HK1_2026_2027_v2.xlsx</div><div class="hist-sub">612 KB · mẫu v1.4</div></td><td>Trần Văn Minh<div class="hist-sub">17/08/2026 15:20</div></td><td><span class="status-badge checking">Đang kiểm tra</span></td><td>3.840 tổng · đang xử lý</td><td class="money">—</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm" onclick="switchImportTab('import-new');goStep(2)">Tiếp tục</button><button class="td-btn ghost sm">Tải file nguồn</button></div></td></tr>
               <tr><td><strong>IMP-260816-0038</strong></td><td>Học phí BRT đợt 1</td><td>Đợt thu bổ sung 1</td><td>Phòng KHTC</td><td><div class="hist-file">ULIS_BRT_DOT1_2026.xlsx</div><div class="hist-sub">128 KB · mẫu v1.4</div></td><td>Nguyễn Thị Hương<div class="hist-sub">16/08/2026 14:12</div></td><td><span class="status-badge warn">Đã nhập một phần</span></td><td>128 tổng · 121 hợp lệ · 7 lỗi<div class="hist-sub">4 trùng · 1 xung đột</div></td><td class="money"><strong>3.025.000.000 đồng</strong></td><td>Nguyễn Thị Hương<div class="hist-sub">16/08/2026 14:18</div></td><td><div class="hist-actions"><button class="td-btn ghost sm">Xem kết quả</button><button class="td-btn ghost sm">Tải file lỗi</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
               <tr><td><strong>IMP-260816-0037</strong></td><td>BHYT khóa 2026</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">BHYT_K2026.xlsx</div><div class="hist-sub">84 KB · mẫu v1.4</div></td><td>Lê Thu Hà<div class="hist-sub">16/08/2026 11:05</div></td><td><span class="status-badge error">Không hợp lệ</span></td><td>176 tổng · 18 lỗi cấu trúc</td><td class="money">—</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm">Xem kết quả</button><button class="td-btn ghost sm">Tải file lỗi</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
               <tr><td><strong>IMP-260815-0032</strong></td><td>Dữ liệu chuyển đổi đợt 02</td><td>Đợt thu học phí chính</td><td>Dữ liệu chuyển đổi</td><td><div class="hist-file">MIGRATION_HP_02.xlsx</div><div class="hist-sub">1.8 MB · mẫu chuyển đổi</div></td><td>Trần Văn Minh<div class="hist-sub">15/08/2026 09:30</div></td><td><span class="status-badge error">Thất bại</span></td><td>5.204 tổng · lỗi khi ghi dữ liệu</td><td class="money">—</td><td>Trần Văn Minh<div class="hist-sub">15/08/2026 09:42</div></td><td><div class="hist-actions"><button class="td-btn ghost sm">Xem kết quả</button><button class="td-btn ghost sm">Tải file nguồn</button></div></td></tr>
-              <tr><td><strong>IMP-260814-0029</strong></td><td>Test mẫu CP6 trước UAT</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">CP6_TEST_SAMPLE.xlsx</div><div class="hist-sub">92 KB · mẫu v1.3</div></td><td>Nguyễn Thị Hương<div class="hist-sub">14/08/2026 17:10</div></td><td><span class="status-badge neutral">Đã hủy</span></td><td>80 tổng · 80 hợp lệ</td><td class="money">2.400.000.000 đồng</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm">Tải file nguồn</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
+              <tr><td><strong>IMP-260824-0029</strong></td><td>Nhập bổ sung học phí HK1</td><td>Đợt thu học phí chính</td><td>Phòng KHTC</td><td><div class="hist-file">ULIS_HOCPHI_BOSUNG_HK1_2026_2027.xlsx</div><div class="hist-sub">92 KB · mẫu v1.4</div></td><td>Nguyễn Thị Hương<div class="hist-sub">24/08/2026 17:10</div></td><td><span class="status-badge neutral">Đã hủy</span></td><td>80 tổng · 80 hợp lệ</td><td class="money">2.400.000.000 đồng</td><td>—</td><td><div class="hist-actions"><button class="td-btn ghost sm">Tải file nguồn</button><button class="td-btn ghost sm">Tạo lô mới từ file này</button></div></td></tr>
             </tbody></table>
             <div class="table-footer"><span>Hiển thị 1–6 / 12 lô nhập</span><div class="page-controls"><button class="pg">‹</button><button class="pg active">1</button><button class="pg">2</button><button class="pg">›</button></div></div>
           </div>
@@ -589,8 +587,8 @@
   <div class="td-modal">
     <div class="td-modal-head"><div><div class="td-modal-title">Xác nhận tạo khoản phải thu</div><div class="td-card-sub">Kiểm tra lại tác động trước khi ghi dữ liệu.</div></div><button class="td-btn ghost" onclick="closeConfirmModal()">✕</button></div>
     <div class="td-modal-body">
-      <div class="impact-box">Hệ thống sẽ tạo <strong>1.976 khoản phải thu</strong> ở trạng thái <strong>Nháp</strong>, tổng số tiền <strong>122.619.600 đồng</strong>. Các khoản này chưa được phát hành và chưa hiển thị cho sinh viên.</div>
-      <div class="confirm-grid"><div class="confirm-item"><span>Đợt thu</span><strong>Đợt thu học phí chính</strong></div><div class="confirm-item"><span>Nguồn dữ liệu</span><strong>Phòng Kế hoạch Tài chính</strong></div><div class="confirm-item"><span>File nguồn</span><strong>ULIS_KHOANTHU_HK1_2026_2027.xlsx</strong></div><div class="confirm-item"><span>Trùng bị bỏ qua</span><strong>18 dòng</strong></div><div class="confirm-item"><span>Không được ghi</span><strong>15 dòng</strong></div><div class="confirm-item"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div></div>
+      <div class="impact-box">Hệ thống sẽ tạo <strong>950 khoản phải thu</strong> ở trạng thái <strong>Nháp</strong>, tổng số tiền <strong>6.284.500.000 đồng</strong>. Các khoản này chưa được phát hành và chưa hiển thị cho sinh viên.</div>
+      <div class="confirm-grid"><div class="confirm-item"><span>Đợt thu</span><strong>Đợt thu học phí chính</strong></div><div class="confirm-item"><span>Nguồn dữ liệu</span><strong>Phòng Kế hoạch Tài chính</strong></div><div class="confirm-item"><span>File nguồn</span><strong>ULIS_KHOANTHU_HK1_2026_2027.xlsx</strong></div><div class="confirm-item"><span>Đủ điều kiện tạo</span><strong>950 dòng</strong></div><div class="confirm-item"><span>Không được tạo</span><strong>36 dòng</strong></div><div class="confirm-item"><span>Người xác nhận</span><strong>Nguyễn Thị Hương</strong></div></div>
     </div>
     <div class="td-modal-foot"><button class="td-btn" onclick="closeConfirmModal();goStep(3)">Quay lại kiểm tra</button><button class="td-btn primary" id="confirmOnceBtn" onclick="confirmImportOnce()">Xác nhận tạo khoản phải thu</button></div>
   </div>
@@ -623,7 +621,7 @@
   function matchPill(r){const c=r==='Khớp'?'ok':r==='Lệch'?'warn':'na';return '<span class="match-pill '+c+'">'+r+'</span>'}
   function rowHtml(x){return '<tr class="'+x.row+'" data-result="'+x.result+'" data-fee="'+x.fee+'" data-course="'+x.course+'" data-reg="'+x.reg+'" data-search="'+(x.student+' '+x.name).toLowerCase()+'"><td class="sticky-1">'+x.line+'</td><td class="sticky-2"><strong>'+x.student+'</strong></td><td class="sticky-3">'+x.name+'</td><td>'+x.fee+'</td><td><strong>'+x.course+'</strong><div style="font-size:11px;color:#94a3b8">'+x.reg+'</div></td><td class="money">'+x.qty+'</td><td class="money"><strong>'+fmt(x.file)+'</strong></td><td class="money">'+fmt(x.cp7)+'</td><td class="money '+(x.diff? 'diff-pos':'diff-zero')+'">'+(x.diff===null?'—':x.diff===0?'0 đồng':('+'+fmt(x.diff)))+'</td><td>'+x.due+'</td><td>'+matchPill(x.match)+'</td><td>'+resultPill(x.result)+'</td><td><button class="td-btn ghost sm" onclick="openRowDrawer('+x.line+')">Xem chi tiết →</button></td></tr>'}
   window.renderPreview=function(){ $('previewBody').innerHTML=records.map(rowHtml).join(''); applyPreviewFilters(); };
-  window.applyPreviewFilters=function(){const q=($('searchRows')?.value||'').trim().toLowerCase();const fee=$('filterFee')?.value||'';const course=$('filterCourse')?.value||'';const reg=$('filterReg')?.value||'';const result=$('filterResult')?.value||'';let count=0;document.querySelectorAll('#previewBody tr').forEach(tr=>{const ok=(!q||tr.dataset.search.includes(q))&&(!fee||tr.dataset.fee===fee)&&(!course||tr.dataset.course===course)&&(!reg||tr.dataset.reg===reg)&&(!result||tr.dataset.result===result);tr.style.display=ok?'':'none';if(ok)count++;});if($('previewCount'))$('previewCount').textContent=count+' dòng mẫu phù hợp · tổng 2.019 dòng';};
+  window.applyPreviewFilters=function(){const q=($('searchRows')?.value||'').trim().toLowerCase();const fee=$('filterFee')?.value||'';const course=$('filterCourse')?.value||'';const reg=$('filterReg')?.value||'';const result=$('filterResult')?.value||'';let count=0;document.querySelectorAll('#previewBody tr').forEach(tr=>{const ok=(!q||tr.dataset.search.includes(q))&&(!fee||tr.dataset.fee===fee)&&(!course||tr.dataset.course===course)&&(!reg||tr.dataset.reg===reg)&&(!result||tr.dataset.result===result);tr.style.display=ok?'':'none';if(ok)count++;});if($('previewCount'))$('previewCount').textContent=count+' dòng phù hợp · tổng 986 dòng';};
   window.quickFilter=function(btn){document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===btn));$('filterResult').value=btn.dataset.filter;applyPreviewFilters();};
   window.filterIssue=function(result){switchImportTab('import-new');goStep(3);$('filterResult').value=result;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x.dataset.filter===result));applyPreviewFilters();setTimeout(()=>$('previewTable').scrollIntoView({behavior:'smooth',block:'start'}),50);};
 
@@ -632,29 +630,30 @@
   window.switchImportTab=function(tab){document.querySelectorAll('.td-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.td-pane').forEach(x=>x.classList.remove('active'));$('tab-'+tab).classList.add('active');$('pane-'+tab).classList.add('active');saveState({tab});};
   window.goStep=function(step){step=Math.max(1,Math.min(4,Number(step)||1));document.querySelectorAll('.step-panel').forEach(x=>x.classList.remove('active'));$('step-'+step).classList.add('active');document.querySelectorAll('.step-item').forEach(x=>{const n=Number(x.dataset.step);x.classList.toggle('active',n===step);x.classList.toggle('done',n<step);});saveState({step});window.scrollTo({top:0,behavior:'smooth'});};
   window.mockToast=function(msg,type){if(typeof showToast==='function')showToast(msg,type||'info');else alert(msg)};
-  window.downloadTemplate=function(){mockToast('Đã tải file mẫu CP6-IMPORT-v1.4 theo đợt thu, nguồn dữ liệu và chế độ nhập.','success')};
+  window.downloadTemplate=function(){mockToast('Đã tải tệp ULIS-IMPORT-v1.4 theo đợt thu, nguồn dữ liệu và chế độ nhập.','success')};
   function prereqReady(){return !!($('collectionRound').value&&$('source').value&&$('importMode').value)}
   function updatePrereqButtons(){const ok=prereqReady();['btnTemplate','btnChooseStep1','btnUploadCheckStep1'].forEach(id=>{if($(id))$(id).disabled=!ok})}
   document.querySelectorAll('.prereq').forEach(x=>x.addEventListener('change',updatePrereqButtons));
   window.chooseFile=function(){if(!prereqReady()){mockToast('Vui lòng chọn đủ Đợt thu, Nguồn dữ liệu và Chế độ nhập trước khi chọn file.','warning');return}$('realFileInput').click();};
   window.onRealFileSelected=function(e){const f=e.target.files?.[0];if(f){$('selectedFileName').textContent=f.name;$('resultFileName').textContent=f.name;}goStep(2);mockToast('Đã chọn file. Bấm “Tải lên và kiểm tra” để tạo lô nhập.','info');};
   window.startUploadCheck=function(){if(!prereqReady())return;goStep(2);runValidation();};
-  window.runValidation=function(){goStep(2);let p=0;$('uploadStatus').textContent='Đang kiểm tra';$('fileStatusText').textContent='Đang kiểm tra';const timer=setInterval(()=>{p=Math.min(100,p+20);$('progressBar').style.width=p+'%';$('progressPct').textContent=p+'%';$('progressLabel').textContent=p<100?'Đang kiểm tra cấu trúc file và 2.019 dòng dữ liệu…':'Đã kiểm tra xong 2.019 dòng dữ liệu.';if(p>=100){clearInterval(timer);$('uploadStatus').textContent='Sẵn sàng xác nhận';$('fileStatusText').textContent='Sẵn sàng xác nhận';saveState({step:3});setTimeout(()=>goStep(3),350)}},220);};
+  window.runValidation=function(){goStep(2);let p=0;$('uploadStatus').textContent='Đang kiểm tra';$('fileStatusText').textContent='Đang kiểm tra';const timer=setInterval(()=>{p=Math.min(100,p+20);$('progressBar').style.width=p+'%';$('progressPct').textContent=p+'%';$('progressLabel').textContent=p<100?'Đang kiểm tra cấu trúc file và 986 dòng dữ liệu…':'Đã kiểm tra xong 986 dòng dữ liệu.';if(p>=100){clearInterval(timer);$('uploadStatus').textContent='Sẵn sàng xác nhận';$('fileStatusText').textContent='Sẵn sàng xác nhận';saveState({step:3});setTimeout(()=>goStep(3),350)}},220);};
   window.simulateRecheck=function(){mockToast('Đang kiểm tra lại lô nhập…','info');setTimeout(()=>mockToast('Đã kiểm tra lại. Kết quả không thay đổi.','success'),600)};
   window.toggleColumns=function(e){e.stopPropagation();$('columnPanel').classList.toggle('open')};document.addEventListener('click',e=>{if(!e.target.closest('.column-menu'))$('columnPanel')?.classList.remove('open')});
-  window.cancelBatch=function(){if(confirm('Hủy lô nhập IMP-260817-0042? Dữ liệu chưa được ghi vào khoản phải thu.')){localStorage.removeItem(STORAGE_KEY);goStep(1);mockToast('Đã hủy lô nhập.','success')}};
-  window.updatePolicyAction=function(){const whole=$('filePolicy').value==='Toàn bộ file';const btn=$('confirmStickyBtn');if(btn)btn.disabled=whole;const note=$('policyNote');if(note)note.textContent=whole?'Không thể xác nhận: còn 12 dòng lỗi và 3 dòng xung đột. Hãy sửa file hoặc chuyển sang “Chỉ các dòng hợp lệ”.':'Chế độ “Chỉ các dòng hợp lệ”: 12 dòng lỗi và 3 dòng xung đột sẽ không được ghi.';};
-  window.openConfirmModal=function(){if($('filePolicy').value==='Toàn bộ file'){mockToast('Không thể xác nhận vì còn 12 dòng lỗi và 3 dòng xung đột.','warning');goStep(3);return}goStep(4);$('confirmImportModal').classList.add('open');$('confirmImportModal').setAttribute('aria-hidden','false')};
+  window.cancelBatch=function(){if(confirm('Hủy lô nhập IMP-260825-0042? Dữ liệu chưa được ghi vào khoản phải thu.')){localStorage.removeItem(STORAGE_KEY);goStep(1);mockToast('Đã hủy lô nhập.','success')}};
+  window.updatePolicyAction=function(){const whole=$('filePolicy').value==='Toàn bộ file';const btn=$('confirmStickyBtn');if(btn)btn.disabled=whole;const note=$('policyNote');if(note)note.textContent=whole?'Không thể xác nhận toàn bộ file: còn 36 dòng chưa đạt điều kiện. Hãy sửa file hoặc chọn “Chỉ các dòng hợp lệ”.':'36 dòng không được tạo: 16 cảnh báo, 8 lỗi, 10 trùng và 2 xung đột.';};
+  window.openConfirmModal=function(){if($('filePolicy').value==='Toàn bộ file'){mockToast('Không thể xác nhận toàn bộ file vì còn 36 dòng chưa đạt điều kiện.','warning');goStep(3);return}goStep(4);$('confirmImportModal').classList.add('open');$('confirmImportModal').setAttribute('aria-hidden','false')};
   window.closeConfirmModal=function(){$('confirmImportModal').classList.remove('open');$('confirmImportModal').setAttribute('aria-hidden','true')};
-  window.confirmImportOnce=function(){const btn=$('confirmOnceBtn');if(btn.dataset.done==='1')return;btn.dataset.done='1';btn.disabled=true;btn.textContent='Đang tạo khoản phải thu…';setTimeout(()=>{closeConfirmModal();$('step4BeforeConfirm').style.display='none';$('importSuccess').style.display='block';saveState({step:4,confirmed:true});mockToast('Đã tạo 1.976 khoản phải thu ở trạng thái Nháp.','success')},700)};
+  window.confirmImportOnce=function(){const btn=$('confirmOnceBtn');if(btn.dataset.done==='1')return;btn.dataset.done='1';btn.disabled=true;btn.textContent='Đang tạo khoản phải thu…';setTimeout(()=>{closeConfirmModal();$('step4BeforeConfirm').style.display='none';$('importSuccess').style.display='block';saveState({step:4,confirmed:true});mockToast('Đã tạo 950 khoản phải thu ở trạng thái Nháp.','success')},700)};
   window.newBatch=function(){localStorage.removeItem(STORAGE_KEY);$('step4BeforeConfirm').style.display='block';$('importSuccess').style.display='none';const b=$('confirmOnceBtn');b.dataset.done='';b.disabled=false;b.textContent='Xác nhận tạo khoản phải thu';switchImportTab('import-new');goStep(1)};
   window.openRowDrawer=function(line){const x=records.find(r=>r.line===line)||records[0];$('drawerTitle').textContent='Chi tiết dòng '+x.line;$('drawerSub').textContent=x.student+' · '+x.name;const error=x.error?'<tr><td>'+x.error+'</td><td>'+x.student+'</td><td>Không đạt</td><td>Kiểm tra và sửa file nguồn, sau đó tải lại.</td></tr>':'<tr><td>Không có lỗi chặn</td><td>—</td><td>Đạt</td><td>Không cần sửa dữ liệu nguồn.</td></tr>';const retro=x.retro?'<div class="retro-alert"><strong>⚠ Cảnh báo quy tắc hồi tố</strong><br>Khoản này đang sử dụng một quy tắc được ban hành hồi tố. Cần kiểm tra trước khi xác nhận.</div>':'';$('drawerBody').innerHTML='<div class="detail-section"><h3>1. Dữ liệu sinh viên</h3><div class="detail-grid"><div class="detail-item"><span>Mã sinh viên</span><strong>'+x.student+'</strong></div><div class="detail-item"><span>Họ tên</span><strong>'+x.name+'</strong></div><div class="detail-item"><span>Chương trình đào tạo</span><strong>'+x.program+'</strong></div><div class="detail-item"><span>Khóa tuyển sinh</span><strong>'+x.cohort+'</strong></div></div></div><div class="detail-section"><h3>2. Dữ liệu nguồn</h3><div class="detail-grid"><div class="detail-item"><span>Mã bản ghi nguồn</span><strong>'+x.sourceId+'</strong></div><div class="detail-item"><span>Khoản mục</span><strong>'+x.fee+'</strong></div><div class="detail-item"><span>Học phần</span><strong>'+x.course+'</strong></div><div class="detail-item"><span>Loại đăng ký</span><strong>'+x.reg+'</strong></div><div class="detail-item"><span>Số tín chỉ / số lượng</span><strong>'+x.qty+'</strong></div><div class="detail-item"><span>Số tiền</span><strong>'+fmt(x.file)+'</strong></div><div class="detail-item"><span>Hạn nộp</span><strong>'+x.due+'</strong></div><div class="detail-item"><span>Căn cứ</span><strong>Thông báo thu học phí HK1 2026–2027</strong></div></div></div><div class="detail-section"><h3>3. Kết quả đối chiếu</h3><div class="detail-grid"><div class="detail-item"><span>Số tiền trong file</span><strong>'+fmt(x.file)+'</strong></div><div class="detail-item"><span>Số tiền tính theo CP7</span><strong>'+fmt(x.cp7)+'</strong></div><div class="detail-item"><span>Chênh lệch</span><strong>'+(x.diff===null?'—':fmt(x.diff))+'</strong></div><div class="detail-item"><span>Quy tắc được chọn</span><strong>'+x.rule+'</strong></div><div class="detail-item"><span>Quy tắc hồi tố</span><strong>'+(x.retro?'Có':'Không')+'</strong></div></div>'+retro+'</div><div class="detail-section"><h3>4. Kiểm tra trùng/xung đột</h3><div class="detail-grid"><div class="detail-item"><span>Dữ liệu đã tồn tại</span><strong>'+(x.result==='Trùng'||x.result==='Xung đột'?'Có':'Không')+'</strong></div><div class="detail-item"><span>Khoản phải thu liên quan</span><strong>'+(x.result==='Trùng'?'RCV-260815-01024':'—')+'</strong></div><div class="detail-item"><span>Giá trị cũ và giá trị mới</span><strong>'+(x.result==='Xung đột'?'30.000.000 → '+fmt(x.file):'Không có thay đổi')+'</strong></div><div class="detail-item"><span>Kết luận</span><strong>'+(x.result==='Trùng'?'Trùng – tự động bỏ qua':x.result==='Xung đột'?'Xung đột – không được ghi đè':'Không phát hiện trùng/xung đột')+'</strong></div></div></div><div class="detail-section"><h3>5. Danh sách lỗi</h3><table class="error-mini"><thead><tr><th>Lỗi</th><th>Giá trị đã nhập</th><th>Kết quả</th><th>Hướng dẫn sửa</th></tr></thead><tbody>'+error+'</tbody></table><div class="no-edit-note">Không sửa trực tiếp dữ liệu Excel tại đây. Người dùng sửa file nguồn và tải lại để hệ thống kiểm tra lại.</div></div>';$('rowDrawerBackdrop').classList.add('open');$('rowDrawerBackdrop').setAttribute('aria-hidden','false')};
   window.closeRowDrawer=function(){$('rowDrawerBackdrop').classList.remove('open');$('rowDrawerBackdrop').setAttribute('aria-hidden','true')};
-  window.openHistoryDetail=function(id){mockToast('Mở chi tiết lô '+id+' (mockup).','info')};
+  window.openHistoryDetail=function(id){mockToast('Đã mở chi tiết lô '+id+'.','info')};
   $('confirmImportModal').addEventListener('click',e=>{if(e.target===$('confirmImportModal'))closeConfirmModal()});$('rowDrawerBackdrop').addEventListener('click',e=>{if(e.target===$('rowDrawerBackdrop'))closeRowDrawer()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeConfirmModal();closeRowDrawer()}});
 
   renderPreview();updatePrereqButtons();updatePolicyAction();const st=loadState();if(st.confirmed){$('step4BeforeConfirm').style.display='none';$('importSuccess').style.display='block'}switchImportTab(st.tab||'import-new');goStep(st.step||1);
 })();
 </script>
+<script src="../js/mvp-clean.js"></script>
 </body>
 </html>

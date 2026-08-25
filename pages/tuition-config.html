@@ -63,6 +63,7 @@
 
 
 </style>
+<link rel="stylesheet" href="../css/mvp-clean.css"/>
 </head>
 <body>
 <div id="toast-container"></div>
@@ -171,13 +172,10 @@
   </nav>
 <div id="main">
 <header id="topbar">
-      <div class="topbar-crumb" style="display:flex;flex-direction:column;gap:1px;">
-        <div style="font-size:10px;font-weight:500;color:var(--muted-lt);letter-spacing:.2px;">Hệ thống quản lý thu học phí</div>
-        <div style="display:flex;align-items:center;gap:5px;">
-          <span class="crumb-root">Nghiệp vụ</span>
-          <span class="crumb-sep"> / </span>
-          <span class="crumb-page" id="crumbPage">Cấu hình khung học phí</span>
-        </div>
+      <div class="topbar-crumb">
+        <span class="crumb-root">Nghiệp vụ</span>
+        <span class="crumb-sep" aria-hidden="true">›</span>
+        <span class="crumb-page" id="crumbPage">Cấu hình học phí</span>
       </div>
 
       <div class="topbar-user topbar-user-wrap">
@@ -195,7 +193,7 @@
             <div class="udh-role">Phòng KHTC — Cán bộ quản trị</div>
           </div>
 
-          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Vui lòng liên hệ quản trị viên để được hỗ trợ.','info')">
             <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
               <circle cx="8" cy="5" r="3"/>
               <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
@@ -203,7 +201,7 @@
             Thông tin tài khoản
           </div>
 
-          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Vui lòng liên hệ quản trị viên để được hỗ trợ.','info')">
             <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="7" width="12" height="8" rx="1"/>
               <path d="M5 7V5a3 3 0 016 0v2"/>
@@ -263,7 +261,7 @@
         <div class="cf-field"><label>Kết quả kiểm tra</label><select><option>Tất cả</option><option>Chưa kiểm tra</option><option>Hợp lệ</option><option>Có cảnh báo</option><option>Có lỗi chặn</option><option>Kết quả đã hết giá trị</option></select></div>
         <label class="cf-check"><input type="checkbox"/> Hiển thị phiên bản lưu trữ</label>
       </div>
-      <div class="cf-card-head"><div><div class="cf-card-title">Danh sách phiên bản khung học phí</div><div class="cf-card-sub">8 phiên bản · dữ liệu mock để minh họa đầy đủ vòng đời CP7</div></div><button class="cf-btn sm">☷ Chọn cột</button></div>
+      <div class="cf-card-head"><div><div class="cf-card-title">Danh sách phiên bản khung học phí</div><div class="cf-card-sub">8 phiên bản trong phạm vi đang chọn</div></div><button class="cf-btn sm">☷ Chọn cột</button></div>
       <div class="cf-table-wrap"><table class="cf-table" id="versionTable"><thead><tr><th class="sticky1">Mã/Tên phiên bản</th><th>Năm học</th><th>Học kỳ</th><th>Hiệu lực từ – đến</th><th>Văn bản căn cứ</th><th class="r">Nhóm phạm vi</th><th class="r">Quy tắc</th><th>Kết quả kiểm tra</th><th>Trạng thái</th><th>Chế độ phát hành</th><th>Cập nhật gần nhất</th><th>Thao tác</th></tr></thead><tbody>
         <tr data-status="NHAP" onclick="selectVersionRow(this)"><td class="sticky1"><strong>FRAME-2026-HK1-DHCQ-v1</strong><br><span class="cf-muted">Khung học phí ĐHCQ HK1 2026–2027</span></td><td>2026–2027</td><td>Học kỳ 1</td><td>01/08/2026 – 31/01/2027</td><td>QĐ 1186/QĐ-ĐHNN</td><td class="r">12</td><td class="r">48</td><td><span class="cf-badge warn">Có cảnh báo</span></td><td><span class="cf-badge neutral">Nháp</span></td><td>Thông thường</td><td>17/08/2026 21:42<br><span class="cf-muted">Nguyễn Thị Hương</span></td><td><div class="cf-actions"><button class="cf-link" onclick="event.stopPropagation();openWorkspace('draft')">Xem / Sửa</button><button class="cf-link" onclick="event.stopPropagation();mockToast('Đã chọn phiên bản để kiểm tra.','info')">Kiểm tra</button><button class="cf-link" onclick="event.stopPropagation();openModal('modalCopy')">Sao chép</button></div></td></tr>
         <tr data-status="CHO_DUYET" onclick="selectVersionRow(this)"><td class="sticky1"><strong>FRAME-2026-BRT-v2</strong><br><span class="cf-muted">Khung BRT điều chỉnh 2026–2027</span></td><td>2026–2027</td><td>Toàn năm</td><td>01/08/2026 – 31/07/2027</td><td>QĐ 1201/QĐ-ĐHNN · +1</td><td class="r">5</td><td class="r">16</td><td><span class="cf-badge green">Hợp lệ</span></td><td><span class="cf-badge warn">Chờ duyệt</span></td><td><span class="cf-badge orange">Hồi tố</span></td><td>17/08/2026 18:15<br><span class="cf-muted">Trần Minh Anh</span></td><td><div class="cf-actions"><button class="cf-link" onclick="event.stopPropagation();openWorkspace('pending')">Xem</button><button class="cf-link" onclick="event.stopPropagation();openModal('modalApprove')">Phê duyệt</button><button class="cf-link danger" onclick="event.stopPropagation();mockToast('Mở hộp thoại từ chối.','warning')">Từ chối</button></div></td></tr>
@@ -486,10 +484,11 @@
  window.closeWorkspace=function(){$('workspace').classList.remove('active','readonly');document.querySelectorAll('#workspace .cf-link[data-edit-label]').forEach(el=>el.textContent='Xem / Sửa');$('topLevelArea').style.display='block';document.querySelectorAll('#workspace input,#workspace select,#workspace textarea').forEach(el=>el.disabled=false);goStep(1);window.scrollTo({top:0,behavior:'smooth'})};
  window.goStep=function(n){document.querySelectorAll('.cf-step').forEach(s=>s.classList.toggle('active',Number(s.dataset.step)===n));document.querySelectorAll('.cf-step-panel').forEach(p=>p.classList.remove('active'));$('step-'+n).classList.add('active')};
  window.runCalculator=function(){$('calcResult').innerHTML='<div class="cf-callout"><strong>Đã tìm thấy đúng 1 quy tắc phù hợp.</strong> Không có chồng lấn trong ngữ cảnh thử.</div><div class="cf-info-grid" style="margin-top:12px;grid-template-columns:1fr 1fr"><div class="cf-info"><div class="cf-info-label">Phiên bản chi phối</div><div class="cf-info-value">FRAME-2026-HK1-DHCQ-v1</div></div><div class="cf-info"><div class="cf-info-label">Quy tắc được chọn</div><div class="cf-info-value">RULE-DHCQ-CREDIT-001</div></div><div class="cf-info"><div class="cf-info-label">Nhóm phạm vi</div><div class="cf-info-value">SCOPE-DHCQ-K24-NNA</div></div><div class="cf-info"><div class="cf-info-label">Phương pháp</div><div class="cf-info-value">Theo tín chỉ</div></div><div class="cf-info"><div class="cf-info-label">Đơn vị</div><div class="cf-info-value">Tín chỉ</div></div><div class="cf-info"><div class="cf-info-label">Đơn giá</div><div class="cf-info-value">720.000 đồng</div></div><div class="cf-info"><div class="cf-info-label">Hệ số</div><div class="cf-info-value">1,0</div></div><div class="cf-info"><div class="cf-info-label">Số lượng mặc định</div><div class="cf-info-value">Không đặt mặc định</div></div><div class="cf-info"><div class="cf-info-label">Tiền tệ</div><div class="cf-info-value">VND</div></div><div class="cf-info"><div class="cf-info-label">Khoảng hiệu lực</div><div class="cf-info-value">01/08/2026 – 31/01/2027</div></div><div class="cf-info"><div class="cf-info-label">Văn bản căn cứ</div><div class="cf-info-value">1186/QĐ-ĐHNN</div></div><div class="cf-info"><div class="cf-info-label">Chế độ phát hành</div><div class="cf-info-value">Phát hành thông thường</div></div><div class="cf-info"><div class="cf-info-label">Hồi tố</div><div class="cf-info-value">Không</div></div></div><div class="cf-callout" style="margin-top:12px"><strong>Vì sao chọn quy tắc này:</strong> Ngày tính nằm trong khoảng hiệu lực; hệ, bậc, khóa, ngành, chương trình, quốc tịch, trạng thái NĐ 116, cơ sở ghi danh và loại đăng ký đều khớp nhóm phạm vi; không có quy tắc cụ thể theo học phần được ưu tiên hơn.</div>'};
- // Role demo: current user is KHTC, reference tab intentionally hidden. Dev can call showReferenceTab() for admin/education role.
+ // Current user is KHTC; reference tab is hidden for this role. Dev can call showReferenceTab() for admin/education role.
  window.showReferenceTab=function(){document.querySelectorAll('.role-admin-only').forEach(x=>x.style.display='block')};
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.cf-overlay.open').forEach(x=>x.classList.remove('open'));document.querySelectorAll('.cf-drawer-bg.open').forEach(x=>x.classList.remove('open'))}})
 })();
 </script>
 <script src="../js/common.js"></script>
+<script src="../js/mvp-clean.js"></script>
 </body></html>

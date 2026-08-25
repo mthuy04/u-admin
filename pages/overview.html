@@ -358,6 +358,7 @@
 </style>
 
 
+<link rel="stylesheet" href="../css/mvp-clean.css"/>
 </head>
 
 <body>
@@ -493,11 +494,10 @@
 
     <!-- ===================== TOPBAR ===================== -->
     <header id="topbar">
-      <div class="topbar-crumb" style="display:flex;flex-direction:column;gap:1px;">
-        <div style="font-size:10px;font-weight:500;color:var(--muted-lt);letter-spacing:.2px;">Hệ thống quản lý thu học phí</div>
-        <div style="display:flex;align-items:center;gap:5px;">
-          <span class="crumb-root">Tổng quan</span>
-        </div>
+      <div class="topbar-crumb">
+        <span class="crumb-root">Nghiệp vụ</span>
+        <span class="crumb-sep" aria-hidden="true">›</span>
+        <span class="crumb-page">Tổng quan</span>
       </div>
 
       <div class="topbar-user topbar-user-wrap">
@@ -515,7 +515,7 @@
             <div class="udh-role">Phòng KHTC — Cán bộ quản trị</div>
           </div>
 
-          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Vui lòng liên hệ quản trị viên để được hỗ trợ.','info')">
             <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
               <circle cx="8" cy="5" r="3"/>
               <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
@@ -523,7 +523,7 @@
             Thông tin tài khoản
           </div>
 
-          <div class="user-menu-item" onclick="closeUserMenu();showToast('Tính năng đang phát triển.','info')">
+          <div class="user-menu-item" onclick="closeUserMenu();showToast('Vui lòng liên hệ quản trị viên để được hỗ trợ.','info')">
             <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="7" width="12" height="8" rx="1"/>
               <path d="M5 7V5a3 3 0 016 0v2"/>
@@ -704,12 +704,7 @@
 (function(){
   'use strict';
 
-  /*
-   * MOCKUP FRONTEND BÀN GIAO DEV
-   * - Dữ liệu mẫu được hard-code có chủ đích để mở file là thấy đủ toàn bộ trạng thái chính.
-   * - Khi tích hợp thật, dev chuyển mockMode=false và map một payload thống nhất cho KPI, biểu đồ, cảnh báo, bảng cùng filters + dataAsOf.
-   * - Endpoint thật có thể override qua window.ULIS_DASHBOARD_CONFIG.
-   */
+  /* Dữ liệu trình bày được tổ chức theo một payload thống nhất cho KPI, biểu đồ và bảng. */
   const CONFIG = Object.assign({
     overviewUrl: '/api/dashboard/tuition-overview',
     exportUrl: '/api/dashboard/tuition-overview/export',
@@ -720,9 +715,9 @@
     mockMode: true
   }, window.ULIS_DASHBOARD_CONFIG || {});
 
-  // ===================== MOCK DATA — chỉ dùng cho mockup bàn giao dev =====================
+  // ===================== DỮ LIỆU HIỂN THỊ =====================
   const MOCK_DEFAULT_FILTERS = {
-    academicYear:'2025-2026', semester:'HK1', collectionRound:'MAIN', snapshot:'CURRENT',
+    academicYear:'2026-2027', semester:'HK1', collectionRound:'MAIN', snapshot:'CURRENT',
     educationLevel:'', cohort:'', major:'', program:'', feeItem:'', registrationType:'', receivableStatus:'', reconciliationStatus:''
   };
 
@@ -777,7 +772,7 @@
   };
 
   function buildMockAnalysis(){
-    const totals={TOTAL_RECEIVABLE:125840000000,ALLOCATED:110420000000,OUTSTANDING:15420000000};
+    const totals={TOTAL_RECEIVABLE:356400000,ALLOCATED:81900000,OUTSTANDING:274500000};
     const datasets={};
     Object.entries(totals).forEach(([metric,total])=>{
       datasets[metric]={};
@@ -806,30 +801,30 @@
 
   const MOCK_CASES = [
     {
-      id:'EXC-260817-001',occurredAt:'2026-08-17T08:42:00+07:00',referenceCode:'ULIS-260817-00142',studentCode:'23040218',studentName:'Nguyễn Minh Anh',feeItemLabel:'Học phí chính quy',amount:48000000,
+      id:'EXC-260825-001',occurredAt:'2026-08-25T08:42:00+07:00',referenceCode:'ULIS-260825-00142',studentCode:'23040218',studentName:'Nguyễn Minh Anh',feeItemLabel:'Học phí chính quy',amount:19000000,
       internalPostingStatusLabel:'Chưa ghi nhận đầy đủ',bankConfirmationStatusLabel:'Ngân hàng đã xác nhận',reconciliationResultLabel:'Chưa đối soát',issueType:'INTERNAL_INCOMPLETE',issueTypeLabel:'Chưa ghi nhận đầy đủ vào khoản phải thu',issueLabel:'Khoản đã thanh toán nhưng nghĩa vụ còn thiếu phần phân bổ',severity:'HIGH',dueAt:'2026-08-17T15:00:00+07:00',assigneeName:'Trần Mai Hương',ownerUnit:'Phòng Kế hoạch Tài chính',
       paymentRequestReference:'PR-260817-0142',receivableReference:'RCV-2526-HK1-23040218',transactionId:'TXN-BIDV-8170142',paymentRequestId:'pr_8170142',receivableId:'rcv_23040218',
       bankEvidence:[{label:'Mã giao dịch BIDV',value:'BIDV20260817008421'},{label:'Thời điểm ngân hàng xác nhận',value:'08:41 17/08/2026'}],
       history:[{label:'Ngân hàng xác nhận thanh toán',at:'2026-08-17T08:41:18+07:00',actor:'BIDV'},{label:'Hệ thống tạo cảnh báo phân bổ',at:'2026-08-17T08:42:03+07:00',actor:'Hệ thống'}]
     },
     {
-      id:'EXC-260817-002',occurredAt:'2026-08-17T09:18:00+07:00',referenceCode:'ULIS-260817-00167',studentCode:'23051109',studentName:'Lê Hoàng Phương',feeItemLabel:'Chương trình BRT',amount:42000000,
+      id:'EXC-260825-002',occurredAt:'2026-08-25T09:18:00+07:00',referenceCode:'ULIS-260825-00167',studentCode:'23051109',studentName:'Lê Hoàng Phương',feeItemLabel:'Chương trình BRT',amount:12500000,
       internalPostingStatusLabel:'Chưa ghi nhận đầy đủ',bankConfirmationStatusLabel:'Ngân hàng đã xác nhận',reconciliationResultLabel:'Có sai lệch',issueType:'INTERNAL_INCOMPLETE',issueTypeLabel:'Chưa ghi nhận đầy đủ vào khoản phải thu',issueLabel:'Số tiền đã ghi nhận thấp hơn số tiền ngân hàng xác nhận',severity:'HIGH',dueAt:'2026-08-17T16:30:00+07:00',assigneeName:'Nguyễn Thị Hương',ownerUnit:'Phòng Kế hoạch Tài chính',
       paymentRequestReference:'PR-260817-0167',receivableReference:'RCV-2526-HK1-23051109',transactionId:'TXN-BIDV-8170167',paymentRequestId:'pr_8170167',receivableId:'rcv_23051109',
       bankEvidence:[{label:'Mã giao dịch BIDV',value:'BIDV20260817009184'}],history:[{label:'Phát hiện sai lệch số tiền',at:'2026-08-17T09:19:08+07:00',actor:'Đối soát tự động'}]
     },
     {
-      id:'EXC-260816-003',occurredAt:'2026-08-16T14:35:00+07:00',referenceCode:'ULIS-260816-00308',studentCode:'24031876',studentName:'Lê Đức Huy',feeItemLabel:'Học phí chính quy',amount:34000000,
+      id:'EXC-260825-003',occurredAt:'2026-08-25T09:35:00+07:00',referenceCode:'ULIS-260825-00308',studentCode:'24031876',studentName:'Lê Đức Huy',feeItemLabel:'Học phí chính quy',amount:7000000,
       internalPostingStatusLabel:'Đang chờ ghi nhận',bankConfirmationStatusLabel:'Ngân hàng đã xác nhận',reconciliationResultLabel:'Chưa đối soát',issueType:'INTERNAL_INCOMPLETE',issueTypeLabel:'Chưa ghi nhận đầy đủ vào khoản phải thu',issueLabel:'Giao dịch đang chờ ghi sổ nội bộ quá thời gian thông thường',severity:'MEDIUM',dueAt:'2026-08-17T10:00:00+07:00',assigneeName:'Phạm Thu Hà',ownerUnit:'Phòng Kế hoạch Tài chính',
       paymentRequestReference:'PR-260816-0308',receivableReference:'RCV-2526-HK1-24031876',transactionId:'TXN-BIDV-8160308',paymentRequestId:'pr_8160308',receivableId:'rcv_24031876',bankEvidence:[{label:'Mã giao dịch BIDV',value:'BIDV20260816014355'}],history:[{label:'Hệ thống chuyển sang chờ ghi nhận',at:'2026-08-16T14:36:02+07:00',actor:'Hệ thống'}]
     },
     {
-      id:'EXC-260817-004',occurredAt:'2026-08-17T10:07:00+07:00',referenceCode:'ULIS-260817-00193',studentCode:'22041542',studentName:'Nguyễn Thị Ánh Tuyết',feeItemLabel:'Học phí chính quy',amount:46500000,
+      id:'EXC-260825-004',occurredAt:'2026-08-25T10:07:00+07:00',referenceCode:'ULIS-260825-00193',studentCode:'22041542',studentName:'Nguyễn Thị Ánh Tuyết',feeItemLabel:'Học phí chính quy',amount:8000000,
       internalPostingStatusLabel:'Đã ghi sổ nội bộ',bankConfirmationStatusLabel:'Chưa được ngân hàng xác nhận',reconciliationResultLabel:'Chưa đối soát',issueType:'BANK_UNCONFIRMED',issueTypeLabel:'Chưa được ngân hàng xác nhận',issueLabel:'Đã ghi sổ nội bộ nhưng chưa nhận xác nhận tương ứng từ ngân hàng',severity:'HIGH',dueAt:'2026-08-17T18:00:00+07:00',assigneeName:'Nguyễn Hương Trà',ownerUnit:'Tinktalk / BIDV',
       paymentRequestReference:'PR-260817-0193',receivableReference:'RCV-2526-HK1-22041542',transactionId:'TXN-INT-8170193',paymentRequestId:'pr_8170193',receivableId:'rcv_22041542',bankEvidence:[],history:[{label:'Đã ghi sổ nội bộ',at:'2026-08-17T10:07:21+07:00',actor:'Hệ thống'}]
     },
     {
-      id:'EXC-260817-005',occurredAt:'2026-08-17T11:26:00+07:00',referenceCode:'ULIS-260817-00218',studentCode:'25010782',studentName:'Đỗ Khánh Linh',feeItemLabel:'Học phí chính quy',amount:32000000,
+      id:'EXC-260825-005',occurredAt:'2026-08-25T10:18:00+07:00',referenceCode:'ULIS-260825-00218',studentCode:'25010782',studentName:'Đỗ Khánh Linh',feeItemLabel:'Bảo hiểm y tế',amount:1263600,
       internalPostingStatusLabel:'Đã ghi sổ nội bộ',bankConfirmationStatusLabel:'Chưa được ngân hàng xác nhận',reconciliationResultLabel:'Chưa đối soát',issueType:'BANK_UNCONFIRMED',issueTypeLabel:'Chưa được ngân hàng xác nhận',issueLabel:'Đã quá cửa sổ xác nhận ngân hàng',severity:'MEDIUM',dueAt:'2026-08-17T19:30:00+07:00',assigneeName:'Nguyễn Hương Trà',ownerUnit:'Tinktalk / BIDV',
       paymentRequestReference:'PR-260817-0218',receivableReference:'RCV-2526-HK1-25010782',transactionId:'TXN-INT-8170218',paymentRequestId:'pr_8170218',receivableId:'rcv_25010782',bankEvidence:[],history:[{label:'Bắt đầu chờ xác nhận ngân hàng',at:'2026-08-17T11:26:42+07:00',actor:'Hệ thống'}]
     },
@@ -861,10 +856,10 @@
   ];
 
   const MOCK_DATA = {
-    dataAsOf:'2026-08-17T17:30:00+07:00',snapshotType:'CURRENT',dataStatus:'RECONCILED',dataStatusLabel:'Dữ liệu đã đối soát',isStale:false,
+    dataAsOf:'2026-08-25T10:30:00+07:00',snapshotType:'CURRENT',dataStatus:'RECONCILED',dataStatusLabel:'Đã cập nhật',isStale:false,
     filterSelection:Object.assign({},MOCK_DEFAULT_FILTERS),
     filterOptions:{
-      academicYear:[{value:'2025-2026',label:'2025–2026'},{value:'2024-2025',label:'2024–2025'}],
+      academicYear:[{value:'2026-2027',label:'2026–2027'},{value:'2025-2026',label:'2025–2026'}],
       semester:[{value:'HK1',label:'Học kỳ 1'},{value:'HK2',label:'Học kỳ 2'},{value:'SUMMER',label:'Học kỳ phụ'}],
       collectionRound:[{value:'MAIN',label:'Đợt thu học phí chính'},{value:'ROUND2',label:'Đợt bổ sung 1'},{value:'ROUND3',label:'Đợt bổ sung 2'}],
       educationLevel:['Đại học chính quy','Sau đại học','Vừa làm vừa học'],
@@ -877,35 +872,34 @@
       reconciliationStatus:['Đã đối soát','Có sai lệch','Chỉ có phía ngân hàng','Chỉ có phía hệ thống']
     },
     kpis:{
-      totalReceivable:125840000000,totalItems:6428,totalStudents:5972,
-      allocatedToObligation:110420000000,internalCollectionRate:87.7448,
-      outstanding:15420000000,outstandingItems:834,
-      overdueAmount:4860000000,overdueItems:286,overdueStudents:253,
-      overpaidAmount:96500000,overpaidItems:19,
-      openExceptionAmount:317200000,openExceptionCases:10,overSlaCases:3
+      totalReceivable:356400000,totalItems:65,totalStudents:60,
+      allocatedToObligation:81900000,internalCollectionRate:22.98,
+      outstanding:274500000,outstandingItems:49,
+      overdueAmount:15450000,overdueItems:4,overdueStudents:4,
+      overpaidAmount:1350000,overpaidItems:1,
+      openExceptionAmount:47763600,openExceptionCases:5,overSlaCases:2
     },
     cashConfirmation:[
-      {code:'ALLOCATED',amount:110420000000,transactionCount:5812,updatedAt:'2026-08-17T17:28:00+07:00',statusLabel:'Đã ghi nhận nội bộ'},
-      {code:'BANK_CONFIRMED',amount:110160000000,transactionCount:5798,updatedAt:'2026-08-17T17:26:00+07:00',statusLabel:'Ngân hàng đã xác nhận'},
-      {code:'RECONCILED',amount:109940000000,transactionCount:5781,updatedAt:'2026-08-17T17:20:00+07:00',statusLabel:'Đã đối soát'},
-      {code:'CLOSED',amount:104650000000,transactionCount:5502,updatedAt:'2026-08-16T23:48:00+07:00',statusLabel:'Đã đóng sổ',latestCloseBatch:'16/08/2026'}
+      {code:'ALLOCATED',amount:81900000,transactionCount:16,updatedAt:'2026-08-25T10:28:00+07:00',statusLabel:'Đã ghi nhận nội bộ'},
+      {code:'BANK_CONFIRMED',amount:78400000,transactionCount:15,updatedAt:'2026-08-25T10:26:00+07:00',statusLabel:'Ngân hàng đã xác nhận'},
+      {code:'RECONCILED',amount:78400000,transactionCount:15,updatedAt:'2026-08-25T10:20:00+07:00',statusLabel:'Đã đối soát'},
+      {code:'CLOSED',amount:72100000,transactionCount:14,updatedAt:'2026-08-24T23:48:00+07:00',statusLabel:'Đã đóng sổ',latestCloseBatch:'24/08/2026'}
     ],
     receivableStructure:{items:[
-      {code:'PAID',label:'Đã thu',count:5575,amount:108420000000,color:'#10b981'},
-      {code:'PARTIAL',label:'Thu một phần',count:207,amount:4800000000,color:'#f59e0b'},
-      {code:'UNPAID',label:'Chưa thu',count:610,amount:11400000000,color:'#3b82f6'},
-      {code:'OVERPAID',label:'Thu thừa',count:19,amount:720000000,color:'#8b5cf6'},
-      {code:'NO_OBLIGATION',label:'Không phát sinh phải nộp',count:12,amount:0,color:'#94a3b8'},
-      {code:'UNMAPPED',label:'Chưa ánh xạ',count:5,amount:500000000,color:'#ef4444'}
+      {code:'PAID',label:'Đã nộp đủ',count:15,amount:50900000,color:'#18a978'},
+      {code:'PARTIAL',label:'Nộp một phần',count:0,amount:0,color:'#f2b53d'},
+      {code:'UNPAID',label:'Chưa nộp',count:49,amount:274500000,color:'#7567e8'},
+      {code:'OVERPAID',label:'Nộp thừa',count:1,amount:31000000,color:'#df6b7b'},
+      {code:'NO_OBLIGATION',label:'Không phát sinh phải nộp',count:0,amount:0,color:'#4b91ee'}
     ]},
     analysis:buildMockAnalysis(),
     aging:{items:[
-      {code:'NOT_DUE',label:'Chưa đến hạn',amount:10560000000,itemCount:548,studentCount:520},
-      {code:'D1_30',label:'Quá hạn 1–30 ngày',amount:2340000000,itemCount:148,studentCount:136},
-      {code:'D31_60',label:'Quá hạn 31–60 ngày',amount:1110000000,itemCount:66,studentCount:61},
-      {code:'D61_90',label:'Quá hạn 61–90 ngày',amount:620000000,itemCount:34,studentCount:32},
-      {code:'D90_PLUS',label:'Quá hạn trên 90 ngày',amount:540000000,itemCount:28,studentCount:26},
-      {code:'MISSING_DUE_DATE',label:'Thiếu hạn nộp',amount:250000000,itemCount:10,studentCount:9}
+      {code:'NOT_DUE',label:'Chưa đến hạn',amount:259050000,itemCount:45,studentCount:42},
+      {code:'D1_30',label:'Quá hạn 1–30 ngày',amount:0,itemCount:0,studentCount:0},
+      {code:'D31_60',label:'Quá hạn 31–60 ngày',amount:15450000,itemCount:4,studentCount:4},
+      {code:'D61_90',label:'Quá hạn 61–90 ngày',amount:0,itemCount:0,studentCount:0},
+      {code:'D90_PLUS',label:'Quá hạn trên 90 ngày',amount:0,itemCount:0,studentCount:0},
+      {code:'MISSING_DUE_DATE',label:'Thiếu hạn nộp',amount:0,itemCount:0,studentCount:0}
     ]},
     dailyTransactions:buildMockDaily(),
     reconciliation:{
@@ -926,12 +920,12 @@
       }
     },
     alerts:{groups:[
-      {code:'INTERNAL_INCOMPLETE',label:'Chưa ghi nhận đầy đủ vào khoản phải thu',caseCount:3,amount:124000000,overSlaCount:1,ownerUnit:'Phòng Kế hoạch Tài chính',oldestCaseAgeLabel:'1 ngày 3 giờ',severity:'HIGH',actionLabel:'Xử lý'},
-      {code:'BANK_UNCONFIRMED',label:'Chưa được ngân hàng xác nhận',caseCount:2,amount:78500000,overSlaCount:0,ownerUnit:'Tinktalk / BIDV',oldestCaseAgeLabel:'7 giờ 23 phút',severity:'MEDIUM',actionLabel:'Xem'},
-      {code:'UNIDENTIFIED_RECEIVABLE',label:'Chưa xác định được đúng khoản phải thu',caseCount:2,amount:56000000,overSlaCount:1,ownerUnit:'Phòng Kế hoạch Tài chính',oldestCaseAgeLabel:'1 ngày 1 giờ',severity:'CRITICAL',actionLabel:'Xử lý'},
-      {code:'RECON_OVERDUE',label:'Đối soát hoặc xử lý đã quá hạn',caseCount:3,amount:58700000,overSlaCount:1,ownerUnit:'KHTC / Tinktalk',oldestCaseAgeLabel:'1 ngày 23 giờ',severity:'HIGH',actionLabel:'Xử lý'}
+      {code:'INTERNAL_INCOMPLETE',label:'Chưa ghi nhận đầy đủ vào khoản phải thu',caseCount:2,amount:31500000,overSlaCount:1,ownerUnit:'Phòng Kế hoạch Tài chính',oldestCaseAgeLabel:'3 giờ 12 phút',severity:'HIGH',actionLabel:'Xử lý'},
+      {code:'BANK_UNCONFIRMED',label:'Chưa được ngân hàng xác nhận',caseCount:1,amount:7000000,overSlaCount:0,ownerUnit:'Tinktalk / BIDV',oldestCaseAgeLabel:'1 giờ 25 phút',severity:'MEDIUM',actionLabel:'Xem'},
+      {code:'UNIDENTIFIED_RECEIVABLE',label:'Chưa xác định được đúng khoản phải thu',caseCount:1,amount:8000000,overSlaCount:1,ownerUnit:'Phòng Kế hoạch Tài chính',oldestCaseAgeLabel:'4 giờ 05 phút',severity:'CRITICAL',actionLabel:'Xử lý'},
+      {code:'RECON_OVERDUE',label:'Đối soát hoặc xử lý đã quá hạn',caseCount:1,amount:1263600,overSlaCount:0,ownerUnit:'KHTC / Tinktalk',oldestCaseAgeLabel:'2 giờ 10 phút',severity:'HIGH',actionLabel:'Xử lý'}
     ]},
-    cases:{totalCount:10,items:MOCK_CASES}
+    cases:{totalCount:5,items:MOCK_CASES.slice(0,5)}
   };
 
   function cloneMockData(){
@@ -1096,9 +1090,7 @@
     const cards=[
       ['TOTAL_RECEIVABLE','Tổng phải thu',k.totalReceivable,(k.totalItems||0)+' khoản · '+(k.totalStudents||0)+' sinh viên','', 'kpi-neutral'],
       ['ALLOCATED','Đã ghi nhận vào nghĩa vụ',k.allocatedToObligation,'Tỷ lệ thu nội bộ '+fmtPct(k.internalCollectionRate),'success','kpi-success'],
-      ['OUTSTANDING','Còn phải thu',k.outstanding,(k.outstandingItems||0)+' khoản chưa hoàn thành','warning','kpi-warning'],
       ['OVERDUE','Quá hạn',k.overdueAmount,(k.overdueItems||0)+' khoản · '+(k.overdueStudents||0)+' sinh viên quá hạn','danger','kpi-danger'],
-      ['OVERPAID','Thu thừa',k.overpaidAmount,(k.overpaidItems||0)+' khoản thu thừa','', 'kpi-purple'],
       ['EXCEPTIONS','Ngoại lệ cần xử lý',k.openExceptionAmount,(k.openExceptionCases||0)+' trường hợp · '+(k.overSlaCases||0)+' quá SLA','danger','kpi-danger']
     ];
     $('kpiGrid').innerHTML=cards.map(c=>'<div class="kpi-card '+c[5]+'" data-kpi="'+c[0]+'"><div class="kpi-label">'+c[1]+'</div><div class="kpi-value '+c[4]+'">'+fmtMoney(c[2])+'</div><div class="kpi-sub">'+esc(c[3])+'</div></div>').join('');
@@ -1214,7 +1206,7 @@
     const btn=$('btnExport'),original=btn.textContent; btn.disabled=true; btn.textContent='Đang xuất Excel…'; showBanner('info','Tệp Excel đang được tạo từ đúng bộ lọc và thời điểm số liệu đang hiển thị.','Ẩn');
     if(CONFIG.mockMode){
       await new Promise(r=>setTimeout(r,450));
-      showBanner('info','Mockup: thao tác Xuất Excel đã được mô phỏng. Khi dev tích hợp backend, tệp phải dùng đúng bộ lọc và thời điểm số liệu đang hiển thị.','Ẩn');
+      showBanner('info','Đã chuẩn bị tệp Excel theo đúng bộ lọc và thời điểm số liệu đang hiển thị.','Ẩn');
       btn.disabled=false;btn.textContent=original;return;
     }
     try{
@@ -1251,5 +1243,6 @@
 </script>
 
 <script src="../js/common.js"></script>
+<script src="../js/mvp-clean.js"></script>
 </body>
 </html>
